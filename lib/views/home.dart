@@ -30,8 +30,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-          child: _widgetOptions.elementAt(_selectedIndex),
+        resizeToAvoidBottomInset : false,
+        body: new GestureDetector(
+              onTap: () {
+                FocusScope.of(context).requestFocus(new FocusNode());
+              },
+          child: SingleChildScrollView(child: _widgetOptions.elementAt(_selectedIndex)),
         ),
       
      bottomNavigationBar: BottomNavigationBar(
@@ -58,7 +62,5 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-
 }
 
