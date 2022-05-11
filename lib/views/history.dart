@@ -6,20 +6,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
-
-class SettingsPage extends StatefulWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+class HistoryPage extends StatefulWidget {
+  const HistoryPage({Key? key}) : super(key: key);
 
   @override
-  State<SettingsPage> createState() => _SettingsPageState();
+  State<HistoryPage> createState() => _HistoryPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage>{
+class _HistoryPageState extends State<HistoryPage>{
 
   
   @override
   Widget build(BuildContext context) {
-    return const Text("Settings");
+    return const Text("History");
   }
 
 }

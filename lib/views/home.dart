@@ -1,6 +1,9 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:msg/components/bottom.dart';
+
+import 'package:msg/views/value_form.dart';
+import 'package:msg/views/history.dart';
+import 'package:msg/views/settings.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -10,69 +13,52 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _formKey = GlobalKey<FormState>();
+  int _selectedIndex = 0;  
+
+ static const List<Widget> _widgetOptions = <Widget>[  
+    ValueForm(),  
+    HistoryPage(),  
+    SettingsPage(),  
+  ];  
+
+  void _onTap(int index) {  
+    setState(() {  
+      _selectedIndex = index;  
+    });  
+  }  
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Stack(children: [_valueForm(), BottomNav()]));
+    return Scaffold(
+        body: Center(
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
+      
+     bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.home),
+            label: 'Nalogi',
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.history),
+            label: 'Zgodovina',
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.settings),
+            label: 'Nastavitve',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
+        onTap: _onTap,
+        elevation: 5,
+        iconSize: 35,  
+      ),
+    );
   }
 
-  Widget _valueForm() {
-    return Form(
-        key: _formKey,
-        child: Container(
-            padding: const EdgeInsets.all(30.0),
-            color: Colors.white,
-            child: Center(
-                child: Column(children: [
-              const Padding(padding: EdgeInsets.only(top: 280.0)),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: "Vnesi naziv naloga",
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                    borderSide: const BorderSide(),
-                  ),
-                  //fillColor: Colors.green
-                ),
-                keyboardType: TextInputType.text,
-                style: const TextStyle(
-                  fontFamily: "Poppins",
-                ),
-              ),
-              const Padding(padding: EdgeInsets.only(top: 20.0)),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: "Vnesi površino",
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                    borderSide: const BorderSide(),
-                  ),
-                  //fillColor: Colors.green
-                ),
-                keyboardType: TextInputType.text,
-                style: const TextStyle(
-                  fontFamily: "Poppins",
-                ),
-              ),
-              const Padding(padding: EdgeInsets.only(top: 20.0)),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.black,
-                  minimumSize: const Size.fromHeight(50), // NEW
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25.0),
-                  ),
-                ),
-                child: const Text(
-                  'Pošlji',
-                  style: TextStyle(fontSize: 20),
-                ),
-                onPressed: () {
-                  print('Hello');
-                },
-              ),
-            ]))));
-  }
+
 }
+
