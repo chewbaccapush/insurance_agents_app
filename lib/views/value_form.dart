@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:msg/models/proprety_value.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ValueForm extends StatefulWidget {
     const ValueForm({Key? key}) : super(key: key);
@@ -9,6 +13,7 @@ class ValueForm extends StatefulWidget {
   
   class _ValueFormState extends State<ValueForm> {
     final _formKey = GlobalKey<FormState>();
+    
 
     // Controllers for textfields
     final nameController = TextEditingController();
@@ -25,6 +30,15 @@ class ValueForm extends StatefulWidget {
     void sendMessage() {
       print("name:" + nameController.text);
       print("area:" + areaController.text);
+    }
+
+    // Locally save order to users device 
+    void localSave() async {
+      final instance = await SharedPreferences.getInstance();
+
+      Object proprety_value = new PropretyValue(nameController.text, areaController.text, 0);
+      
+      instance.setString(nameController.text, jsonEncode(proprety_value));
     }
 
     @override
