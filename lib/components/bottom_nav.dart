@@ -27,11 +27,11 @@ class _BottomNavState extends State<BottomNav> {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             curve: Curves.easeOutCubic,
-            height: MediaQuery.of(context).padding.bottom + 55.0,
+            height: MediaQuery.of(context).padding.bottom + 80.0,
             decoration: BoxDecoration(
                 color: CupertinoTheme.of(context).primaryColor,
                 borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(10.0))),
+                    const BorderRadius.vertical(top: Radius.circular(35.0))),
             padding: EdgeInsets.only(
               top: 10.0,
               left: 10.0,
@@ -45,10 +45,22 @@ class _BottomNavState extends State<BottomNav> {
               scrollDirection: Axis.horizontal,
               reverse: true,
               children: [
-                const SizedBox(width: 10.0),
+                const SizedBox(width: 35.0),
                 _buildButton(
-                    'History',
-                    CupertinoIcons.gear_alt_fill,
+                    'Zgodovina',
+                    Icons.history,
+                    () => Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) => const SettingsPage()))),
+                const SizedBox(width: 40.0),
+                _buildButton(
+                    'Nalogi',
+                    Icons.history,
+                    () => Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) => const SettingsPage()))),
+                const SizedBox(width: 40.0),
+                _buildButton(
+                    'Nalogi',
+                    Icons.history,
                     () => Navigator.of(context).push(CupertinoPageRoute(
                         builder: (context) => const SettingsPage()))),
               ],
@@ -61,33 +73,30 @@ class _BottomNavState extends State<BottomNav> {
 
   Widget _buildButton(String name, IconData? icon, Function() onTap) {
     return ElevatedButton(
-      child: Row(
-        children: [
-          Icon(
-            icon!,
-            size: 20.0,
-            color: Theme.of(context).textTheme.bodyText1!.color,
-          ),
-          const SizedBox(width: 10.0),
-          Text(
-            name,
-            style: TextStyle(
-              color: Theme.of(context).textTheme.bodyText1!.color,
-            ),
-          ),
-        ],
-      ),
-      onPressed: onTap,
-      style: ButtonStyle(
-        backgroundColor:
-            MaterialStateProperty.all(CupertinoColors.white.withOpacity(.3)),
-        elevation: MaterialStateProperty.all(0.0),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
+        child: Align(
+          alignment: Alignment.center,
+          child: Column(
+            children: [
+              Icon(
+                icon!,
+                size: 35.0,
+                color: Colors.white,
+              ),
+              Text(
+                name,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
         ),
-      ),
-    );
+        onPressed: onTap,
+        style: OutlinedButton.styleFrom(
+          side: BorderSide(
+            color: Colors.transparent,
+          ),
+        ));
   }
 }

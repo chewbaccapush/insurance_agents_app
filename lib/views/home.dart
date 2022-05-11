@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:msg/components/bottom_nav.dart';
+import 'package:msg/components/bottom.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,7 +13,7 @@ class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Stack(children: [_valueForm(), const BottomNav()]));
+    return Scaffold(body: Stack(children: [_valueForm(), BottomNav()]));
   }
 
   Widget _valueForm() {
