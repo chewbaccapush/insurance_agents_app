@@ -30,23 +30,25 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         resizeToAvoidBottomInset : false,
-        body: new GestureDetector(
+        body: GestureDetector(
               onTap: () {
-                FocusScope.of(context).requestFocus(new FocusNode());
+                FocusScope.of(context).requestFocus(FocusNode());
               },
           child: SingleChildScrollView(child: _widgetOptions.elementAt(_selectedIndex)),
         ),
       
      bottomNavigationBar: BottomNavigationBar(
         items: [
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.home),
-            label: 'Nalogi',
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            label: 'Pošlji nalog',
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.history),
             label: 'Zgodovina',
+            
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.settings),
@@ -54,11 +56,13 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.black,
+        selectedItemColor: Color.fromARGB(255, 184, 60, 93),
         unselectedItemColor: Colors.grey,
+        backgroundColor: Color.fromARGB(255, 45, 43, 43),
         onTap: _onTap,
         elevation: 5,
-        iconSize: 35,  
+        iconSize: 40, 
+        selectedFontSize: 15.5, 
       ),
     );
   }
