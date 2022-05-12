@@ -52,8 +52,10 @@ class ValueForm extends StatefulWidget {
               color: Colors.white,
               child: Center(
                   child: Column(children: [
+                  
                 const Padding(padding: EdgeInsets.only(top: 200.0)),
                 TextFormField(
+                  cursorColor: Color.fromARGB(255, 45, 43, 43),
                   controller: nameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -62,10 +64,12 @@ class ValueForm extends StatefulWidget {
                     return null;
                   },
                   decoration: InputDecoration(
+                    
+                    floatingLabelStyle: TextStyle( color: Color.fromARGB(255, 184, 60, 93)),
                     labelText: "Vnesi naziv naloga",
                     focusedBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                        borderSide: BorderSide(color: Color.fromARGB(255, 247, 172, 22),width: 2.0)),
+                        borderSide: BorderSide(color: Color.fromARGB(255, 184, 60, 93),width: 2.0)),
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15.0),
@@ -79,7 +83,8 @@ class ValueForm extends StatefulWidget {
                 ),
                 const Padding(padding: EdgeInsets.only(top: 30.0)),
                 TextFormField(
-                  controller: areaController,
+                   cursorColor: Color.fromARGB(255, 45, 43, 43),
+                   controller: areaController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Vnesite podatke.';
@@ -87,11 +92,12 @@ class ValueForm extends StatefulWidget {
                     return null;
                   },
                   decoration: InputDecoration(
+                    floatingLabelStyle: TextStyle( color: Color.fromARGB(255, 184, 60, 93)),
                     labelText: "Vnesi površino",
                     fillColor: Colors.white,
                     focusedBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                        borderSide: BorderSide(color: Color.fromARGB(255, 247, 172, 22), width: 2.0)),
+                        borderSide: BorderSide(color: Color.fromARGB(255, 184, 60, 93), width: 2.0)),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15.0),
                       borderSide: const BorderSide(),
@@ -105,6 +111,97 @@ class ValueForm extends StatefulWidget {
                     color: Colors.black,
                   ),
                 ),
+                 const Padding(padding: EdgeInsets.only(top: 30.0)),
+                TextFormField(
+                  cursorColor: Color.fromARGB(255, 45, 43, 43),
+                  //controller: areaController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Vnesite podatke.';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    floatingLabelStyle: TextStyle( color: Color.fromARGB(255, 184, 60, 93)),
+                    labelText: "Vnesi površino",
+                    fillColor: Colors.white,
+                    focusedBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                        borderSide: BorderSide(color: Color.fromARGB(255, 184, 60, 93), width: 2.0)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: const BorderSide(),
+                      
+                    ),
+                    
+                  ),
+                  keyboardType: TextInputType.text,
+                  style: const TextStyle(
+                    fontFamily: "Poppins",
+                    color: Colors.black,
+                  ),
+                ),
+                 const Padding(padding: EdgeInsets.only(top: 30.0)),
+                TextFormField(
+                  cursorColor: Color.fromARGB(255, 45, 43, 43),
+                  //controller: areaController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Vnesite podatke.';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    floatingLabelStyle: TextStyle( color: Color.fromARGB(255, 184, 60, 93)),
+                    labelText: "Vnesi površino",
+                    fillColor: Colors.white,
+                    focusedBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                        borderSide: BorderSide(color: Color.fromARGB(255, 184, 60, 93), width: 2.0)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: const BorderSide(),
+                      
+                    ),
+                    
+                  ),
+                  keyboardType: TextInputType.text,
+                  style: const TextStyle(
+                    fontFamily: "Poppins",
+                    color: Colors.black,
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.only(top: 30.0)),
+                TextFormField(
+                  cursorColor: Color.fromARGB(255, 45, 43, 43),
+                  //controller: areaController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Vnesite podatke.';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    floatingLabelStyle: TextStyle( color: Color.fromARGB(255, 184, 60, 93)),
+                    labelText: "Vnesi površino",
+                    fillColor: Colors.white,
+                    focusedBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                        borderSide: BorderSide(color: Color.fromARGB(255, 184, 60, 93), width: 2.0)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: const BorderSide(),
+                      
+                    ),
+                    
+                  ),
+                  keyboardType: TextInputType.text,
+                  style: const TextStyle(
+                    fontFamily: "Poppins",
+                    color: Colors.black,
+                  ),
+                ),
+                
                 const Padding(padding: EdgeInsets.only(top: 30.0)),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(

@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        resizeToAvoidBottomInset : false,
+        resizeToAvoidBottomInset : true,
         body: GestureDetector(
               onTap: () {
                 FocusScope.of(context).requestFocus(FocusNode());
@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
      bottomNavigationBar: BottomNavigationBar(
         items: [
           const BottomNavigationBarItem(
-            icon: Icon(Icons.add),
+            icon: Icon(Icons.send_rounded),
             label: 'Pošlji nalog',
           ),
           BottomNavigationBarItem(
@@ -58,11 +58,11 @@ class _HomePageState extends State<HomePage> {
         currentIndex: _selectedIndex,
         selectedItemColor: Color.fromARGB(255, 184, 60, 93),
         unselectedItemColor: Colors.grey,
-        backgroundColor: Color.fromARGB(255, 45, 43, 43),
+        backgroundColor: Color.fromARGB(255, 54, 52, 52),
         onTap: _onTap,
         elevation: 5,
         iconSize: 40, 
-        selectedFontSize: 15.5, 
+        selectedFontSize: 14.5, 
       ),
     );
   }

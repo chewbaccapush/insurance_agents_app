@@ -57,9 +57,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/images/Msg-life-logo.svg.png
+  
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -76,22 +76,22 @@ flutter:
   fonts:
     - family: MontserratSemi
       fonts:
-        - asset: fonts/Montserrat-SemiBold.ttf
+        - asset: assets/fonts/Montserrat-SemiBold.ttf
           
     - family: MontserratExtra
       fonts:
-        - asset: fonts/Montserrat-ExtraBold.ttf
+        - asset: assets/fonts/Montserrat-ExtraBold.ttf
 
     - family: PoppinsRegular
       fonts:
-        - asset: fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Regular.ttf
 
     - family: PoppinsSemi
       fonts:
-        - asset: fonts/Poppins-SemiBold.ttf
+        - asset: assets/fonts/Poppins-SemiBold.ttf
 
     - family: PoppinsExtra
       fonts:
-        - asset: fonts/Poppins-ExtraBold.ttf
+        - asset: assets/fonts/Poppins-ExtraBold.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
