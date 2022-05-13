@@ -36,9 +36,16 @@ class ValueForm extends StatefulWidget {
     void localSave() async {
       final instance = await SharedPreferences.getInstance();
 
-      Object proprety_value = new PropretyValue(nameController.text, areaController.text, 0);
+      PropretyValue propretyValue = PropretyValue(nameController.text, areaController.text, 0);
+
+      Map<String, dynamic> map = {
+        'name': propretyValue.name,
+        'area': propretyValue.area,
+        'value': propretyValue.value
+      };
       
-      instance.setString(nameController.text, jsonEncode(proprety_value));
+      instance.setString(nameController.text, jsonEncode(map));
+      print(instance.getKeys());
     }
 
     @override
@@ -111,8 +118,6 @@ class ValueForm extends StatefulWidget {
                     color: Colors.black,
                   ),
                 ),
-               
-            
                 const Padding(padding: EdgeInsets.only(top: 30.0)),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -131,6 +136,7 @@ class ValueForm extends StatefulWidget {
                     if (_formKey.currentState!.validate()) {
                       debugPrint('Value form fired');
                       sendMessage();
+                      localSave();
                     }
                   },
                 ),
