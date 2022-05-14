@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:msg/models/proprety_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,9 +16,9 @@ class HistoryPage extends StatefulWidget {
   State<HistoryPage> createState() => _HistoryPageState();
 }
 
-class _HistoryPageState extends State<HistoryPage>{
+class _HistoryPageState extends State<HistoryPage> {
   List<dynamic> allEntries = [];
-  
+
   @override
   void initState() {
     super.initState();
@@ -25,22 +26,31 @@ class _HistoryPageState extends State<HistoryPage>{
   }
 
   // Get orders from users local storage
-  void localGet() async{
+  void localGet() async {
     final instance = await SharedPreferences.getInstance();
     final keys = instance.getKeys();
-    print(keys);
 
-    for(String key in keys) {
-      print(instance.get(key));
-      allEntries.add(instance.get(key)); 
+    for (String key in keys) {
+      allEntries.add(instance.get(key));
     }
-  
-    print(allEntries);
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    return const Text("History");
+    return buildView();
   }
 
+  Widget buildView() {
+    return ListView.separated(
+        itemCount: allEntries.length,
+        separatorBuilder: (BuildContext context, int index) => const Divider(),
+        itemBuilder: (context, i) {
+          dynamic entry = jsonDecode(allEntries[i]);
+          return buildTile(entry);
+        });
+  }
+
+  Widget buildTile(entry) {
+    return ListTile(title: Text(entry["name"]), trailing: Text(entry["area"]));
+  }
 }
