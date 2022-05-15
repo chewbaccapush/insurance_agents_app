@@ -1,13 +1,5 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:settings_ui/settings_ui.dart';
-
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -17,45 +9,52 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool isSwitched = false;
-  
-  void switchValue() {
-    debugPrint("hej");
-  }
+  bool _darkMode = false;
+  dynamic _currentLanguage = "Slovenian";
+
+  dynamic changeTheme = (value) => {};
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("msg"),
-      ),
-      body: SettingsList(
-        sections: [
-          SettingsSection(
-            //titlePadding: EdgeInsets.all(20),
-            title: Text("Osnovno"),
-            tiles: [
-              SettingsTile(
-                title: Text('Jezik'),
-                //subtitle: 'English',
-                leading: Icon(Icons.language),
-                onPressed: (BuildContext context) {},
-              ),
-              SettingsTile.switchTile(
-                initialValue: false,
-                title: Text('Uporabi sistemsko temo'),
-                leading: Icon(Icons.phone_android),
-                // switch: isSwitched,
-                onToggle: (value) {
-                  setState(() {
-                    isSwitched = value;
-                  });
-                },
-              ),
-            ],
-          ),
-        ],
-      ),
+        appBar: AppBar(
+          title: const Text("Settings"),
+        ),
+        body: buildSettings());
+  }
+
+  Widget buildSettings() {
+    return SettingsList(
+      sections: [
+        SettingsSection(
+          tiles: <SettingsTile>[
+            buildNavigationTile("Jezik", Icon(Icons.language)),
+            buildSwitchTile("Temna tema", Icon(Icons.dark_mode))
+          ],
+        ),
+      ],
+    );
+  }
+
+  SettingsTile buildSwitchTile(title, icon) {
+    return SettingsTile.switchTile(
+      title: Text(title),
+      leading: icon,
+      initialValue: _darkMode,
+      onToggle: (value) {
+        setState(() {
+          _darkMode = value;
+        });
+      },
+    );
+  }
+
+  SettingsTile buildNavigationTile(title, icon) {
+    return SettingsTile.navigation(
+      title: Text(title),
+      leading: icon,
+      value: Text(_currentLanguage),
+      onPressed: (BuildContext context) {},
     );
   }
 }
