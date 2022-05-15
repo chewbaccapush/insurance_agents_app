@@ -9,9 +9,9 @@ class ValueForm extends StatefulWidget {
   
     @override
     State<ValueForm> createState() => _ValueFormState();
-  }
+}
   
-  class _ValueFormState extends State<ValueForm> {
+class _ValueFormState extends State<ValueForm> {
     final _formKey = GlobalKey<FormState>();
     
 
@@ -142,4 +142,4 @@ class ValueForm extends StatefulWidget {
                 ),
             ]))));
     }
-  }
+}
