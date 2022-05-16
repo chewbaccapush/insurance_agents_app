@@ -23,9 +23,10 @@ class _HistoryPageState extends State<HistoryPage>{
 
   @override
   void initState() {
-   
+    _localGet();
     super.initState();
   }
+
 
   // Get orders from users local storage
   _localGet() async {
@@ -35,6 +36,9 @@ class _HistoryPageState extends State<HistoryPage>{
     for (String key in keys) {
       allEntries.add(instance.get(key));
     }
+   
+    setState(() {});
+    print(allEntries);
   }
 
   @override
@@ -55,5 +59,4 @@ class _HistoryPageState extends State<HistoryPage>{
   Widget buildTile(entry) {
     return ListTile(title: Text(entry["name"]), trailing: Text(entry["area"]));
   }
-
 }

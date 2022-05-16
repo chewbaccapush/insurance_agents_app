@@ -17,7 +17,7 @@ class _ValueFormState extends State<ValueForm> {
   // Controllers for textfields
   final _nameController = TextEditingController();
   final _areaController = TextEditingController();
-
+  
   // Clears the controller when the widget is disposed.
   @override
   void dispose() {
@@ -45,6 +45,13 @@ class _ValueFormState extends State<ValueForm> {
     };
 
     instance.setString(_nameController.text, jsonEncode(map));
+    clearText();
+  }
+
+  void clearText() {
+    _nameController.clear();
+    _areaController.clear();
+    FocusManager.instance.primaryFocus?.unfocus();
   }
 
   @override
@@ -58,7 +65,7 @@ class _ValueFormState extends State<ValueForm> {
               const Padding(padding: EdgeInsets.only(top: 200.0)),
               buildTextFormField(_nameController, "Vnesi naziv naloga"),
               const Padding(padding: EdgeInsets.only(top: 30.0)),
-              buildTextFormField(_nameController, "VnesiPovršino"),
+              buildTextFormField(_areaController, "Vnesi površino"),
               const Padding(padding: EdgeInsets.only(top: 30.0)),
               buildElevatedButton("Pošlji")
             ]))));
@@ -96,7 +103,7 @@ class _ValueFormState extends State<ValueForm> {
           borderRadius: BorderRadius.circular(25.0),
         ),
       ),
-      child: Text(labelText),
+      child: Text(labelText, style: const TextStyle(fontSize: 20),),
       onPressed: () {
         if (_formKey.currentState!.validate()) {
           debugPrint('Value form fired');
