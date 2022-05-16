@@ -29,7 +29,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
         resizeToAvoidBottomInset: true,
         body: GestureDetector(
             onTap: () {
@@ -52,9 +51,9 @@ class _HomePageState extends State<HomePage> {
               )
             ],
             currentIndex: _selectedIndex,
-            selectedItemColor: Color.fromARGB(255, 184, 60, 93),
-            unselectedItemColor: Colors.grey,
-            backgroundColor: Color.fromARGB(255, 54, 52, 52),
+            // selectedItemColor: Color.fromARGB(255, 184, 60, 93),
+            //   unselectedItemColor: Colors.grey,
+            //   backgroundColor: Color.fromARGB(255, 54, 52, 52),
             onTap: _onTap,
             elevation: 5,
             iconSize: 40,
