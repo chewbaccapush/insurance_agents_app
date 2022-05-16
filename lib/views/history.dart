@@ -23,13 +23,13 @@ class _HistoryPageState extends State<HistoryPage>{
 
   @override
   void initState() {
-    _localGet();
+   
     super.initState();
   }
 
   // Get orders from users local storage
   _localGet() async {
-    final instance = await SharedPreferences.getInstance();
+    SharedPreferences instance = await SharedPreferences.getInstance();
     final keys = instance.getKeys();
 
     for (String key in keys) {
@@ -55,6 +55,5 @@ class _HistoryPageState extends State<HistoryPage>{
   Widget buildTile(entry) {
     return ListTile(title: Text(entry["name"]), trailing: Text(entry["area"]));
   }
-
 
 }
