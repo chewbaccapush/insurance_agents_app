@@ -36,20 +36,7 @@ class _HomePageState extends State<HomePage> {
             },
             child: _widgetOptions.elementAt(_selectedIndex)),
         bottomNavigationBar: BottomNavigationBar(
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.send_rounded),
-                label: 'Pošlji nalog',
-              ),
-              BottomNavigationBarItem(
-                icon: const Icon(Icons.history),
-                label: 'Zgodovina',
-              ),
-              BottomNavigationBarItem(
-                icon: const Icon(Icons.settings),
-                label: 'Nastavitve',
-              )
-            ],
+            items: buildNavigationBarItems(),
             currentIndex: _selectedIndex,
             // selectedItemColor: Color.fromARGB(255, 184, 60, 93),
             //   unselectedItemColor: Colors.grey,
@@ -58,5 +45,22 @@ class _HomePageState extends State<HomePage> {
             elevation: 5,
             iconSize: 40,
             selectedFontSize: 14.5));
+  }
+
+  List<BottomNavigationBarItem> buildNavigationBarItems() {
+    return const [
+      BottomNavigationBarItem(
+        icon: Icon(Icons.send_rounded),
+        label: 'Pošlji nalog',
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.history),
+        label: 'Zgodovina',
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.settings),
+        label: 'Nastavitve',
+      )
+    ];
   }
 }

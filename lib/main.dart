@@ -8,10 +8,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  
     return MaterialApp(
-        theme: ThemeData(fontFamily: 'PoppinsRegular'),
+        theme: ThemeData.dark(),
         debugShowCheckedModeBanner: false,
-        home: HomePage());
+        home: const HomePage());
   }
 }
