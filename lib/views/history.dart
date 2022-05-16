@@ -38,7 +38,7 @@ class _HistoryPageState extends State<HistoryPage>{
     }
    
     setState(() {});
-    print(allEntries);
+    
   }
 
   @override

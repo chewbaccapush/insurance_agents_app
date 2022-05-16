@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:dart_amqp/dart_amqp.dart';
 import 'package:flutter/material.dart';
 import 'package:msg/models/proprety_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+
 
 class ValueForm extends StatefulWidget {
   const ValueForm({Key? key}) : super(key: key);
@@ -26,10 +29,30 @@ class _ValueFormState extends State<ValueForm> {
     super.dispose();
   }
 
-  void sendMessage() {
-    print("name:" + _nameController.text);
-    print("area:" + _areaController.text);
+  static ConnectionSettings settings = ConnectionSettings(
+      host: "localhost",
+      maxConnectionAttempts: 3
+    );
+
+  void sendMessage() async{
+ 
+    final Client _client = Client(settings: settings);
+
+      debugPrint("name:" + _nameController.text);
+      debugPrint("area:" + _areaController.text);
+      debugPrint("connecting..");
+
+      _client
+        .channel()
+        .then((Channel channel) {
+          return channel.queue("hello-world", durable: false);
+        })
+        .then((Queue queue) {
+          queue.publish("hello world");
+          _client.close();
+        });
   }
+  
 
   // Locally save order to users device
   void localSave() async {
