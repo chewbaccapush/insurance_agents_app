@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   dart_amqp: ^0.2.1
   flutter_hooks: ^0.18.3
+  settings_ui: ^2.0.2
 
 dev_dependencies:
   flutter_test:
