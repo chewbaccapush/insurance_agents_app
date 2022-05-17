@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:msg/styles/theme_data.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -18,43 +19,36 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Settings"),
+          title: const Text("Nastavitve"),
         ),
         body: buildSettings());
   }
 
   Widget buildSettings() {
-    return SettingsList(
-      sections: [
-        SettingsSection(
-          tiles: <SettingsTile>[
-            buildNavigationTile("Jezik", Icon(Icons.language)),
-            buildSwitchTile("Temna tema", Icon(Icons.dark_mode))
-          ],
-        ),
-      ],
-    );
+    return ListView(children: [
+      buildSwitchTile("Temna tema", Icon(Icons.dark_mode)),
+      buildNavigationTile("Spremeni Jezik", Icon(Icons.language))
+    ]);
   }
 
-  SettingsTile buildSwitchTile(title, icon) {
-    return SettingsTile.switchTile(
-      title: Text(title),
-      leading: icon,
-      initialValue: _darkMode,
-      onToggle: (value) {
-        setState(() {
-          _darkMode = value;
-        });
-      },
-    );
+  ListTile buildSwitchTile(title, icon) {
+    return ListTile(
+        leading: icon,
+        title: Text(title),
+        trailing: Switch(
+            value: _darkMode,
+            onChanged: (value) {
+              setState(() {
+                _darkMode = value;
+              });
+            }));
   }
 
-  SettingsTile buildNavigationTile(title, icon) {
-    return SettingsTile.navigation(
-      title: Text(title),
+  ListTile buildNavigationTile(title, icon) {
+    return ListTile(
       leading: icon,
-      value: Text(_currentLanguage),
-      onPressed: (BuildContext context) {},
+      title: Text(title),
+      trailing: const Icon(Icons.keyboard_arrow_right),
     );
   }
 }
