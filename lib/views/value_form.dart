@@ -30,7 +30,7 @@ class _ValueFormState extends State<ValueForm> {
   }
 
   static ConnectionSettings settings = ConnectionSettings(
-      host: "localhost",
+      host: "10.0.2.2",
       maxConnectionAttempts: 3
     );
 
