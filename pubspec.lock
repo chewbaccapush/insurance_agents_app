@@ -170,6 +170,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
+<<<<<<< HEAD
   path_provider:
     dependency: "direct main"
     description:
@@ -191,6 +192,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.9"
+=======
+>>>>>>> 7ebd75285dd7c6d11bc5661869d9cdc59c005478
   path_provider_linux:
     dependency: transitive
     description:
@@ -315,6 +318,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.1"
+<<<<<<< HEAD
   sqflite:
     dependency: "direct main"
     description:
@@ -329,6 +333,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.1+1"
+=======
+>>>>>>> 7ebd75285dd7c6d11bc5661869d9cdc59c005478
   stack_trace:
     dependency: transitive
     description:
@@ -401,4 +407,8 @@ packages:
     version: "0.2.0+1"
 sdks:
   dart: ">=2.16.2 <3.0.0"
+<<<<<<< HEAD
   flutter: ">=2.8.1"
+=======
+  flutter: ">=2.8.0"
+>>>>>>> 7ebd75285dd7c6d11bc5661869d9cdc59c005478
