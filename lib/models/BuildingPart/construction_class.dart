@@ -1,0 +1,4 @@
+enum ConstructionClass {
+  solidConstruction,
+  mixedConstruction
+}

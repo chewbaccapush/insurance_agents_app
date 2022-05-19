@@ -2,10 +2,14 @@ import 'dart:convert';
 
 import 'package:dart_amqp/dart_amqp.dart';
 import 'package:flutter/material.dart';
-import 'package:msg/models/proprety_value.dart';
+import 'dart:ffi';
+import 'package:msg/models/BuildingAssessment/building_assessment.dart';
+import 'package:msg/models/BuildingPart/building_part.dart';
+import 'package:msg/models/Database/database_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
+import 'package:sqflite/sqflite.dart';
 
+import 'package:msg/models/proprety_value.dart';
 
 class ValueForm extends StatefulWidget {
   const ValueForm({Key? key}) : super(key: key);
@@ -24,38 +28,46 @@ class _ValueFormState extends State<ValueForm> {
   // Clears the controller when the widget is disposed.
   @override
   void dispose() {
+    DatabaseHelper.instance.close();
     _nameController.dispose();
     _areaController.dispose();
     super.dispose();
   }
 
   static ConnectionSettings settings = ConnectionSettings(
-      host: "localhost",
+      host: "10.0.2.2",
       maxConnectionAttempts: 3
     );
 
   void sendMessage() async{
- 
     final Client _client = Client(settings: settings);
 
-      debugPrint("name:" + _nameController.text);
-      debugPrint("area:" + _areaController.text);
-      debugPrint("connecting..");
+    debugPrint("name:" + _nameController.text);
+    debugPrint("area:" + _areaController.text);
+    debugPrint("connecting..");
 
-      _client
-        .channel()
-        .then((Channel channel) {
-          return channel.queue("hello-world", durable: false);
-        })
-        .then((Queue queue) {
-          queue.publish("hello world");
-          _client.close();
-        });
+    _client
+      .channel()
+      .then((Channel channel) {
+        return channel.queue("hello-world", durable: false);
+      })
+      .then((Queue queue) {
+        queue.publish("hello world");
+        _client.close();
+      });
   }
   
 
   // Locally save order to users device
   void localSave() async {
+    List<BuildingPart> list = [];
+
+    BuildingAssessment assessment = BuildingAssessment(appointmentDate: DateTime(2017, 9, 7, 17 ,30), description: "neki", assessmentCause: "sdsdsd",numOfAppartments: 12, voluntaryDeduction: 22.2, assessmentFee: 22.2, buildingParts: list);
+
+    await DatabaseHelper.instance.createAssessment(assessment);
+
+    
+   /*
     final instance = await SharedPreferences.getInstance();
 
     PropretyValue propretyValue =
@@ -67,8 +79,11 @@ class _ValueFormState extends State<ValueForm> {
       'value': propretyValue.value
     };
 
+
     instance.setString(_nameController.text, jsonEncode(map));
+    */
     clearText();
+    
   }
 
   void clearText() {
@@ -104,14 +119,18 @@ class _ValueFormState extends State<ValueForm> {
           return null;
         },
         decoration: buildInputDecoration(labelText),
+        cursorColor: Colors.white,
         keyboardType: TextInputType.text);
   }
 
   InputDecoration buildInputDecoration(labelText) {
     return InputDecoration(
+        floatingLabelStyle: const TextStyle( color: Color.fromARGB(255, 184, 60, 93)),
         labelText: labelText,
         focusedBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+          borderSide: BorderSide(color: Color.fromARGB(255, 184, 60, 93), width: 2.0),
+        ),
         fillColor: Colors.white,
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15.0),
@@ -125,8 +144,9 @@ class _ValueFormState extends State<ValueForm> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25.0),
         ),
+        primary: const Color.fromARGB(255, 184, 60, 93),
       ),
-      child: Text(labelText, style: const TextStyle(fontSize: 20),),
+      child: Text(labelText, style: const TextStyle(fontSize: 20)),
       onPressed: () {
         if (_formKey.currentState!.validate()) {
           debugPrint('Value form fired');

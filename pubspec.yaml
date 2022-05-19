@@ -30,6 +30,8 @@ dependencies:
   flutter:
     sdk: flutter
   shared_preferences: ^2.0.14
+  http: ^0.13.4
+  sqflite: ^2.0.2
   
 
   # The following adds the Cupertino Icons font to your application.
@@ -38,7 +40,7 @@ dependencies:
   dart_amqp: ^0.2.1
   flutter_hooks: ^0.18.3
   settings_ui: ^2.0.2
-  http: ^0.13.4
+  path_provider: ^2.0.10
 
 dev_dependencies:
   flutter_test:

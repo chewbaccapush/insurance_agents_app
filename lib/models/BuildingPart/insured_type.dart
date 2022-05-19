@@ -1,0 +1,4 @@
+enum InsuredType {
+  newValue,
+  timeValue
+}
