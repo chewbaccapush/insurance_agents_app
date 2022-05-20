@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:msg/views/home.dart';
+import 'package:msg/screens/home.dart';
 import 'package:sqflite/sqflite.dart';
 
 void main() => runApp(const MyApp());

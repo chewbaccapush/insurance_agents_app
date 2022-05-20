@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:msg/views/value_form.dart';
-import 'package:msg/views/history.dart';
-import 'package:msg/views/settings.dart';
+import 'package:msg/screens/building_assessment_form.dart';
+import 'package:msg/screens/history.dart';
+import 'package:msg/screens/settings.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,36 +15,30 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
-    ValueForm(),
+    BuildingAssessmentForm(),
     HistoryPage(),
     SettingsPage(),
   ];
-
-  void _onTap(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: true,
-        body: GestureDetector(
-            onTap: () {
-              FocusScope.of(context).requestFocus(FocusNode());
-            },
-            child: _widgetOptions.elementAt(_selectedIndex)),
+        body: Container(
+          padding: const EdgeInsets.all(50.0),
+          child: GestureDetector(
+              onTap: () {
+                FocusScope.of(context).requestFocus(FocusNode());
+              },
+              child: _widgetOptions.elementAt(_selectedIndex)),
+        ),
         bottomNavigationBar: BottomNavigationBar(
-            items: buildNavigationBarItems(),
-            currentIndex: _selectedIndex,
-            selectedItemColor: Color.fromARGB(255, 184, 60, 93),
-            //   unselectedItemColor: Colors.grey,
-            //   backgroundColor: Color.fromARGB(255, 54, 52, 52),
-            onTap: _onTap,
-            elevation: 5,
-            iconSize: 40,
-            selectedFontSize: 14.5));
+          items: buildNavigationBarItems(),
+          currentIndex: _selectedIndex,
+          onTap: (index) => setState(() {
+            _selectedIndex = index;
+          }),
+        ));
   }
 
   List<BottomNavigationBarItem> buildNavigationBarItems() {
