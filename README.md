@@ -1,2 +1,2 @@
 
-This is an android building assessment application for a real client, built in Flutter.  
+This is an Aandroid building assessment application for a real client, built in Flutter.  
