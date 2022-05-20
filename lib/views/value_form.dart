@@ -1,11 +1,14 @@
 import 'dart:convert';
 
+import 'package:aws_sqs_api/sqs-2012-11-05.dart';
 import 'package:dart_amqp/dart_amqp.dart';
 import 'package:flutter/material.dart';
 import 'dart:ffi';
 import 'package:msg/models/BuildingAssessment/building_assessment.dart';
 import 'package:msg/models/BuildingPart/building_part.dart';
 import 'package:msg/models/Database/database_helper.dart';
+import 'package:msg/services/sqs_sender.dart';
+import 'package:msg/widgets/alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -34,29 +37,27 @@ class _ValueFormState extends State<ValueForm> {
     super.dispose();
   }
 
-  static ConnectionSettings settings = ConnectionSettings(
-      host: "10.0.2.2",
-      maxConnectionAttempts: 3
-    );
+  final SQSSender sqsSender = SQSSender();
 
   void sendMessage() async{
-    final Client _client = Client(settings: settings);
-
     debugPrint("name:" + _nameController.text);
     debugPrint("area:" + _areaController.text);
-    debugPrint("connecting..");
 
-    _client
-      .channel()
-      .then((Channel channel) {
-        return channel.queue("hello-world", durable: false);
-      })
-      .then((Queue queue) {
-        queue.publish("hello world");
-        _client.close();
-      });
+    try {
+      await sqsSender.sendToSQS(_nameController.text);
+      showDialogPopup("ja", "Assessment successfully sent.");
+    } catch (e) {
+      showDialogPopup("Error", "Assessment not sent.");
+    }
   }
   
+  void showDialogPopup(String title, String content) {
+      showDialog(
+        context: context, 
+        builder: (BuildContext context) {
+          return new Alert(title: title, content: content);
+        });
+  }
 
   // Locally save order to users device
   void localSave() async {

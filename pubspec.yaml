@@ -41,6 +41,7 @@ dependencies:
   flutter_hooks: ^0.18.3
   settings_ui: ^2.0.2
   path_provider: ^2.0.10
+  aws_sqs_api: ^1.2.0
 
 dev_dependencies:
   flutter_test:
