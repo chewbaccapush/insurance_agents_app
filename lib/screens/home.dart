@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:msg/screens/building_assessment_form.dart';
+import 'package:msg/screens/building_part_form.dart';
 import 'package:msg/screens/history.dart';
 import 'package:msg/screens/settings.dart';
 

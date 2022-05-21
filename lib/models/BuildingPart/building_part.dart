@@ -13,8 +13,19 @@ import 'package:msg/models/BuildingPart/risk_class.dart';
 const String tableBuildingPart = 'buildingPart';
 
 class BuildingPartFields {
-   static final List<String> values= [
-    id, description, buildingYear, fireProtection, constructionClass, riskClass, unitPrice, insuredType, devaluationPercentage, cubature, value, sumInsured, 
+  static final List<String> values = [
+    id,
+    description,
+    buildingYear,
+    fireProtection,
+    constructionClass,
+    riskClass,
+    unitPrice,
+    insuredType,
+    devaluationPercentage,
+    cubature,
+    value,
+    sumInsured,
   ];
 
   static const String id = 'buildingPartId';
@@ -34,47 +45,48 @@ class BuildingPartFields {
 
 class BuildingPart {
   int? id;
-  String description; 
-  int buildingYear;
-  FireProtection fireProtection;
-  ConstructionClass constructionClass;
-  RiskClass riskClass;
-  double unitPrice;
-  InsuredType insuredType;
-  double devaluationPercentage;
-  double cubature; 
-  double value;
-  double sumInsured;
+  String? description;
+  int? buildingYear;
+  FireProtection? fireProtection;
+  ConstructionClass? constructionClass;
+  RiskClass? riskClass;
+  double? unitPrice;
+  InsuredType? insuredType;
+  double? devaluationPercentage;
+  double? cubature;
+  double? value;
+  double? sumInsured;
   int? fk_buildingAssesmentId;
   List<Measurement>? measurements;
 
-  BuildingPart({
-    this.id,
-    required this.description,
-    required this.buildingYear,
-    required this.fireProtection,
-    required this.constructionClass,
-    required this.riskClass,
-    required this.unitPrice,
-    required this.insuredType,
-    required this.devaluationPercentage,
-    required this.cubature,
-    required this.value,
-    required this.sumInsured,
-    this.fk_buildingAssesmentId,
-    this.measurements
-  });
+  BuildingPart(
+      {this.id,
+      this.description,
+      this.buildingYear,
+      this.fireProtection,
+      this.constructionClass,
+      this.riskClass,
+      this.unitPrice,
+      this.insuredType,
+      this.devaluationPercentage,
+      this.cubature,
+      this.value,
+      this.sumInsured,
+      this.fk_buildingAssesmentId,
+      this.measurements});
 
-   Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       BuildingPartFields.id: id,
       BuildingPartFields.description: description,
       BuildingPartFields.buildingYear: buildingYear,
-      BuildingPartFields.fireProtection: EnumToString.convertToString(fireProtection),
-      BuildingPartFields.constructionClass:  EnumToString.convertToString(constructionClass),
-      BuildingPartFields.riskClass:  EnumToString.convertToString(riskClass),
+      BuildingPartFields.fireProtection:
+          EnumToString.convertToString(fireProtection),
+      BuildingPartFields.constructionClass:
+          EnumToString.convertToString(constructionClass),
+      BuildingPartFields.riskClass: EnumToString.convertToString(riskClass),
       BuildingPartFields.unitPrice: unitPrice,
-      BuildingPartFields.insuredType:  EnumToString.convertToString(insuredType),
+      BuildingPartFields.insuredType: EnumToString.convertToString(insuredType),
       BuildingPartFields.devaluationPercentage: devaluationPercentage,
       BuildingPartFields.cubature: cubature,
       BuildingPartFields.sumInsured: sumInsured,
@@ -84,22 +96,29 @@ class BuildingPart {
   }
 
   static BuildingPart fromJson(Map<String, dynamic> json) {
-    return BuildingPart(                                             
+    return BuildingPart(
       id: json[BuildingPartFields.id] as int?,
       description: json[BuildingPartFields.description] as String,
       buildingYear: json[BuildingPartFields.buildingYear] as int,
-      fireProtection: EnumToString.fromString(FireProtection.values, json[BuildingPartFields.fireProtection]) as FireProtection,
-      constructionClass: EnumToString.fromString(ConstructionClass.values, json[BuildingPartFields.constructionClass]) as ConstructionClass,
-      riskClass: EnumToString.fromString(RiskClass.values,json[BuildingPartFields.riskClass]) as RiskClass,
+      fireProtection: EnumToString.fromString(
+              FireProtection.values, json[BuildingPartFields.fireProtection])
+          as FireProtection,
+      constructionClass: EnumToString.fromString(ConstructionClass.values,
+          json[BuildingPartFields.constructionClass]) as ConstructionClass,
+      riskClass: EnumToString.fromString(
+          RiskClass.values, json[BuildingPartFields.riskClass]) as RiskClass,
       unitPrice: json[BuildingPartFields.unitPrice] as double,
-      insuredType: EnumToString.fromString(InsuredType.values,json[BuildingPartFields.insuredType]) as InsuredType,
+      insuredType: EnumToString.fromString(
+              InsuredType.values, json[BuildingPartFields.insuredType])
+          as InsuredType,
       cubature: double.parse(json[BuildingPartFields.cubature].toString()),
-      devaluationPercentage: double.parse(json[BuildingPartFields.devaluationPercentage].toString()),
+      devaluationPercentage: double.parse(
+          json[BuildingPartFields.devaluationPercentage].toString()),
       value: double.parse(json[BuildingPartFields.value].toString()),
       sumInsured: double.parse(json[BuildingPartFields.sumInsured].toString()),
     );
   }
-  
+
   BuildingPart copy({
     int? id,
     String? description,
@@ -113,29 +132,30 @@ class BuildingPart {
     double? cubature,
     double? value,
     double? sumInsured,
-  }) => 
-    BuildingPart(
-      id: id ?? this.id,
-      description: description ?? this.description,
-      buildingYear: buildingYear ?? this.buildingYear,
-      fireProtection: fireProtection ?? this.fireProtection,
-      constructionClass: constructionClass ?? this.constructionClass,
-      riskClass: riskClass ?? this.riskClass,
-      unitPrice: unitPrice ?? this.unitPrice,
-      insuredType: insuredType ?? this.insuredType,
-      devaluationPercentage: devaluationPercentage ?? this.devaluationPercentage,
-      cubature: cubature ?? this.cubature,
-      value: value ?? this.value,
-      sumInsured: sumInsured ?? this.sumInsured,
-  );
+  }) =>
+      BuildingPart(
+        id: id ?? this.id,
+        description: description ?? this.description,
+        buildingYear: buildingYear ?? this.buildingYear,
+        fireProtection: fireProtection ?? this.fireProtection,
+        constructionClass: constructionClass ?? this.constructionClass,
+        riskClass: riskClass ?? this.riskClass,
+        unitPrice: unitPrice ?? this.unitPrice,
+        insuredType: insuredType ?? this.insuredType,
+        devaluationPercentage:
+            devaluationPercentage ?? this.devaluationPercentage,
+        cubature: cubature ?? this.cubature,
+        value: value ?? this.value,
+        sumInsured: sumInsured ?? this.sumInsured,
+      );
 
-  calculateAll(Measurement measurement){
+  calculateAll(Measurement measurement) {
     calculateCubature(measurement);
     calculateValue();
     calculateSumInsured();
   }
 
-  calculateCubature(Measurement measurement){
+  calculateCubature(Measurement measurement) {
     /*
     if(measurement.length == null) {
       cubature = measurement.radius * measurement.radius * measurement.height;
@@ -145,68 +165,63 @@ class BuildingPart {
     */
   }
 
-  calculateValue(){
-    value = cubature * unitPrice;
+  calculateValue() {
+    // value = cubature * unitPrice;
   }
 
-  calculateSumInsured(){
-    if(insuredType == InsuredType.newValue) {
+  calculateSumInsured() {
+    if (insuredType == InsuredType.newValue) {
       sumInsured = value;
-    }
-    else if(insuredType == InsuredType.timeValue) {
-      sumInsured = value - (devaluationPercentage * value);
-    }
-    else {
+    } else if (insuredType == InsuredType.timeValue) {
+      // sumInsured = value - (devaluationPercentage * value);
+    } else {
       throw Exception("Wrong Insured Type");
     }
   }
-  
 
   get getId => this.id;
 
-  set setId( id) => this.id = id;
+  set setId(id) => this.id = id;
 
   get getBuildingYear => this.buildingYear;
 
-  set setBuildingYear( buildingYear) => this.buildingYear = buildingYear;
+  set setBuildingYear(buildingYear) => this.buildingYear = buildingYear;
 
   get getFireProtection => this.fireProtection;
 
-  set setFireProtection( fireProtection) => this.fireProtection = fireProtection;
+  set setFireProtection(fireProtection) => this.fireProtection = fireProtection;
 
   get getConstructionClass => this.constructionClass;
 
-  set setConstructionClass( constructionClass) => this.constructionClass = constructionClass;
+  set setConstructionClass(constructionClass) =>
+      this.constructionClass = constructionClass;
 
   get getRiskClass => this.riskClass;
 
-  set setRiskClass( riskClass) => this.riskClass = riskClass;
+  set setRiskClass(riskClass) => this.riskClass = riskClass;
 
   get getUnitPrice => this.unitPrice;
 
-  set setUnitPrice( unitPrice) => this.unitPrice = unitPrice;
+  set setUnitPrice(unitPrice) => this.unitPrice = unitPrice;
 
   get getInsuredType => this.insuredType;
 
-  set setInsuredType( insuredType) => this.insuredType = insuredType;
+  set setInsuredType(insuredType) => this.insuredType = insuredType;
 
   get getDevaluationPercentage => this.devaluationPercentage;
 
-  set setDevaluationPercentage( devaluationPercentage) => this.devaluationPercentage = devaluationPercentage;
+  set setDevaluationPercentage(devaluationPercentage) =>
+      this.devaluationPercentage = devaluationPercentage;
 
   get getValue => this.value;
 
-  set setValue( value) => this.value = value;
+  set setValue(value) => this.value = value;
 
   get getSumInsured => this.sumInsured;
 
-  set setSumInsured( sumInsured) => this.sumInsured = sumInsured;
+  set setSumInsured(sumInsured) => this.sumInsured = sumInsured;
 
   get getMeasurments => measurements;
 
- set setMeasurments(measurments) => measurements = measurments;
-
-
-  
-
+  set setMeasurments(measurments) => measurements = measurments;
 }

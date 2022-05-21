@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:msg/models/BuildingAssessment/building_assessment.dart';
 import 'package:msg/widgets/add_objects_section.dart';
 import 'package:msg/widgets/custom_text_form_field.dart';
 import 'package:msg/widgets/date_form_field.dart';
@@ -12,6 +13,7 @@ class BuildingAssessmentForm extends StatefulWidget {
 
 class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
   final _formKey = GlobalKey<FormState>();
+  BuildingAssessment buildingAssessment = BuildingAssessment();
 
   // // Controllers for textfields
   // final _nameController = TextEditingController();
@@ -104,7 +106,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
           Flexible(
             child: Column(
               children: const <Widget>[
-                AddObjectsSection(),
+                // AddObjectsSection(),
               ],
             ),
           ),
