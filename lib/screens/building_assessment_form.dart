@@ -13,7 +13,7 @@ class BuildingAssessmentForm extends StatefulWidget {
 
 class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
   final _formKey = GlobalKey<FormState>();
-  BuildingAssessment buildingAssessment = BuildingAssessment();
+  // BuildingAssessment buildingAssessment = BuildingAssessment();
 
   // // Controllers for textfields
   // final _nameController = TextEditingController();
