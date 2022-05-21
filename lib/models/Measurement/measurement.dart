@@ -13,33 +13,36 @@ class MeasurementFields {
   static const String height = 'height';
   static const String width = 'width';
   static const String radius = 'radius';
+  static const String buildingPart = 'fk_buildingPartId';
 }
 
 class Measurement {
   int? measurementId;
   String description;
-  Float length;
-  Float height;
-  Float width;
-  Float radius;
+  double? length;
+  double? height;
+  double? width;
+  double? radius;
+  int? fk_buildingPartId;
 
   Measurement({
     this.measurementId,
     required this.description,
-    required this.length,
-    required this.height,
-    required this.width,
-    required this.radius,
+    this.length,
+    this.height,
+    this.width,
+    this.radius,
+    this.fk_buildingPartId
   });
 
     Map<String, dynamic> toJson() {
     return {
-      MeasurementFields.id: measurementId,
       MeasurementFields.description: description,
       MeasurementFields.length: length,
       MeasurementFields.height: height,
       MeasurementFields.width: width,
-      MeasurementFields.radius: radius
+      MeasurementFields.radius: radius,
+      MeasurementFields.buildingPart: fk_buildingPartId
     };
   }
 
@@ -47,19 +50,19 @@ class Measurement {
     Measurement(                                             
       measurementId: json[MeasurementFields.id] as int?,
       description: json[MeasurementFields.description] as String,
-      length: json[MeasurementFields.length] as Float,
-      height: json[MeasurementFields.height] as Float,
-      width: json[MeasurementFields.width] as Float,
-      radius: json[MeasurementFields.radius] as Float,
+      length: double.parse(json[MeasurementFields.length].toString()),
+      height: double.parse(json[MeasurementFields.height].toString()),
+      width: double.parse(json[MeasurementFields.width].toString()),
+      radius: double.parse(json[MeasurementFields.radius].toString()),
   );
   
   Measurement copy({
       int? id,
       String? description,
-      Float? length,
-      Float? height,
-      Float? width,
-      Float? radius,
+      double? length,
+      double? height,
+      double? width,
+      double? radius,
      
   }) => 
     Measurement(

@@ -42,6 +42,7 @@ dependencies:
   settings_ui: ^2.0.2
   path_provider: ^2.0.10
   aws_sqs_api: ^1.2.0
+  enum_to_string: ^2.0.1
 
 dev_dependencies:
   flutter_test:

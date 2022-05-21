@@ -1,18 +1,23 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:aws_sqs_api/sqs-2012-11-05.dart';
 import 'package:dart_amqp/dart_amqp.dart';
 import 'package:flutter/material.dart';
-import 'dart:ffi';
-import 'package:msg/models/BuildingAssessment/building_assessment.dart';
-import 'package:msg/models/BuildingPart/building_part.dart';
-import 'package:msg/models/Database/database_helper.dart';
-import 'package:msg/services/sqs_sender.dart';
-import 'package:msg/widgets/alert.dart';
+import 'package:msg/models/BuildingPart/construction_class.dart';
+import 'package:msg/models/BuildingPart/fire_protection.dart';
+import 'package:msg/models/BuildingPart/insured_type.dart';
+import 'package:msg/models/BuildingPart/risk_class.dart';
+import 'package:msg/models/Measurement/measurement.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
+import 'package:msg/models/BuildingAssessment/building_assessment.dart';
+import 'package:msg/models/BuildingPart/building_part.dart';
+import 'package:msg/models/Database/database_helper.dart';
 import 'package:msg/models/proprety_value.dart';
+import 'package:msg/services/sqs_sender.dart';
+import 'package:msg/widgets/alert.dart';
 
 class ValueForm extends StatefulWidget {
   const ValueForm({Key? key}) : super(key: key);
@@ -31,7 +36,7 @@ class _ValueFormState extends State<ValueForm> {
   // Clears the controller when the widget is disposed.
   @override
   void dispose() {
-    DatabaseHelper.instance.close();
+    
     _nameController.dispose();
     _areaController.dispose();
     super.dispose();
@@ -59,13 +64,28 @@ class _ValueFormState extends State<ValueForm> {
         });
   }
 
+  // Deletes Database - for testing 
+  void deleteDatabase() {
+    DatabaseHelper.instance.deleteDatabase('/data/user/0/com.example.msg/databases/msgDatabase.db');
+  }
+
   // Locally save order to users device
   void localSave() async {
-    List<BuildingPart> list = [];
+   
 
-    BuildingAssessment assessment = BuildingAssessment(appointmentDate: DateTime(2017, 9, 7, 17 ,30), description: "neki", assessmentCause: "sdsdsd",numOfAppartments: 12, voluntaryDeduction: 22.2, assessmentFee: 22.2, buildingParts: list);
+    Measurement measurement1 = Measurement(description: "ME1", height: 2.2, width: 23.0, length: 12.0, radius: 23.0);
+    Measurement measurement2 = Measurement(description: "ME2", height: 2.0, width: 33.0, length: 2.0, radius: 9.0);
 
-    await DatabaseHelper.instance.createAssessment(assessment);
+    List<Measurement> measurements = [measurement1, measurement2];
+
+    BuildingPart buildingPart1 = BuildingPart(description: "BP1", buildingYear: 2022, fireProtection: FireProtection.bma, constructionClass: ConstructionClass.solidConstruction, riskClass: RiskClass.four, unitPrice: 12.2, insuredType: InsuredType.newValue, devaluationPercentage: 0.33, cubature: 0.0, value: 0.0, sumInsured: 0.0, measurements: measurements);
+    BuildingPart buildingPart2 = BuildingPart(description: "BP2", buildingYear: 2022, fireProtection: FireProtection.bma, constructionClass: ConstructionClass.solidConstruction, riskClass: RiskClass.four, unitPrice: 12.2, insuredType: InsuredType.newValue, devaluationPercentage: 0.33, cubature: 0, value: 0, sumInsured: 0, measurements: measurements);
+   
+    List<BuildingPart> buildingParts = [buildingPart1, buildingPart2];
+
+    BuildingAssessment assessment = BuildingAssessment(appointmentDate: DateTime(2017, 9, 7, 17 ,30), description: "neki", assessmentCause: "sdsdsd",numOfAppartments: 12, voluntaryDeduction: 22.2, assessmentFee: 22.2);
+
+    await DatabaseHelper.instance.createAssessment(assessment, buildingParts);
 
     
    /*
@@ -153,6 +173,7 @@ class _ValueFormState extends State<ValueForm> {
           debugPrint('Value form fired');
           sendMessage();
           localSave();
+          //deleteDatabase();
         }
       },
     );

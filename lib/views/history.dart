@@ -10,6 +10,9 @@ import 'package:msg/models/proprety_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import '../models/BuildingAssessment/building_assessment.dart';
+import '../models/Database/database_helper.dart';
+
 class HistoryPage extends StatefulWidget {
   const HistoryPage({Key? key}) : super(key: key);
 
@@ -27,9 +30,21 @@ class _HistoryPageState extends State<HistoryPage>{
     super.initState();
   }
 
+  @override
+  void dispose() {
+   
+    super.dispose();
+  }
 
   // Get orders from users local storage
   _localGet() async {
+
+    List<BuildingAssessment> buildingAssessments = await DatabaseHelper.instance.readAllAssessments();
+
+    buildingAssessments.forEach((element) {
+      print(element.buildingParts![0].measurements![0].height);
+    });
+    /*
     SharedPreferences instance = await SharedPreferences.getInstance();
     final keys = instance.getKeys();
 
@@ -38,6 +53,7 @@ class _HistoryPageState extends State<HistoryPage>{
     }
    
     setState(() {});
+    */
     
   }
 

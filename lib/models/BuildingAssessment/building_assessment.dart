@@ -6,7 +6,7 @@ const String tableBuildingAssesment = 'buildingAssessment';
 
 class BuildingAssessmentFields {
   static final List<String> values= [
-    id, appointmentDate, description, assessmentCause, numOfAppartments, voluntaryDeduction, assessmentFee, buildingParts
+    id, appointmentDate, description, assessmentCause, numOfAppartments, voluntaryDeduction, assessmentFee
   ];
 
   static const String id = 'buildingAssessmentId';
@@ -16,7 +16,6 @@ class BuildingAssessmentFields {
   static const String numOfAppartments = 'numOfAppartments';
   static const String voluntaryDeduction = 'voluntaryDeduction';
   static const String assessmentFee = 'assessmentFee';
-  static const String buildingParts = 'FK_buildingParts';
 }
 
 
@@ -30,7 +29,7 @@ class BuildingAssessment {
   double assessmentFee;
   List<BuildingPart>? buildingParts;
 
-  BuildingAssessment({this.id, required this.appointmentDate, required this.description, required this.assessmentCause, this.numOfAppartments, required this.voluntaryDeduction, required this.assessmentFee, required  this.buildingParts});
+  BuildingAssessment({this.id, required this.appointmentDate, required this.description, required this.assessmentCause, this.numOfAppartments, required this.voluntaryDeduction, required this.assessmentFee, this.buildingParts});
 
   Map<String, dynamic> toJson() {
     return {
@@ -41,7 +40,6 @@ class BuildingAssessment {
       BuildingAssessmentFields.numOfAppartments: numOfAppartments,
       BuildingAssessmentFields.voluntaryDeduction: voluntaryDeduction,
       BuildingAssessmentFields.assessmentFee: assessmentFee,
-      BuildingAssessmentFields.buildingParts: buildingParts,
     };
   }
 
@@ -54,7 +52,6 @@ class BuildingAssessment {
       numOfAppartments: json[BuildingAssessmentFields.numOfAppartments] as int?,
       voluntaryDeduction: json[BuildingAssessmentFields.voluntaryDeduction] as double,
       assessmentFee:json[BuildingAssessmentFields.assessmentFee] as double,
-      buildingParts:json[BuildingAssessmentFields.buildingParts] as List<BuildingPart>,
   );
   
   BuildingAssessment copy({
@@ -78,8 +75,6 @@ class BuildingAssessment {
       buildingParts: buildingParts ?? this.buildingParts
   );
   
-
-
   get getId => this.id;
 
   set setId(int id) => this.id = id;
