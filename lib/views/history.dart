@@ -22,7 +22,7 @@ class HistoryPage extends StatefulWidget {
 
 
 class _HistoryPageState extends State<HistoryPage>{
-  List<dynamic> allEntries = [];
+  List<BuildingAssessment> buildingAssessments = [];
 
   @override
   void initState() {
@@ -32,18 +32,13 @@ class _HistoryPageState extends State<HistoryPage>{
 
   @override
   void dispose() {
-   
     super.dispose();
   }
 
   // Get orders from users local storage
   _localGet() async {
+    buildingAssessments = await DatabaseHelper.instance.readAllAssessments();
 
-    List<BuildingAssessment> buildingAssessments = await DatabaseHelper.instance.readAllAssessments();
-
-    buildingAssessments.forEach((element) {
-      print(element.buildingParts![0].measurements![0].height);
-    });
     /*
     SharedPreferences instance = await SharedPreferences.getInstance();
     final keys = instance.getKeys();
@@ -51,10 +46,9 @@ class _HistoryPageState extends State<HistoryPage>{
     for (String key in keys) {
       allEntries.add(instance.get(key));
     }
+    */
    
     setState(() {});
-    */
-    
   }
 
   @override
@@ -64,15 +58,24 @@ class _HistoryPageState extends State<HistoryPage>{
 
   Widget buildView() {
     return ListView.separated(
-        itemCount: allEntries.length,
+        itemCount: buildingAssessments.length,
         separatorBuilder: (BuildContext context, int index) => const Divider(),
         itemBuilder: (context, i) {
-          dynamic entry = jsonDecode(allEntries[i]);
+          dynamic entry = jsonDecode(buildingAssessments[i].toString());
           return buildTile(entry);
         });
   }
 
   Widget buildTile(entry) {
     return ListTile(title: Text(entry["name"]), trailing: Text(entry["area"]));
+  }
+}
+
+class ListViewBuilder extends StatelessWidget {
+  const ListViewBuilder({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context){
+      return Container();
   }
 }
