@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:msg/models/BuildingAssessment/building_assessment.dart';
 import 'package:msg/models/BuildingPart/building_part.dart';
 import 'package:msg/models/Measurement/measurement.dart';
 
-class AddObjectsSection extends StatefulWidget {
-  final BuildingPart buildingPart;
+enum ObjectType { buildingPart, measurement }
 
-  const AddObjectsSection({Key? key, required this.buildingPart})
+class AddObjectsSection extends StatefulWidget {
+  final dynamic onPressed;
+  final BuildingAssessment? buildingAssessment;
+  final BuildingPart? buildingPart;
+  final ObjectType objectType;
+
+  const AddObjectsSection(
+      {Key? key,
+      this.onPressed,
+      this.buildingAssessment,
+      this.buildingPart,
+      required this.objectType})
       : super(key: key);
 
   @override
@@ -13,16 +24,17 @@ class AddObjectsSection extends StatefulWidget {
 }
 
 class _AddObjectsSectionState extends State<AddObjectsSection> {
-  BuildingPart buildingPart = BuildingPart();
   List<ListTile> objects = [];
 
   @override
   void initState() {
-    buildingPart = widget.buildingPart;
-    objects = buildingPart.measurements!
-        .map<ListTile>((Measurement measurement) =>
-            ListTile(title: Text(measurement.description)))
-        .toList();
+    objects = widget.objectType == ObjectType.buildingPart
+        ? widget.buildingAssessment!.buildingParts
+            .map((e) => ListTile(title: Text(e.description!)))
+            .toList()
+        : widget.buildingPart!.measurements
+            .map((e) => ListTile(title: Text(e.description!)))
+            .toList();
     super.initState();
   }
 
@@ -31,13 +43,7 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
     return Column(
       children: <Widget>[
         OutlinedButton(
-            onPressed: () {
-              setState(() {
-                ListTile testBuildingPart = const ListTile(title: Text("Test"));
-                objects.add(testBuildingPart);
-              });
-            },
-            child: const Icon(Icons.add)),
+            onPressed: widget.onPressed, child: const Icon(Icons.add)),
         SizedBox(
           height: 500,
           width: 500,

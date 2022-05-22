@@ -23,39 +23,36 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: true,
-        body: Container(
-          padding: const EdgeInsets.all(50.0),
-          child: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).requestFocus(FocusNode());
-              },
-              child: _widgetOptions.elementAt(_selectedIndex)),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: buildNavigationBarItems(),
-          currentIndex: _selectedIndex,
-          onTap: (index) => setState(() {
-            _selectedIndex = index;
-          }),
-        ));
+    return Container(
+      child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: _widgetOptions.elementAt(0)),
+    );
+    // bottomNavigationBar: BottomNavigationBar(
+    //   items: buildNavigationBarItems(),
+    //   currentIndex: _selectedIndex,
+    //   onTap: (index) => setState(() {
+    //     _selectedIndex = index;
+    //   }),
+    // )
   }
 
-  List<BottomNavigationBarItem> buildNavigationBarItems() {
-    return const [
-      BottomNavigationBarItem(
-        icon: Icon(Icons.send_rounded),
-        label: 'Pošlji nalog',
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.history),
-        label: 'Zgodovina',
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.settings),
-        label: 'Nastavitve',
-      )
-    ];
-  }
+  // List<BottomNavigationBarItem> buildNavigationBarItems() {
+  //   return const [
+  //     BottomNavigationBarItem(
+  //       icon: Icon(Icons.send_rounded),
+  //       label: 'Pošlji nalog',
+  //     ),
+  //     BottomNavigationBarItem(
+  //       icon: Icon(Icons.history),
+  //       label: 'Zgodovina',
+  //     ),
+  //     BottomNavigationBarItem(
+  //       icon: Icon(Icons.settings),
+  //       label: 'Nastavitve',
+  //     )
+  //   ];
+  // }
 }

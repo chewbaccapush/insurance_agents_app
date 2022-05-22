@@ -57,7 +57,7 @@ class BuildingPart {
   double? value;
   double? sumInsured;
   int? fk_buildingAssesmentId;
-  List<Measurement>? measurements;
+  List<Measurement> measurements;
 
   BuildingPart(
       {this.id,
@@ -73,7 +73,8 @@ class BuildingPart {
       this.value,
       this.sumInsured,
       this.fk_buildingAssesmentId,
-      this.measurements});
+      List<Measurement>? measurements})
+      : measurements = measurements ?? [];
 
   Map<String, dynamic> toJson() {
     return {
