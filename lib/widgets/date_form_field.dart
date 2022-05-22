@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class CustomDateFormField extends StatefulWidget {
-  const CustomDateFormField({Key? key}) : super(key: key);
+  final DateTime? initialValue;
+  final dynamic onDateSaved;
+  const CustomDateFormField({Key? key, this.initialValue, this.onDateSaved})
+      : super(key: key);
 
   @override
   State<CustomDateFormField> createState() => _CustomDateFormFieldState();
@@ -11,6 +14,12 @@ class _CustomDateFormFieldState extends State<CustomDateFormField> {
   DateTime _selectedAppointmentDate = DateTime.now();
 
   @override
+  void initState() {
+    _selectedAppointmentDate = widget.initialValue ?? DateTime.now();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(children: <Widget>[
       Flexible(
@@ -18,6 +27,7 @@ class _CustomDateFormFieldState extends State<CustomDateFormField> {
           children: [
             InputDatePickerFormField(
                 initialDate: _selectedAppointmentDate,
+                onDateSaved: widget.onDateSaved,
                 fieldLabelText: "Appointment Date",
                 firstDate: DateTime(2000),
                 lastDate: DateTime(2100)),

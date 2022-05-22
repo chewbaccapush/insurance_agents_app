@@ -23,26 +23,26 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: true,
-        body: Container(
-          padding: const EdgeInsets.only(left: 50, right: 50, top: 50),
-          //padding: const EdgeInsets.all(50.0),
-          child: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).requestFocus(FocusNode());
-              },
-              child: _widgetOptions.elementAt(_selectedIndex)),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: buildNavigationBarItems(),
-          currentIndex: _selectedIndex,
-          onTap: (index) => setState(() {
-            _selectedIndex = index;
-          }),
-        ));
+    return Container(
+      child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: _widgetOptions.elementAt(1)),
+    );
+    /*
+    bottomNavigationBar:
+    BottomNavigationBar(
+      items: buildNavigationBarItems(),
+      currentIndex: _selectedIndex,
+      onTap: (index) => setState(() {
+        _selectedIndex = index;
+      }),
+    );
+    */
   }
-
+}
+/*
   List<BottomNavigationBarItem> buildNavigationBarItems() {
     return const [
       BottomNavigationBarItem(
@@ -60,3 +60,4 @@ class _HomePageState extends State<HomePage> {
     ];
   }
 }
+*/

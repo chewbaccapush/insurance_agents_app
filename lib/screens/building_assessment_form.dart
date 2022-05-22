@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:msg/models/BuildingAssessment/building_assessment.dart';
+import 'package:msg/models/BuildingPart/building_part.dart';
+import 'package:msg/screens/building_part_form.dart';
 import 'package:msg/widgets/add_objects_section.dart';
 import 'package:msg/widgets/custom_text_form_field.dart';
 import 'package:msg/widgets/date_form_field.dart';
 
 class BuildingAssessmentForm extends StatefulWidget {
-  const BuildingAssessmentForm({Key? key}) : super(key: key);
+  final BuildingAssessment? buildingAssessment;
+  const BuildingAssessmentForm({Key? key, this.buildingAssessment})
+      : super(key: key);
 
   @override
   State<BuildingAssessmentForm> createState() => _BuildingAssessmentFormState();
@@ -13,7 +17,13 @@ class BuildingAssessmentForm extends StatefulWidget {
 
 class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
   final _formKey = GlobalKey<FormState>();
-  // BuildingAssessment buildingAssessment = BuildingAssessment();
+  BuildingAssessment buildingAssessment = BuildingAssessment();
+
+  @override
+  void initState() {
+    buildingAssessment = widget.buildingAssessment ?? BuildingAssessment();
+    super.initState();
+  }
 
   // // Controllers for textfields
   // final _nameController = TextEditingController();
@@ -76,41 +86,115 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Row(
-        children: <Widget>[
-          Flexible(
-            child: Column(
-              children: const <Widget>[
-                CustomDateFormField(),
-                CustomTextFormField(
-                    type: TextInputType.text, labelText: "Description"),
-                CustomTextFormField(
-                    type: TextInputType.text, labelText: "Assessment Cause"),
-                CustomTextFormField(
-                  type: TextInputType.numberWithOptions(decimal: false),
-                  labelText: "Number of Apartments",
+    return Scaffold(
+      appBar: AppBar(title: const Text("Building Assessment")),
+      body: Container(
+        padding: const EdgeInsets.all(50.0),
+        child: Form(
+          key: _formKey,
+          child: Row(
+            children: <Widget>[
+              Flexible(
+                child: Column(
+                  children: <Widget>[
+                    CustomDateFormField(
+                      initialValue: buildingAssessment.appointmentDate,
+                      onDateSaved: (newValue) => {
+                        setState((() =>
+                            {buildingAssessment.appointmentDate = newValue}))
+                      },
+                    ),
+                    CustomTextFormField(
+                      type: TextInputType.text,
+                      labelText: "Description",
+                      initialValue: buildingAssessment.description,
+                      onChanged: (newValue) => {
+                        setState(
+                            () => {buildingAssessment.description = newValue})
+                      },
+                    ),
+                    CustomTextFormField(
+                      type: TextInputType.text,
+                      labelText: "Assessment Cause",
+                      initialValue: buildingAssessment.assessmentCause,
+                      onChanged: (newValue) => {
+                        setState(() =>
+                            {buildingAssessment.assessmentCause = newValue})
+                      },
+                    ),
+                    CustomTextFormField(
+                      type:
+                          const TextInputType.numberWithOptions(decimal: false),
+                      labelText: "Number of Apartments",
+                      initialValue:
+                          buildingAssessment.numOfAppartments.toString(),
+                      onChanged: (newValue) => {
+                        setState(() => {
+                              buildingAssessment.numOfAppartments =
+                                  int.parse(newValue)
+                            })
+                      },
+                    ),
+                    CustomTextFormField(
+                      type:
+                          const TextInputType.numberWithOptions(decimal: true),
+                      labelText: "Voluntary Deduction",
+                      initialValue:
+                          buildingAssessment.voluntaryDeduction.toString(),
+                      onChanged: (newValue) => {
+                        setState(() => {
+                              buildingAssessment.voluntaryDeduction =
+                                  double.parse(newValue)
+                            })
+                      },
+                    ),
+                    CustomTextFormField(
+                      type:
+                          const TextInputType.numberWithOptions(decimal: true),
+                      labelText: "Assessment Fee",
+                      initialValue: buildingAssessment.assessmentFee.toString(),
+                      onChanged: (newValue) => {
+                        setState(() => {
+                              buildingAssessment.assessmentFee =
+                                  double.parse(newValue)
+                            })
+                      },
+                    ),
+                  ],
                 ),
-                CustomTextFormField(
-                  type: TextInputType.numberWithOptions(decimal: true),
-                  labelText: "Voluntary Deduction",
+              ),
+              Flexible(
+                child: Column(
+                  children: <Widget>[
+                    AddObjectsSection(
+                      objectType: ObjectType.buildingPart,
+                      buildingAssessment: buildingAssessment,
+                      onPressed: () => {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => BuildingPartForm(
+                              buildingAssessment: buildingAssessment,
+                            ),
+                          ),
+                        )
+                      },
+                    ),
+                    OutlinedButton(
+                        onPressed: () {
+                          _formKey.currentState!.save();
+                          print(buildingAssessment.toJson());
+                          print(buildingAssessment.buildingParts[0].toJson());
+                          print(buildingAssessment
+                              .buildingParts[0].measurements[1]
+                              .toJson());
+                        },
+                        child: const Text("Send"))
+                  ],
                 ),
-                CustomTextFormField(
-                  type: TextInputType.numberWithOptions(decimal: true),
-                  labelText: "Assessment Fee",
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          Flexible(
-            child: Column(
-              children: const <Widget>[
-                // AddObjectsSection(),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

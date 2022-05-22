@@ -37,30 +37,31 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     double c_width = MediaQuery.of(context).size.width * 0.5;
-    return Padding(
-        padding: const EdgeInsets.only(right: 30, left: 30),
-        child: Column(
-          children: [
-            Row(
+    return Scaffold(
+        body: Padding(
+            padding: const EdgeInsets.only(top: 50, right: 50, left: 50),
+            child: Column(
               children: [
-                AnimSearchBar(
-                  helpText: 'Search',
-                  color: Colors.grey[600],
-                  width: c_width,
-                  textController: textController,
-                  prefixIcon: const Icon(Icons.search),
-                  suffixIcon: const Icon(Icons.close),
-                  onSuffixTap: () {
-                    setState(() {
-                      textController.clear();
-                    });
-                  },
-                )
+                Row(
+                  children: [
+                    AnimSearchBar(
+                      helpText: 'Search',
+                      color: Colors.grey[600],
+                      width: c_width,
+                      textController: textController,
+                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon: const Icon(Icons.close),
+                      onSuffixTap: () {
+                        setState(() {
+                          textController.clear();
+                        });
+                      },
+                    )
+                  ],
+                ),
+                buildView(),
               ],
-            ),
-            buildView(),
-          ],
-        ));
+            )));
   }
 
   Widget buildView() {
@@ -77,7 +78,7 @@ class _HistoryPageState extends State<HistoryPage> {
     return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
-          color: Color.fromARGB(150, 132, 20, 57),
+          color: const Color.fromARGB(150, 132, 20, 57),
         ),
         margin: const EdgeInsets.only(bottom: 30.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -195,7 +196,7 @@ class _HistoryPageState extends State<HistoryPage> {
     List<Widget> children = [];
     List<BuildingPart>? parts = entry.buildingParts;
 
-    parts?.forEach((element) {
+    parts.forEach((element) {
       children.add(ListView(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,

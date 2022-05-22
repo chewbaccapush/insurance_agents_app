@@ -9,23 +9,23 @@ import '../Measurement/measurement.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._init();
-  
+
   static Database? _database;
 
   DatabaseHelper._init();
 
-  Future<Database> get database async{
-    if(_database != null) return _database!;
+  Future<Database> get database async {
+    if (_database != null) return _database!;
 
     _database = await _initDB('msgDatabase.db');
     return _database!;
   }
 
-  Future<Database> _initDB(String filePath) async{
+  Future<Database> _initDB(String filePath) async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
-    debugPrint('db location: '+ path);
-    return await openDatabase(path,version: 1, onCreate: _createDB);
+    debugPrint('db location: ' + path);
+    return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 
   Future _createDB(Database db, int version) async {
@@ -45,10 +45,9 @@ class DatabaseHelper {
           ${BuildingAssessmentFields.numOfAppartments} $intagerType,
           ${BuildingAssessmentFields.voluntaryDeduction} $numericType,
           ${BuildingAssessmentFields.assessmentFee} $numericType     
-      )'''
-    );
+      )''');
 
-        await db.execute('''
+    await db.execute('''
       CREATE TABLE $tableBuildingPart (
           ${BuildingPartFields.id} $idType,
           ${BuildingPartFields.buildingAssesment} $intagerNullable,
@@ -65,8 +64,7 @@ class DatabaseHelper {
           ${BuildingPartFields.sumInsured} $numericType,
           FOREIGN KEY(${BuildingPartFields.buildingAssesment}) REFERENCES $tableBuildingAssesment(${BuildingAssessmentFields.id})
           
-      )'''
-    );
+      )''');
 
     await db.execute('''
       CREATE TABLE $tableMeasurement(
@@ -78,22 +76,25 @@ class DatabaseHelper {
           ${MeasurementFields.width} $numericNullable,
           ${MeasurementFields.radius} $numericNullable,
           FOREIGN KEY(${MeasurementFields.buildingPart}) REFERENCES $tableBuildingPart(${BuildingPartFields.id})
-      )'''
-    );
+      )''');
   }
 
-  Future<BuildingAssessment> createAssessment(BuildingAssessment assessment, List<BuildingPart> buildingParts) async{
+  Future<BuildingAssessment> createAssessment(
+      BuildingAssessment assessment, List<BuildingPart> buildingParts) async {
     final db = await instance.database;
 
-    final assessmentId = await db.insert(tableBuildingAssesment, assessment.toJson());
-    final response = await createBuildingPartMeasurement(assessmentId, buildingParts);
+    final assessmentId =
+        await db.insert(tableBuildingAssesment, assessment.toJson());
+    final response =
+        await createBuildingPartMeasurement(assessmentId, buildingParts);
 
     debugPrint(response);
 
     return assessment.copy(id: assessmentId);
   }
 
-  Future createBuildingPartMeasurement(int assessmentId, List<BuildingPart> buildingParts) async {
+  Future createBuildingPartMeasurement(
+      int assessmentId, List<BuildingPart> buildingParts) async {
     final db = await instance.database;
 
     if (buildingParts.isEmpty) {
@@ -101,14 +102,16 @@ class DatabaseHelper {
     }
 
     // !!! NEED TO ALSO CALCULATE CUBATURE, SUM INSURED AND VALUE !!!
-    for(int i = 0; i < buildingParts.length; i++) {
+    for (int i = 0; i < buildingParts.length; i++) {
       buildingParts[i].fk_buildingAssesmentId = assessmentId;
-    
-      final buildingPartId = await db.insert(tableBuildingPart, buildingParts[i].toJson());
-    
-      for(int j = 0; j < buildingParts[i].measurements!.length; j++){
-        buildingParts[i].measurements![j].fk_buildingPartId = buildingPartId;
-        await db.insert(tableMeasurement, buildingParts[i].measurements![j].toJson());
+
+      final buildingPartId =
+          await db.insert(tableBuildingPart, buildingParts[i].toJson());
+
+      for (int j = 0; j < buildingParts[i].measurements.length; j++) {
+        buildingParts[i].measurements[j].fk_buildingPartId = buildingPartId;
+        await db.insert(
+            tableMeasurement, buildingParts[i].measurements[j].toJson());
       }
     }
 
@@ -132,35 +135,36 @@ class DatabaseHelper {
     }
   }
 
-  Future<List<BuildingAssessment>> readAllAssessments() async{
+  Future<List<BuildingAssessment>> readAllAssessments() async {
     final db = await instance.database;
 
-    final resultAssesments = await db.query(tableBuildingAssesment); 
+    final resultAssesments = await db.query(tableBuildingAssesment);
 
-    List<BuildingAssessment> assessments = resultAssesments.map((json)=>BuildingAssessment.fromJson(json)).toList();
+    List<BuildingAssessment> assessments = resultAssesments
+        .map((json) => BuildingAssessment.fromJson(json))
+        .toList();
 
     for (var buildingAssessment in assessments) {
-        final resultParts = await db.query(
-          tableBuildingPart,
+      final resultParts = await db.query(tableBuildingPart,
           where: '${BuildingPartFields.buildingAssesment} = ?',
-          whereArgs: [buildingAssessment.id]
-        );
-        List<BuildingPart> buildingParts = resultParts.map((json)=>BuildingPart.fromJson(json)).toList();
+          whereArgs: [buildingAssessment.id]);
+      List<BuildingPart> buildingParts =
+          resultParts.map((json) => BuildingPart.fromJson(json)).toList();
 
-        for (var buildingPart in buildingParts) {
-            final resultMesurements = await db.query(
-            tableMeasurement,
+      for (var buildingPart in buildingParts) {
+        final resultMesurements = await db.query(tableMeasurement,
             where: '${MeasurementFields.buildingPart} = ?',
-            whereArgs: [buildingPart.id]
-          );
-          List<Measurement> measurements = resultMesurements.map((json)=>Measurement.fromJson(json)).toList();
-          buildingPart.measurements = measurements;
-        }
-        buildingAssessment.buildingParts = buildingParts;
+            whereArgs: [buildingPart.id]);
+        List<Measurement> measurements = resultMesurements
+            .map((json) => Measurement.fromJson(json))
+            .toList();
+        buildingPart.measurements = measurements;
+      }
+      buildingAssessment.buildingParts = buildingParts;
     }
 
     return assessments;
-  } 
+  }
 
   Future close() async {
     final db = await instance.database;
@@ -169,5 +173,5 @@ class DatabaseHelper {
   }
 
   Future<void> deleteDatabase(String path) =>
-    databaseFactory.deleteDatabase(path);
+      databaseFactory.deleteDatabase(path);
 }
