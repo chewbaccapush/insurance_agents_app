@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -32,7 +32,6 @@ dependencies:
   shared_preferences: ^2.0.14
   http: ^0.13.4
   sqflite: ^2.0.2
-  
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -43,12 +42,12 @@ dependencies:
   path_provider: ^2.0.10
   aws_sqs_api: ^1.2.0
   enum_to_string: ^2.0.1
+  anim_search_bar: ^2.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
- 
   # optionally, as transparency is not allowed on app store
   # remove_alpha_ios: true
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -62,15 +61,13 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
-flutter:       
+flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  
-  
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -85,14 +82,6 @@ flutter:
   # example:
   #fonts:
   fonts:
-    - family: MontserratSemi
-      fonts:
-        - asset: assets/fonts/Montserrat-SemiBold.ttf
-          
-    - family: MontserratExtra
-      fonts:
-        - asset: assets/fonts/Montserrat-ExtraBold.ttf
-
     - family: PoppinsRegular
       fonts:
         - asset: assets/fonts/Poppins-Regular.ttf
@@ -104,5 +93,13 @@ flutter:
     - family: PoppinsExtra
       fonts:
         - asset: assets/fonts/Poppins-ExtraBold.ttf
+
+    - family: RobotoLight
+      fonts:
+        - asset: assets/fonts/Roboto-Light.ttf
+
+    - family: RobotoRegular
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

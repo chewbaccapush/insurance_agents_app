@@ -26,7 +26,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         resizeToAvoidBottomInset: true,
         body: Container(
-          padding: const EdgeInsets.all(50.0),
+          padding: const EdgeInsets.only(left: 50, right: 50, top: 50),
+          //padding: const EdgeInsets.all(50.0),
           child: GestureDetector(
               onTap: () {
                 FocusScope.of(context).requestFocus(FocusNode());

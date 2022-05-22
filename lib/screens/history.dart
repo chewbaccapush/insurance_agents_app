@@ -1,16 +1,8 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:msg/models/proprety_value.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:msg/widgets/search_bar.dart';
 
 import '../models/BuildingAssessment/building_assessment.dart';
+import '../models/BuildingPart/building_part.dart';
 import '../models/Database/database_helper.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -20,9 +12,9 @@ class HistoryPage extends StatefulWidget {
   State<HistoryPage> createState() => _HistoryPageState();
 }
 
-
-class _HistoryPageState extends State<HistoryPage>{
+class _HistoryPageState extends State<HistoryPage> {
   List<BuildingAssessment> buildingAssessments = [];
+  TextEditingController textController = TextEditingController();
 
   @override
   void initState() {
@@ -38,44 +30,198 @@ class _HistoryPageState extends State<HistoryPage>{
   // Get orders from users local storage
   _localGet() async {
     buildingAssessments = await DatabaseHelper.instance.readAllAssessments();
-
-    /*
-    SharedPreferences instance = await SharedPreferences.getInstance();
-    final keys = instance.getKeys();
-
-    for (String key in keys) {
-      allEntries.add(instance.get(key));
-    }
-    */
-   
+    print(buildingAssessments);
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return buildView();
+    double c_width = MediaQuery.of(context).size.width * 0.5;
+    return Padding(
+        padding: const EdgeInsets.only(right: 30, left: 30),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                AnimSearchBar(
+                  helpText: 'Search',
+                  color: Colors.grey[600],
+                  width: c_width,
+                  textController: textController,
+                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon: const Icon(Icons.close),
+                  onSuffixTap: () {
+                    setState(() {
+                      textController.clear();
+                    });
+                  },
+                )
+              ],
+            ),
+            buildView(),
+          ],
+        ));
   }
 
   Widget buildView() {
-    return ListView.separated(
-        itemCount: buildingAssessments.length,
-        separatorBuilder: (BuildContext context, int index) => const Divider(),
-        itemBuilder: (context, i) {
-          dynamic entry = jsonDecode(buildingAssessments[i].toString());
-          return buildTile(entry);
-        });
+    return Expanded(
+        child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            itemCount: buildingAssessments.length,
+            itemBuilder: (context, position) {
+              return buildTile(buildingAssessments[position]);
+            }));
   }
 
-  Widget buildTile(entry) {
-    return ListTile(title: Text(entry["name"]), trailing: Text(entry["area"]));
+  Widget buildTile(BuildingAssessment entry) {
+    return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          color: Color.fromARGB(150, 132, 20, 57),
+        ),
+        margin: const EdgeInsets.only(bottom: 30.0),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Row(
+            children: const [
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 35, horizontal: 40),
+                child: Text(
+                  'Building Assessment',
+                  style: TextStyle(fontSize: 30),
+                ),
+              ),
+            ],
+          ),
+          Row(children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                    padding: const EdgeInsets.only(top: 10, left: 40),
+                    child: Row(
+                      children: [
+                        const Text(
+                          'Appointment Date:    ',
+                          style: TextStyle(fontSize: 22),
+                        ),
+                        Text(entry.appointmentDate.toString().substring(0, 10),
+                            style: const TextStyle(fontSize: 20))
+                      ],
+                    )),
+                Padding(
+                    padding: const EdgeInsets.only(top: 20, left: 40),
+                    child: Row(
+                      children: [
+                        const Text(
+                          'Number of Apartments:    ',
+                          style: TextStyle(fontSize: 22),
+                        ),
+                        Text(entry.numOfAppartments.toString(),
+                            style: const TextStyle(fontSize: 20))
+                      ],
+                    )),
+                Padding(
+                    padding: const EdgeInsets.only(top: 20, left: 40),
+                    child: Row(
+                      children: [
+                        const Text(
+                          'Voluntary Deduction:    ',
+                          style: TextStyle(fontSize: 22),
+                        ),
+                        Text(entry.voluntaryDeduction.toString() + " %",
+                            style: const TextStyle(fontSize: 20))
+                      ],
+                    )),
+                Padding(
+                    padding: const EdgeInsets.only(top: 20, left: 40),
+                    child: Row(
+                      children: [
+                        const Text(
+                          'Assessment Fee:    ',
+                          style: TextStyle(fontSize: 22),
+                        ),
+                        Text(entry.assessmentFee.toString() + " €",
+                            style: const TextStyle(fontSize: 20))
+                      ],
+                    )),
+              ],
+            ),
+            Padding(
+                padding: const EdgeInsets.only(left: 150),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                          padding: const EdgeInsets.only(bottom: 20, top: 15),
+                          child: Row(
+                            children: [
+                              const Text(
+                                'Description:    ',
+                                style: TextStyle(fontSize: 22),
+                              ),
+                              Text(entry.description.toString(),
+                                  style: const TextStyle(fontSize: 20))
+                            ],
+                          )),
+                      Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 50),
+                          child: Row(
+                            children: [
+                              const Text(
+                                'Assessment Cause:    ',
+                                style: TextStyle(fontSize: 22),
+                              ),
+                              Text(entry.assessmentCause.toString(),
+                                  style: const TextStyle(fontSize: 20))
+                            ],
+                          )),
+                    ])),
+          ]),
+          Padding(
+              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 25),
+              child: ExpansionTile(
+                  iconColor: Colors.white,
+                  textColor: Colors.white,
+                  title: const Text(
+                    'Building parts',
+                    style: TextStyle(fontSize: 28),
+                  ),
+                  children: _getChildren(entry)))
+        ]));
   }
-}
 
-class ListViewBuilder extends StatelessWidget {
-  const ListViewBuilder({Key? key}) : super(key: key);
+  List<Widget> _getChildren(BuildingAssessment entry) {
+    List<Widget> children = [];
+    List<BuildingPart>? parts = entry.buildingParts;
 
-  @override
-  Widget build(BuildContext context){
-      return Container();
+    parts?.forEach((element) {
+      children.add(ListView(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        children: [buildingPartTile(entry)],
+      ));
+    });
+    return children;
+  }
+
+  Widget buildingPartTile(entry) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
+            child: Row(
+              children: [
+                const Text(
+                  'Appointment Date:    ',
+                  style: TextStyle(fontSize: 18),
+                ),
+                Text(entry.appointmentDate.toString().substring(0, 10),
+                    style: const TextStyle(fontSize: 20))
+              ],
+            )),
+      ],
+    );
   }
 }
