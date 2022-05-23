@@ -6,6 +6,7 @@ class CustomTextFormField extends StatefulWidget {
   final double? width;
   final String? initialValue;
   final ValueChanged<String>? onChanged;
+  final FormFieldValidator<String>? validator;
 
   const CustomTextFormField(
       {Key? key,
@@ -13,7 +14,8 @@ class CustomTextFormField extends StatefulWidget {
       this.labelText,
       this.width,
       this.initialValue,
-      this.onChanged})
+      this.onChanged,
+      this.validator})
       : super(key: key);
 
   @override
@@ -33,12 +35,14 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               onChanged: widget.onChanged,
               decoration: inputDecoration(widget.labelText, widget.width),
               keyboardType: widget.type,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Vnesite podatke.';
-                }
-                return null;
-              }),
+              validator: widget.validator,
+              // validator: (value) {
+              //   if (value == null || value.isEmpty) {
+              //     return 'Vnesite podatke.';
+              //   }
+              //   return null;
+              // }
+          ),
         ),
         const Padding(padding: EdgeInsets.all(10)),
       ],

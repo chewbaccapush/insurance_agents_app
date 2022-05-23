@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:msg/models/Measurement/measurement.dart';
 import 'package:msg/screens/building_part_form.dart';
+import 'package:msg/validators/Validators.dart';
 import 'package:msg/widgets/custom_text_form_field.dart';
 
 import '../models/BuildingPart/building_part.dart';
@@ -48,6 +49,7 @@ class _BuildingMeasurementFormState extends State<BuildingMeasurementForm> {
                       onChanged: (newValue) => {
                         setState(() => {measurement.description = newValue})
                       },
+                      validator: (value) => Validators.defaultValidator(value!),
                     ),
                     CustomTextFormField(
                       type:
@@ -58,6 +60,7 @@ class _BuildingMeasurementFormState extends State<BuildingMeasurementForm> {
                         setState(
                             () => {measurement.length = double.parse(newValue)})
                       },
+                      validator: (value) => Validators.measurementValidator(value!),
                     ),
                     CustomTextFormField(
                       type:
@@ -68,6 +71,7 @@ class _BuildingMeasurementFormState extends State<BuildingMeasurementForm> {
                         setState(
                             () => {measurement.height = double.parse(newValue)})
                       },
+                      validator: (value) => Validators.measurementValidator(value!),
                     ),
                     CustomTextFormField(
                       type:
@@ -78,6 +82,7 @@ class _BuildingMeasurementFormState extends State<BuildingMeasurementForm> {
                         setState(
                             () => {measurement.width = double.parse(newValue)})
                       },
+                      validator: (value) => Validators.measurementValidator(value!),
                     ),
                     CustomTextFormField(
                       type:
@@ -88,10 +93,15 @@ class _BuildingMeasurementFormState extends State<BuildingMeasurementForm> {
                         setState(
                             () => {measurement.radius = double.parse(newValue)})
                       },
+                      validator: (value) => Validators.measurementValidator(value!),
                     ),
                     OutlinedButton(
                       onPressed: () => {
-                        setState(
+                        if (_formKey.currentState!.validate()) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Saving..')),
+                          ),
+                          setState(
                           () {
                             print(buildingPart.measurements);
                             buildingPart.measurements.add(measurement);
@@ -100,6 +110,7 @@ class _BuildingMeasurementFormState extends State<BuildingMeasurementForm> {
                                     buildingPart: buildingPart)));
                           },
                         ),
+                      },
                       },
                       child: const Text("Add"),
                     ),
