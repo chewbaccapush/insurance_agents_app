@@ -1,4 +1,3 @@
-import 'package:aws_sqs_api/sqs-2012-11-05.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:msg/models/Measurement/measurement.dart';
@@ -17,6 +16,7 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   List<BuildingAssessment> buildingAssessments = [];
+  List<BuildingAssessment> searchResults = [];
   TextEditingController textController = TextEditingController();
 
   @override
@@ -33,36 +33,78 @@ class _HistoryPageState extends State<HistoryPage> {
   // Get orders from users local storage
   _localGet() async {
     buildingAssessments = await DatabaseHelper.instance.readAllAssessments();
-    print(buildingAssessments);
+
+    setState(() {});
+  }
+
+  onSearchTextChanged(String text) {
+    searchResults.clear();
+    if (text.isEmpty) {
+      setState(() {});
+      return;
+    }
+
+    buildingAssessments.forEach((assessment) {
+      if (assessment.description!.contains(text) ||
+          assessment.assessmentCause!.contains(text) ||
+          assessment.appointmentDate.toString().contains(text)) {
+        searchResults.add(assessment);
+      }
+    });
+
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    print(searchResults);
     double c_width = MediaQuery.of(context).size.width * 0.5;
     return Scaffold(
         body: Padding(
-            padding: const EdgeInsets.only(top: 40, right: 50, left: 50),
+            padding: const EdgeInsets.only(top: 80, right: 50, left: 50),
             child: Column(
               children: [
                 Row(
                   children: [
-                    AnimSearchBar(
-                      helpText: 'Search',
-                      color: Colors.grey[600],
-                      width: c_width,
-                      textController: textController,
-                      prefixIcon: const Icon(Icons.search),
-                      suffixIcon: const Icon(Icons.close),
-                      onSuffixTap: () {
-                        setState(() {
-                          textController.clear();
-                        });
-                      },
-                    )
+                    Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(40),
+                          color: Colors.grey,
+                        ),
+                        margin: const EdgeInsets.only(bottom: 45),
+                        width: c_width,
+                        height: 55,
+                        child: Row(children: [
+                          Container(
+                              width: c_width - 50,
+                              child: Padding(
+                                  padding: EdgeInsets.only(left: 25),
+                                  child: TextField(
+                                    style: TextStyle(fontSize: 18),
+                                    cursorColor: Colors.white,
+                                    controller: textController,
+                                    decoration: const InputDecoration(
+                                        fillColor: Colors.grey,
+                                        hintText: 'Search',
+                                        border: InputBorder.none),
+                                    onChanged: onSearchTextChanged,
+                                  ))),
+                          IconButton(
+                            icon: Icon(Icons.cancel),
+                            onPressed: () {
+                              textController.clear();
+                              onSearchTextChanged('');
+                            },
+                          ),
+                        ])),
                   ],
                 ),
-                buildView(),
+                if (searchResults.isNotEmpty ||
+                    textController.text.isNotEmpty) ...[
+                  buildSearchView()
+                ] else ...[
+                  buildView(),
+                ],
               ],
             )));
   }
@@ -74,6 +116,16 @@ class _HistoryPageState extends State<HistoryPage> {
             itemCount: buildingAssessments.length,
             itemBuilder: (context, position) {
               return buildTile(buildingAssessments[position]);
+            }));
+  }
+
+  Widget buildSearchView() {
+    return Expanded(
+        child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            itemCount: searchResults.length,
+            itemBuilder: (context, position) {
+              return buildTile(searchResults[position]);
             }));
   }
 
@@ -109,7 +161,7 @@ class _HistoryPageState extends State<HistoryPage> {
                           'Appointment Date:    ',
                           style: TextStyle(fontSize: 22),
                         ),
-                        Text(entry.appointmentDate.toString().substring(0, 10),
+                        Text(entry.appointmentDate.toString().substring(0, 19),
                             style: const TextStyle(fontSize: 20))
                       ],
                     )),

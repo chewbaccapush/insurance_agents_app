@@ -6,6 +6,13 @@ import 'package:msg/widgets/add_objects_section.dart';
 import 'package:msg/widgets/custom_text_form_field.dart';
 import 'package:msg/widgets/date_form_field.dart';
 
+import '../models/BuildingPart/construction_class.dart';
+import '../models/BuildingPart/fire_protection.dart';
+import '../models/BuildingPart/insured_type.dart';
+import '../models/BuildingPart/risk_class.dart';
+import '../models/Database/database_helper.dart';
+import '../models/Measurement/measurement.dart';
+
 class BuildingAssessmentForm extends StatefulWidget {
   final BuildingAssessment? buildingAssessment;
   const BuildingAssessmentForm({Key? key, this.buildingAssessment})
@@ -62,21 +69,57 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
   // }
 
   // // Locally save order to users device
-  // void localSave() async {
-  //   final instance = await SharedPreferences.getInstance();
+  void localSave() async {
+    Measurement measurement1 = Measurement(
+        description: "ME1",
+        height: 2.2,
+        width: 23.0,
+        length: 12.0,
+        radius: 23.0);
+    Measurement measurement2 = Measurement(
+        description: "ME2", height: 2.0, width: 33.0, length: 2.0, radius: 9.0);
 
-  //   PropretyValue propretyValue =
-  //       PropretyValue(_nameController.text, _areaController.text, 0);
+    List<Measurement> measurements = [measurement1, measurement2];
 
-  //   Map<String, dynamic> map = {
-  //     'name': propretyValue.name,
-  //     'area': propretyValue.area,
-  //     'value': propretyValue.value
-  //   };
+    BuildingPart buildingPart1 = BuildingPart(
+        description: "BP1",
+        buildingYear: 2022,
+        fireProtection: FireProtection.bma,
+        constructionClass: ConstructionClass.solidConstruction,
+        riskClass: RiskClass.four,
+        unitPrice: 12.2,
+        insuredType: InsuredType.newValue,
+        devaluationPercentage: 0.33,
+        cubature: 0.0,
+        value: 0.0,
+        sumInsured: 0.0,
+        measurements: measurements);
+    BuildingPart buildingPart2 = BuildingPart(
+        description: "BP2",
+        buildingYear: 2022,
+        fireProtection: FireProtection.bma,
+        constructionClass: ConstructionClass.solidConstruction,
+        riskClass: RiskClass.four,
+        unitPrice: 12.2,
+        insuredType: InsuredType.newValue,
+        devaluationPercentage: 0.33,
+        cubature: 0,
+        value: 0,
+        sumInsured: 0,
+        measurements: measurements);
 
-  //   instance.setString(_nameController.text, jsonEncode(map));
-  //   clearText();
-  // }
+    List<BuildingPart> buildingParts = [buildingPart1, buildingPart2];
+
+    BuildingAssessment assessment = BuildingAssessment(
+        appointmentDate: DateTime(2017, 9, 7, 17, 30),
+        description: "neki",
+        assessmentCause: "sdsdsd",
+        numOfAppartments: 12,
+        voluntaryDeduction: 22.2,
+        assessmentFee: 22.2);
+
+    await DatabaseHelper.instance.createAssessment(assessment, buildingParts);
+  }
 
   // void clearText() {
   //   _nameController.clear();
@@ -181,6 +224,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                     ),
                     OutlinedButton(
                         onPressed: () {
+                          localSave();
                           _formKey.currentState!.save();
                           print(buildingAssessment.toJson());
                           print(buildingAssessment.buildingParts[0].toJson());

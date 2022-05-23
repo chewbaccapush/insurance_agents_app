@@ -1,9 +1,10 @@
-
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AnimSearchBar extends StatefulWidget {
+  final Function function;
+
   ///  width - double ,isRequired : Yes
   ///  textController - TextEditingController  ,isRequired : Yes
   ///  onSuffixTap - Function, isRequired : Yes
@@ -41,6 +42,7 @@ class AnimSearchBar extends StatefulWidget {
     this.suffixIcon,
     this.prefixIcon,
     this.helpText = "Search...",
+    required this.function,
 
     /// choose your custom color
     this.color = Colors.white,
@@ -165,12 +167,10 @@ class _AnimSearchBarState extends State<AnimSearchBar>
                       },
 
                       ///suffixIcon is of type Icon
-                      child: 
-                            
-                            const Icon(
-                              Icons.close,
-                              size: 20.0,
-                            ),
+                      child: const Icon(
+                        Icons.close,
+                        size: 20.0,
+                      ),
                     ),
                     builder: (context, widget) {
                       ///Using Transform.rotate to rotate the suffix icon when it gets expanded
@@ -200,7 +200,7 @@ class _AnimSearchBarState extends State<AnimSearchBar>
                   width: widget.width / 1.7,
                   child: TextField(
                     ///Text Controller. you can manipulate the text inside this textField by calling this controller.
-                    
+
                     controller: widget.textController,
                     inputFormatters: widget.inputFormatters,
                     focusNode: focusNode,
@@ -213,10 +213,11 @@ class _AnimSearchBarState extends State<AnimSearchBar>
                         toggle = 0;
                       });
                     },
+                    onChanged: widget.function(),
 
                     ///style is of type TextStyle, the default is just a color black
                     style: const TextStyle(color: Colors.white),
-                    cursorColor: Colors.black,
+                    cursorColor: Colors.white,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.only(bottom: 5),
                       isDense: true,
