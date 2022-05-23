@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
-          child: _widgetOptions.elementAt(1)),
+          child: _widgetOptions.elementAt(0)),
     );
     /*
     bottomNavigationBar:

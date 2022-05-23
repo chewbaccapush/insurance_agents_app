@@ -7,6 +7,7 @@ import 'package:msg/models/BuildingPart/insured_type.dart';
 import 'package:msg/models/BuildingPart/risk_class.dart';
 import 'package:msg/screens/building_assessment_form.dart';
 import 'package:msg/screens/building_measurement_form.dart';
+import 'package:msg/validators/Validators.dart';
 import 'package:msg/widgets/add_objects_section.dart';
 import 'package:msg/widgets/custom_text_form_field.dart';
 
@@ -94,6 +95,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                           buildingPart.description = newValue;
                         })
                       },
+                      validator: (value) => Validators.defaultValidator(value!),
                     ),
                     CustomTextFormField(
                         type: const TextInputType.numberWithOptions(
@@ -101,10 +103,12 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                         labelText: "Building Year",
                         initialValue: buildingPart.buildingYear.toString(),
                         onChanged: (newValue) => {
-                              setState(() {
-                                buildingPart.buildingYear = int.parse(newValue);
-                              })
-                            }),
+                          setState(() {
+                            buildingPart.buildingYear = int.parse(newValue);
+                          })
+                        },
+                        validator: (value) => Validators.intValidator(value!),
+                        ),        
                     DropdownButton<FireProtection>(
                       value: buildingPart.fireProtection,
                       items: fireProtectionList,
@@ -141,7 +145,9 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                               setState(() {
                                 buildingPart.unitPrice = double.parse(newValue);
                               })
-                            }),
+                            },
+                        validator: (value) => Validators.floatValidator(value!),
+                        ),
                     DropdownButton<InsuredType>(
                       value: buildingPart.insuredType,
                       items: insuredTypeList,
@@ -162,7 +168,15 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                 buildingPart.devaluationPercentage =
                                     double.parse(newValue);
                               })
-                            }),
+                            },
+                        validator: (value) {
+                          if (buildingPart.getInsuredType == InsuredType.timeValue) {
+                            return Validators.floatValidator(value!);
+                          } else {
+                            return null;
+                          }
+                        },
+                    ),
                     //Cubature
                     //Value
                     //Sum Insured
@@ -183,12 +197,17 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                             }),
                     OutlinedButton(
                       onPressed: () => {
-                        setState(() {
+                        if (_formKey.currentState!.validate()) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Saving..')),
+                          ),
+                          setState(() {
                           buildingAssessment.buildingParts.add(buildingPart);
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => BuildingAssessmentForm(
                                   buildingAssessment: buildingAssessment)));
-                        }),
+                        })
+                        },
                       },
                       child: const Text("Add"),
                     ),

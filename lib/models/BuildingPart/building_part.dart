@@ -3,6 +3,7 @@
 import 'dart:ffi';
 import 'dart:math';
 import 'package:enum_to_string/enum_to_string.dart';
+import 'dart:convert';
 
 import 'package:msg/models/BuildingPart/construction_class.dart';
 import 'package:msg/models/BuildingPart/fire_protection.dart';
@@ -41,6 +42,7 @@ class BuildingPartFields {
   static const String value = 'value';
   static const String sumInsured = 'sumInsured';
   static const String buildingAssesment = 'fk_buildingAssessmentId';
+  static const String measurements = 'measurements';
 }
 
 class BuildingPart {
@@ -93,6 +95,29 @@ class BuildingPart {
       BuildingPartFields.sumInsured: sumInsured,
       BuildingPartFields.value: value,
       BuildingPartFields.buildingAssesment: fk_buildingAssesmentId
+    };
+  }
+
+    Map<String, dynamic> toMessage() {
+    List measurementsJson = [];
+    measurements.forEach((measrement) { 
+      measurementsJson.add(measrement.toMessage());
+    });
+    return {
+      BuildingPartFields.description: description,
+      BuildingPartFields.buildingYear: buildingYear,
+      BuildingPartFields.fireProtection:
+          EnumToString.convertToString(fireProtection),
+      BuildingPartFields.constructionClass:
+          EnumToString.convertToString(constructionClass),
+      BuildingPartFields.riskClass: EnumToString.convertToString(riskClass),
+      BuildingPartFields.unitPrice: unitPrice,
+      BuildingPartFields.insuredType: EnumToString.convertToString(insuredType),
+      BuildingPartFields.devaluationPercentage: devaluationPercentage,
+      BuildingPartFields.cubature: cubature,
+      BuildingPartFields.sumInsured: sumInsured,
+      BuildingPartFields.value: value,
+      BuildingPartFields.measurements: measurementsJson,
     };
   }
 

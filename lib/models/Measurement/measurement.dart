@@ -50,6 +50,16 @@ class Measurement {
     };
   }
 
+  Map<String, dynamic> toMessage() {
+    return {
+      MeasurementFields.description: description,
+      MeasurementFields.length: length,
+      MeasurementFields.height: height,
+      MeasurementFields.width: width,
+      MeasurementFields.radius: radius,
+    };
+  }
+
   static Measurement fromJson(Map<String, Object?> json) => Measurement(
         measurementId: json[MeasurementFields.id] as int?,
         description: json[MeasurementFields.description] as String,
