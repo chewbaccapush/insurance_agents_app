@@ -94,12 +94,5 @@ flutter:
       fonts:
         - asset: assets/fonts/Poppins-ExtraBold.ttf
 
-    - family: RobotoLight
-      fonts:
-        - asset: assets/fonts/Roboto-Light.ttf
-
-    - family: RobotoRegular
-      fonts:
-        - asset: assets/fonts/Roboto-Regular.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

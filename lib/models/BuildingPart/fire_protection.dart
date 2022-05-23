@@ -1,6 +1,1 @@
-enum FireProtection {
-  none,
-  bma,
-  spa,
-  bmaSpa
-}
+enum FireProtection { none, bma, spa, bmaSpa }
