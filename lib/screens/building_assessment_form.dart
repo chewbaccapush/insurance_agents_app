@@ -7,6 +7,9 @@ import 'package:msg/widgets/add_objects_section.dart';
 import 'package:msg/widgets/custom_text_form_field.dart';
 import 'package:msg/widgets/date_form_field.dart';
 
+import '../services/sqs_sender.dart';
+import '../widgets/alert.dart';
+
 class BuildingAssessmentForm extends StatefulWidget {
   final BuildingAssessment? buildingAssessment;
   const BuildingAssessmentForm({Key? key, this.buildingAssessment})
@@ -26,6 +29,23 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
     super.initState();
   }
 
+  final SQSSender sqsSender = SQSSender();
+
+  void sendMessage(String message) async {
+    try {
+      await sqsSender.sendToSQS(message);
+      showDialogPopup("Info", "Assessment successfully sent.");
+    } catch (e) {
+      showDialogPopup("Error", "Assessment not sent.");
+    }
+  }
+  void showDialogPopup(String title, String content) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return new Alert(title: title, content: content);
+        });
+  }
   // // Controllers for textfields
   // final _nameController = TextEditingController();
   // final _areaController = TextEditingController();
@@ -192,11 +212,15 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               const SnackBar(content: Text('Sending..')),
                             );
                             _formKey.currentState!.save();
-                            print(buildingAssessment.toJson());
-                            print(buildingAssessment.buildingParts[0].toJson());
-                            print(buildingAssessment
-                              .buildingParts[0].measurements[1]
-                              .toJson());
+                            print(buildingAssessment.toMessage());
+                            
+                            sendMessage(buildingAssessment.toMessage().toString());
+
+                            // print(buildingAssessment.toJson());
+                            // print(buildingAssessment.buildingParts[0].toJson());
+                            // print(buildingAssessment
+                            //   .buildingParts[0].measurements[1]
+                            //   .toJson());
                           }                     
                         },
                         child: const Text("Send"))

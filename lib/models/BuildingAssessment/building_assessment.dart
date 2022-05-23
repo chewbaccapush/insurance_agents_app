@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'dart:convert';
 
 import 'package:msg/models/BuildingPart/building_part.dart';
 
@@ -22,6 +23,7 @@ class BuildingAssessmentFields {
   static const String numOfAppartments = 'numOfAppartments';
   static const String voluntaryDeduction = 'voluntaryDeduction';
   static const String assessmentFee = 'assessmentFee';
+  static const String buildingParts = 'buildingParts';
 }
 
 class BuildingAssessment {
@@ -54,7 +56,24 @@ class BuildingAssessment {
       BuildingAssessmentFields.assessmentCause: assessmentCause,
       BuildingAssessmentFields.numOfAppartments: numOfAppartments,
       BuildingAssessmentFields.voluntaryDeduction: voluntaryDeduction,
+      BuildingAssessmentFields.assessmentFee: assessmentFee
+    };
+  }
+
+  Map<String, dynamic> toMessage() {
+    List buildingPartsJson = [];
+    buildingParts.forEach((buildingPart) { 
+      buildingPartsJson.add(buildingPart.toMessage());
+    });
+    return {
+      BuildingAssessmentFields.appointmentDate:
+          '"${appointmentDate!.toIso8601String().substring(0, 10)}"',
+      BuildingAssessmentFields.description: description,
+      BuildingAssessmentFields.assessmentCause: assessmentCause,
+      BuildingAssessmentFields.numOfAppartments: numOfAppartments,
+      BuildingAssessmentFields.voluntaryDeduction: voluntaryDeduction,
       BuildingAssessmentFields.assessmentFee: assessmentFee,
+      BuildingAssessmentFields.buildingParts: buildingPartsJson
     };
   }
 
