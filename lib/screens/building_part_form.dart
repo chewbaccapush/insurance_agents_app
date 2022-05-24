@@ -6,7 +6,7 @@ import 'package:msg/models/BuildingPart/construction_class.dart';
 import 'package:msg/models/BuildingPart/insured_type.dart';
 import 'package:msg/models/BuildingPart/risk_class.dart';
 import 'package:msg/screens/building_assessment_form.dart';
-import 'package:msg/screens/building_measurement_form.dart';
+import 'package:msg/screens/measurement_form.dart';
 import 'package:msg/validators/validators.dart';
 import 'package:msg/widgets/add_objects_section.dart';
 import 'package:msg/widgets/custom_text_form_field.dart';
@@ -196,8 +196,8 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                         buildingAssessment: buildingAssessment,
                         onPressed: () => {
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => BuildingMeasurementForm(
-                                    buildingPart: buildingPart),
+                                builder: (context) =>
+                                    MeasurementForm(buildingPart: buildingPart),
                               )),
                             }),
                     OutlinedButton(

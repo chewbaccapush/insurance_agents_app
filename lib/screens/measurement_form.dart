@@ -6,18 +6,17 @@ import 'package:msg/widgets/custom_text_form_field.dart';
 
 import '../models/BuildingPart/building_part.dart';
 
-class BuildingMeasurementForm extends StatefulWidget {
+class MeasurementForm extends StatefulWidget {
   final BuildingPart? buildingPart;
   final Measurement? measurement;
-  const BuildingMeasurementForm({Key? key, this.measurement, this.buildingPart})
+  const MeasurementForm({Key? key, this.measurement, this.buildingPart})
       : super(key: key);
 
   @override
-  State<BuildingMeasurementForm> createState() =>
-      _BuildingMeasurementFormState();
+  State<MeasurementForm> createState() => _MeasurementFormState();
 }
 
-class _BuildingMeasurementFormState extends State<BuildingMeasurementForm> {
+class _MeasurementFormState extends State<MeasurementForm> {
   final _formKey = GlobalKey<FormState>();
   Measurement measurement = Measurement();
   BuildingPart buildingPart = BuildingPart();

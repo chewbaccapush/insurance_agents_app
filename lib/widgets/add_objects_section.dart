@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:msg/models/BuildingAssessment/building_assessment.dart';
 import 'package:msg/models/BuildingPart/building_part.dart';
-import 'package:msg/screens/building_measurement_form.dart';
+import 'package:msg/screens/measurement_form.dart';
 import 'package:msg/screens/building_part_form.dart';
 
 enum ObjectType { buildingPart, measurement }
@@ -48,8 +48,7 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
                   onTap: () => {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) =>
-                            BuildingMeasurementForm(measurement: e),
+                        builder: (context) => MeasurementForm(measurement: e),
                       ),
                     )
                   },
