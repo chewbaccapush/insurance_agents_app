@@ -40,6 +40,8 @@ class _HistoryPageState extends State<HistoryPage> {
   _localGet() async {
     buildingAssessments = await DatabaseHelper.instance.readAllAssessments();
 
+    print(buildingAssessments);
+
     setState(() {});
   }
 
@@ -94,7 +96,7 @@ class _HistoryPageState extends State<HistoryPage> {
               borderRadius: BorderRadius.circular(40),
               color: Colors.grey,
             ),
-            margin: const EdgeInsets.only(bottom: 45),
+            margin: const EdgeInsets.only(bottom: 10),
             width: width,
             height: 55,
             child: Row(children: [

@@ -3,13 +3,19 @@ import 'package:flutter/material.dart';
 
 import '../models/BuildingPart/building_part.dart';
 
-class BuildingPartTile extends StatelessWidget {
+class BuildingPartTile extends StatefulWidget {
   final BuildingPart? entry;
   final List<Widget>? measurements;
 
   const BuildingPartTile({Key? key, this.entry, this.measurements})
       : super(key: key);
 
+  @override
+  State<BuildingPartTile> createState() => _BuildingPartTileState();
+}
+
+class _BuildingPartTileState extends State<BuildingPartTile> {
+  bool _isExpanded = false;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -27,7 +33,7 @@ class BuildingPartTile extends StatelessWidget {
                         'Building Year:    ',
                         style: TextStyle(fontSize: 20),
                       ),
-                      Text(entry!.buildingYear.toString(),
+                      Text(widget.entry!.buildingYear.toString(),
                           style: const TextStyle(
                               fontSize: 18,
                               color: Color.fromARGB(255, 219, 219, 219)))
@@ -42,7 +48,9 @@ class BuildingPartTile extends StatelessWidget {
                         'Fire Protection:    ',
                         style: TextStyle(fontSize: 20),
                       ),
-                      Text(EnumToString.convertToString(entry!.fireProtection),
+                      Text(
+                          EnumToString.convertToString(
+                              widget.entry!.fireProtection),
                           style: const TextStyle(
                               fontSize: 18,
                               color: Color.fromARGB(255, 219, 219, 219)))
@@ -59,7 +67,7 @@ class BuildingPartTile extends StatelessWidget {
                       ),
                       Text(
                           EnumToString.convertToString(
-                              entry!.constructionClass),
+                              widget.entry!.constructionClass),
                           style: const TextStyle(
                               fontSize: 18,
                               color: Color.fromARGB(255, 219, 219, 219)))
@@ -74,7 +82,8 @@ class BuildingPartTile extends StatelessWidget {
                         'Risk Class:    ',
                         style: TextStyle(fontSize: 20),
                       ),
-                      Text(EnumToString.convertToString(entry!.riskClass),
+                      Text(
+                          EnumToString.convertToString(widget.entry!.riskClass),
                           style: const TextStyle(
                               fontSize: 18,
                               color: Color.fromARGB(255, 219, 219, 219)))
@@ -89,7 +98,7 @@ class BuildingPartTile extends StatelessWidget {
                         'Unit Price:    ',
                         style: TextStyle(fontSize: 20),
                       ),
-                      Text(entry!.unitPrice.toString() + ' €',
+                      Text(widget.entry!.unitPrice.toString() + ' €',
                           style: const TextStyle(
                               fontSize: 18,
                               color: Color.fromARGB(255, 219, 219, 219)))
@@ -104,7 +113,9 @@ class BuildingPartTile extends StatelessWidget {
                         'Insured Type:    ',
                         style: TextStyle(fontSize: 20),
                       ),
-                      Text(EnumToString.convertToString(entry!.insuredType),
+                      Text(
+                          EnumToString.convertToString(
+                              widget.entry!.insuredType),
                           style: const TextStyle(
                               fontSize: 18,
                               color: Color.fromARGB(255, 219, 219, 219)))
@@ -119,7 +130,8 @@ class BuildingPartTile extends StatelessWidget {
                         'Devaluation Percentage:    ',
                         style: TextStyle(fontSize: 20),
                       ),
-                      Text(entry!.devaluationPercentage.toString() + ' %',
+                      Text(
+                          widget.entry!.devaluationPercentage.toString() + ' %',
                           style: const TextStyle(
                               fontSize: 18,
                               color: Color.fromARGB(255, 219, 219, 219)))
@@ -142,7 +154,7 @@ class BuildingPartTile extends StatelessWidget {
                                   'Description:    ',
                                   style: TextStyle(fontSize: 20),
                                 ),
-                                Text(entry!.description.toString(),
+                                Text(widget.entry!.description.toString(),
                                     style: const TextStyle(
                                         fontSize: 18,
                                         color:
@@ -158,7 +170,7 @@ class BuildingPartTile extends StatelessWidget {
                                   'Cubature:    ',
                                   style: TextStyle(fontSize: 20),
                                 ),
-                                Text(entry!.cubature.toString(),
+                                Text(widget.entry!.cubature.toString(),
                                     style: const TextStyle(
                                         fontSize: 18,
                                         color:
@@ -174,7 +186,7 @@ class BuildingPartTile extends StatelessWidget {
                                   'Value:    ',
                                   style: TextStyle(fontSize: 20),
                                 ),
-                                Text(entry!.value.toString(),
+                                Text(widget.entry!.value.toString(),
                                     style: const TextStyle(
                                         fontSize: 18,
                                         color:
@@ -190,7 +202,7 @@ class BuildingPartTile extends StatelessWidget {
                                   'Sum Insured:    ',
                                   style: TextStyle(fontSize: 20),
                                 ),
-                                Text(entry!.sumInsured.toString(),
+                                Text(widget.entry!.sumInsured.toString(),
                                     style: const TextStyle(
                                         fontSize: 18,
                                         color:
@@ -207,14 +219,24 @@ class BuildingPartTile extends StatelessWidget {
                 data: ThemeData()
                     .copyWith(dividerColor: Color.fromARGB(0, 246, 0, 0)),
                 child: ExpansionTile(
+                    onExpansionChanged: (value) {
+                      setState(() {
+                        _isExpanded = value;
+                      });
+                    },
                     collapsedIconColor: Colors.white,
                     iconColor: Colors.white,
                     textColor: Colors.white,
+                    trailing: AnimatedRotation(
+                        turns: _isExpanded ? .5 : 0,
+                        duration: Duration(milliseconds: 400),
+                        child:
+                            Icon(Icons.expand_circle_down_outlined, size: 30)),
                     title: const Text(
                       'Measurements',
                       style: TextStyle(fontSize: 25, color: Colors.white),
                     ),
-                    children: measurements!))),
+                    children: widget.measurements!))),
       ],
     );
   }

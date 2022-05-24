@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 
 import '../models/BuildingAssessment/building_assessment.dart';
 
-class BuildingAssessmentTile extends StatelessWidget {
+class BuildingAssessmentTile extends StatefulWidget {
   final BuildingAssessment? entry;
   final List<Widget>? buildingParts;
 
@@ -11,38 +11,35 @@ class BuildingAssessmentTile extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<BuildingAssessmentTile> createState() => _BuildingAssessmentTileState();
+}
+
+class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
+  bool _isExpanded = false;
+  @override
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
-          color: const Color.fromARGB(150, 132, 20, 57),
+          color: Color.fromARGB(148, 135, 18, 57),
         ),
         margin: const EdgeInsets.only(bottom: 30.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+          Padding(
+            padding:
+                const EdgeInsets.only(top: 35, bottom: 10, left: 35, right: 40),
+            child: Row(children: [
+              const Icon(Icons.check_circle_rounded,
+                  size: 40, color: Colors.green),
               Padding(
-                padding: const EdgeInsets.only(
-                    top: 35, bottom: 10, left: 40, right: 40),
+                padding: const EdgeInsets.only(left: 10),
                 child: Text(
-                  'Building Assessment #' + entry!.id.toString(),
+                  DateFormat.yMMMd()
+                      .format(widget.entry!.appointmentDate as DateTime),
                   style: const TextStyle(fontSize: 30),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 35, bottom: 10, left: 40, right: 40),
-                child: Row(children: [
-                  const Icon(Icons.event_available),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 5),
-                    child: Text(DateFormat.yMMMd()
-                        .format(entry!.appointmentDate as DateTime)),
-                  )
-                ]),
-              ),
-            ],
+              )
+            ]),
           ),
           Row(children: [
             Column(
@@ -57,8 +54,8 @@ class BuildingAssessmentTile extends StatelessWidget {
                           style: TextStyle(fontSize: 22),
                         ),
                         Text(
-                            DateFormat.yMMMMd()
-                                .format(entry!.appointmentDate as DateTime),
+                            DateFormat.yMMMMd().format(
+                                widget.entry!.appointmentDate as DateTime),
                             style: const TextStyle(
                                 fontSize: 20,
                                 color: Color.fromARGB(255, 219, 219, 219)))
@@ -72,7 +69,7 @@ class BuildingAssessmentTile extends StatelessWidget {
                           'Number of Apartments:    ',
                           style: TextStyle(fontSize: 22),
                         ),
-                        Text(entry!.numOfAppartments.toString(),
+                        Text(widget.entry!.numOfAppartments.toString(),
                             style: const TextStyle(
                                 fontSize: 20,
                                 color: Color.fromARGB(255, 219, 219, 219)))
@@ -86,7 +83,7 @@ class BuildingAssessmentTile extends StatelessWidget {
                           'Voluntary Deduction:    ',
                           style: TextStyle(fontSize: 22),
                         ),
-                        Text(entry!.voluntaryDeduction.toString() + " %",
+                        Text(widget.entry!.voluntaryDeduction.toString() + " %",
                             style: const TextStyle(
                                 fontSize: 20,
                                 color: Color.fromARGB(255, 219, 219, 219)))
@@ -100,7 +97,7 @@ class BuildingAssessmentTile extends StatelessWidget {
                           'Assessment Fee:    ',
                           style: TextStyle(fontSize: 22),
                         ),
-                        Text(entry!.assessmentFee.toString() + " €",
+                        Text(widget.entry!.assessmentFee.toString() + " €",
                             style: const TextStyle(
                                 fontSize: 20,
                                 color: Color.fromARGB(255, 219, 219, 219)))
@@ -122,7 +119,7 @@ class BuildingAssessmentTile extends StatelessWidget {
                                 'Description:    ',
                                 style: TextStyle(fontSize: 22),
                               ),
-                              Text(entry!.description.toString(),
+                              Text(widget.entry!.description.toString(),
                                   style: const TextStyle(
                                       fontSize: 20,
                                       color:
@@ -137,7 +134,7 @@ class BuildingAssessmentTile extends StatelessWidget {
                                 'Assessment Cause:    ',
                                 style: TextStyle(fontSize: 22),
                               ),
-                              Text(entry!.assessmentCause.toString(),
+                              Text(widget.entry!.assessmentCause.toString(),
                                   style: const TextStyle(
                                       fontSize: 20,
                                       color:
@@ -153,14 +150,24 @@ class BuildingAssessmentTile extends StatelessWidget {
                   data: ThemeData()
                       .copyWith(dividerColor: Color.fromARGB(0, 246, 0, 0)),
                   child: ExpansionTile(
+                      onExpansionChanged: (value) {
+                        setState(() {
+                          _isExpanded = value;
+                        });
+                      },
                       collapsedIconColor: Colors.white,
                       iconColor: Colors.white,
                       textColor: Colors.white,
+                      trailing: AnimatedRotation(
+                          turns: _isExpanded ? .5 : 0,
+                          duration: Duration(milliseconds: 00),
+                          child: Icon(Icons.expand_circle_down_outlined,
+                              size: 35)),
                       title: const Text(
                         'Building parts',
                         style: TextStyle(fontSize: 28, color: Colors.white),
                       ),
-                      children: buildingParts as List<Widget>)))
+                      children: widget.buildingParts as List<Widget>)))
         ]));
   }
 }
