@@ -13,13 +13,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
+  // int _selectedIndex = 0;
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    BuildingAssessmentForm(),
-    HistoryPage(),
-    SettingsPage(),
-  ];
+  // static const List<Widget> _widgetOptions = <Widget>[
+  //   BuildingAssessmentForm(),
+  //   HistoryPage(),
+  //   SettingsPage(),
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
-          child: _widgetOptions.elementAt(1)),
+          child: const BuildingAssessmentForm()),
     );
     /*
     bottomNavigationBar:

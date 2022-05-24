@@ -19,7 +19,8 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Nastavitve"),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
         ),
         body: buildSettings());
   }
