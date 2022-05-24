@@ -31,17 +31,11 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         SizedBox(
           width: widget.width,
           child: TextFormField(
-              initialValue: widget.initialValue,
-              onChanged: widget.onChanged,
-              decoration: inputDecoration(widget.labelText, widget.width),
-              keyboardType: widget.type,
-              validator: widget.validator,
-              // validator: (value) {
-              //   if (value == null || value.isEmpty) {
-              //     return 'Vnesite podatke.';
-              //   }
-              //   return null;
-              // }
+            initialValue: widget.initialValue,
+            onChanged: widget.onChanged,
+            decoration: inputDecoration(widget.labelText, widget.width),
+            keyboardType: widget.type,
+            validator: widget.validator,
           ),
         ),
         const Padding(padding: EdgeInsets.all(10)),
