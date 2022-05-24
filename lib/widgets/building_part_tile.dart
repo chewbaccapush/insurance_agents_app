@@ -1,6 +1,5 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
-import 'package:msg/models/Measurement/measurement.dart';
 
 import '../models/BuildingPart/building_part.dart';
 
@@ -231,7 +230,8 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                     trailing: AnimatedRotation(
                         turns: _isExpanded ? .5 : 0,
                         duration: Duration(milliseconds: 400),
-                        child: Icon(Icons.expand_circle_down_outlined)),
+                        child:
+                            Icon(Icons.expand_circle_down_outlined, size: 30)),
                     title: const Text(
                       'Measurements',
                       style: TextStyle(fontSize: 25, color: Colors.white),

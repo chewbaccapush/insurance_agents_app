@@ -21,7 +21,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
     return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
-          color: const Color.fromARGB(150, 132, 20, 57),
+          color: Color.fromARGB(148, 135, 18, 57),
         ),
         margin: const EdgeInsets.only(bottom: 30.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -30,7 +30,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                 const EdgeInsets.only(top: 35, bottom: 10, left: 35, right: 40),
             child: Row(children: [
               const Icon(Icons.check_circle_rounded,
-                  size: 40, color: Colors.greenAccent),
+                  size: 40, color: Colors.green),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: Text(
