@@ -63,7 +63,7 @@ class BuildingAssessment {
   Map<String, dynamic> toMessage() {
     List buildingPartsJson = [];
     buildingParts.forEach((buildingPart) {
-      //buildingPartsJson.add(buildingPart.toMessage());
+      buildingPartsJson.add(buildingPart.toMessage());
     });
     return {
       BuildingAssessmentFields.appointmentDate:

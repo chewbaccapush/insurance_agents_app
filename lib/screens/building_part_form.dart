@@ -46,7 +46,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
         .map<DropdownMenuItem<FireProtection>>((FireProtection value) {
       return DropdownMenuItem<FireProtection>(
         value: value,
-        child: Text(value.toString()),
+        child: Text(value.name.toString()),
       );
     }).toList();
 
@@ -55,7 +55,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
             (ConstructionClass value) {
       return DropdownMenuItem<ConstructionClass>(
         value: value,
-        child: Text(value.toString()),
+        child: Text(value.name.toString()),
       );
     }).toList();
 
@@ -63,7 +63,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
         .map<DropdownMenuItem<InsuredType>>((InsuredType value) {
       return DropdownMenuItem<InsuredType>(
         value: value,
-        child: Text(value.toString()),
+        child: Text(value.name.toString()),
       );
     }).toList();
 
@@ -71,7 +71,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
         RiskClass.values.map<DropdownMenuItem<RiskClass>>((RiskClass value) {
       return DropdownMenuItem<RiskClass>(
         value: value,
-        child: Text(value.toString()),
+        child: Text(value.name.toString()),
       );
     }).toList();
 
