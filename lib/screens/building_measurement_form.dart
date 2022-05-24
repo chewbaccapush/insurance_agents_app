@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:msg/models/Measurement/measurement.dart';
 import 'package:msg/screens/building_part_form.dart';
-import 'package:msg/validators/Validators.dart';
+import 'package:msg/validators/validators.dart';
 import 'package:msg/widgets/custom_text_form_field.dart';
 
 import '../models/BuildingPart/building_part.dart';
@@ -60,7 +60,8 @@ class _BuildingMeasurementFormState extends State<BuildingMeasurementForm> {
                         setState(
                             () => {measurement.length = double.parse(newValue)})
                       },
-                      validator: (value) => Validators.measurementValidator(value!),
+                      validator: (value) =>
+                          Validators.measurementValidator(value!),
                     ),
                     CustomTextFormField(
                       type:
@@ -71,7 +72,8 @@ class _BuildingMeasurementFormState extends State<BuildingMeasurementForm> {
                         setState(
                             () => {measurement.height = double.parse(newValue)})
                       },
-                      validator: (value) => Validators.measurementValidator(value!),
+                      validator: (value) =>
+                          Validators.measurementValidator(value!),
                     ),
                     CustomTextFormField(
                       type:
@@ -82,7 +84,8 @@ class _BuildingMeasurementFormState extends State<BuildingMeasurementForm> {
                         setState(
                             () => {measurement.width = double.parse(newValue)})
                       },
-                      validator: (value) => Validators.measurementValidator(value!),
+                      validator: (value) =>
+                          Validators.measurementValidator(value!),
                     ),
                     CustomTextFormField(
                       type:
@@ -93,24 +96,26 @@ class _BuildingMeasurementFormState extends State<BuildingMeasurementForm> {
                         setState(
                             () => {measurement.radius = double.parse(newValue)})
                       },
-                      validator: (value) => Validators.measurementValidator(value!),
+                      validator: (value) =>
+                          Validators.measurementValidator(value!),
                     ),
                     OutlinedButton(
                       onPressed: () => {
-                        if (_formKey.currentState!.validate()) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Saving..')),
-                          ),
-                          setState(
-                          () {
-                            print(buildingPart.measurements);
-                            buildingPart.measurements.add(measurement);
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => BuildingPartForm(
-                                    buildingPart: buildingPart)));
+                        if (_formKey.currentState!.validate())
+                          {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Saving..')),
+                            ),
+                            setState(
+                              () {
+                                print(buildingPart.measurements);
+                                buildingPart.measurements.add(measurement);
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => BuildingPartForm(
+                                        buildingPart: buildingPart)));
+                              },
+                            ),
                           },
-                        ),
-                      },
                       },
                       child: const Text("Add"),
                     ),
