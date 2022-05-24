@@ -91,55 +91,8 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
 
   // // Locally save order to users device
   void localSave() async {
-    Measurement measurement1 = Measurement(
-        description: "ME1",
-        height: 2.2,
-        width: 23.0,
-        length: 12.0,
-        radius: 23.0);
-    Measurement measurement2 = Measurement(
-        description: "ME2", height: 2.0, width: 33.0, length: 2.0, radius: 9.0);
-
-    List<Measurement> measurements = [measurement1, measurement2];
-
-    BuildingPart buildingPart1 = BuildingPart(
-        description: "BP1",
-        buildingYear: 2022,
-        fireProtection: FireProtection.bma,
-        constructionClass: ConstructionClass.solidConstruction,
-        riskClass: RiskClass.four,
-        unitPrice: 12.2,
-        insuredType: InsuredType.newValue,
-        devaluationPercentage: 0.33,
-        cubature: 0.0,
-        value: 0.0,
-        sumInsured: 0.0,
-        measurements: measurements);
-    BuildingPart buildingPart2 = BuildingPart(
-        description: "BP2",
-        buildingYear: 2022,
-        fireProtection: FireProtection.bma,
-        constructionClass: ConstructionClass.solidConstruction,
-        riskClass: RiskClass.four,
-        unitPrice: 12.2,
-        insuredType: InsuredType.newValue,
-        devaluationPercentage: 0.33,
-        cubature: 0,
-        value: 0,
-        sumInsured: 0,
-        measurements: measurements);
-
-    List<BuildingPart> buildingParts = [buildingPart1, buildingPart2];
-
-    BuildingAssessment assessment = BuildingAssessment(
-        appointmentDate: DateTime(2017, 9, 7, 17, 30),
-        description: "neki",
-        assessmentCause: "sdsdsd",
-        numOfAppartments: 12,
-        voluntaryDeduction: 22.2,
-        assessmentFee: 22.2);
-
-    await DatabaseHelper.instance.createAssessment(assessment, buildingParts);
+    await DatabaseHelper.instance
+        .createAssessment(buildingAssessment, buildingAssessment.buildingParts);
   }
 
   // void clearText() {
