@@ -76,7 +76,10 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
     }).toList();
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Add Building Part")),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
       body: Container(
         padding: const EdgeInsets.all(50.0),
         child: Form(

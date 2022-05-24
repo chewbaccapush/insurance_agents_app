@@ -32,7 +32,10 @@ class _BuildingMeasurementFormState extends State<BuildingMeasurementForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Add Building Part Measurement")),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
       body: Container(
         padding: const EdgeInsets.all(50.0),
         child: Form(
