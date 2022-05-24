@@ -1,9 +1,12 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:msg/models/Measurement/measurement.dart';
+import 'package:msg/screens/building_assessment_form.dart';
+import 'package:msg/screens/settings.dart';
 import 'package:msg/widgets/building_assessment_tile.dart';
 import 'package:msg/widgets/building_part_tile.dart';
 import 'package:msg/widgets/measurement_tile.dart';
+import 'package:msg/widgets/routing_button.dart';
 import 'package:msg/widgets/search_bar.dart';
 
 import 'package:intl/intl.dart';
@@ -68,16 +71,32 @@ class _HistoryPageState extends State<HistoryPage> {
     double cWidth = MediaQuery.of(context).size.width * 0.5;
 
     return Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-        ),
         body: Padding(
-            padding: const EdgeInsets.only(top: 80, right: 50, left: 50),
+            padding: const EdgeInsets.only(top: 60, right: 50, left: 50),
             child: Column(
               children: [
-                searchBar(cWidth),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      searchBar(cWidth),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(right: 20),
+                              child: RoutingButton(
+                                destination: BuildingAssessmentForm(),
+                                icon: Icon(Icons.send_rounded),
+                                tooltip: 'Send',
+                              ),
+                            ),
+                            RoutingButton(
+                              destination: SettingsPage(),
+                              icon: Icon(Icons.settings),
+                              tooltip: 'Settings',
+                            )
+                          ])
+                    ]),
                 if (searchResults.isNotEmpty ||
                     textController.text.isNotEmpty) ...[
                   buildSearchView()

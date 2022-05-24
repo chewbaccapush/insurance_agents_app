@@ -3,19 +3,18 @@ import 'package:flutter/material.dart';
 class RoutingButton extends StatelessWidget {
   final Widget destination;
   final Icon icon;
-  final Text label;
+  final String? tooltip;
+
   const RoutingButton(
-      {Key? key,
-      required this.destination,
-      required this.icon,
-      required this.label})
+      {Key? key, required this.destination, required this.icon, this.tooltip})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton.icon(
-      label: label,
+    return IconButton(
       icon: icon,
+      tooltip: tooltip,
+      iconSize: 40,
       onPressed: () => {
         Navigator.of(context).push(
           MaterialPageRoute(

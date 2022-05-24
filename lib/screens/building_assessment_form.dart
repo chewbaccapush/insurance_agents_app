@@ -68,34 +68,39 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-      ),
+      resizeToAvoidBottomInset: true,
       body: Container(
         padding: const EdgeInsets.all(50.0),
         child: Form(
           key: _formKey,
           child: Column(
             children: [
-              Row(
-                children: const <Widget>[
-                  RoutingButton(
-                    label: Text("History"),
-                    icon: Icon(Icons.history),
-                    destination: HistoryPage(),
-                  ),
-                  RoutingButton(
-                    label: Text("Settings"),
-                    icon: Icon(Icons.settings),
-                    destination: SettingsPage(),
-                  ),
-                ],
-              ),
+              Padding(
+                  padding: EdgeInsets.only(top: 15, bottom: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text('Send building assessement',
+                          style: TextStyle(fontSize: 35)),
+                      Row(children: [
+                        Padding(
+                            padding: EdgeInsets.only(right: 20),
+                            child: RoutingButton(
+                              icon: Icon(Icons.history),
+                              destination: HistoryPage(),
+                            )),
+                        RoutingButton(
+                          icon: Icon(Icons.settings),
+                          destination: SettingsPage(),
+                        ),
+                      ])
+                    ],
+                  )),
               Row(
                 children: <Widget>[
                   Flexible(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
                         CustomDateFormField(
                           initialValue: buildingAssessment.appointmentDate,
@@ -108,6 +113,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                         CustomTextFormField(
                           type: TextInputType.text,
                           labelText: "Description",
+                          fontSize: 20,
                           initialValue: buildingAssessment.description,
                           onChanged: (newValue) => {
                             setState(() =>
@@ -117,6 +123,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               Validators.defaultValidator(value!),
                         ),
                         CustomTextFormField(
+                          fontSize: 20,
                           type: TextInputType.text,
                           labelText: "Assessment Cause",
                           initialValue: buildingAssessment.assessmentCause,
@@ -128,6 +135,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               Validators.defaultValidator(value!),
                         ),
                         CustomTextFormField(
+                          fontSize: 20,
                           type: const TextInputType.numberWithOptions(
                               decimal: false),
                           labelText: "Number of Apartments",
@@ -143,6 +151,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               Validators.numberOfApartmentsValidator(value!),
                         ),
                         CustomTextFormField(
+                          fontSize: 20,
                           type: const TextInputType.numberWithOptions(
                               decimal: true),
                           labelText: "Voluntary Deduction",
@@ -158,6 +167,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               Validators.floatValidator(value!),
                         ),
                         CustomTextFormField(
+                          fontSize: 20,
                           type: const TextInputType.numberWithOptions(
                               decimal: true),
                           labelText: "Assessment Fee",
@@ -172,26 +182,10 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                           validator: (value) =>
                               Validators.floatValidator(value!),
                         ),
-                      ],
-                    ),
-                  ),
-                  Flexible(
-                    child: Column(
-                      children: <Widget>[
-                        AddObjectsSection(
-                          objectType: ObjectType.buildingPart,
-                          buildingAssessment: buildingAssessment,
-                          onPressed: () => {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => BuildingPartForm(
-                                  buildingAssessment: buildingAssessment,
-                                ),
-                              ),
-                            )
-                          },
-                        ),
-                        OutlinedButton(
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: Color.fromARGB(148, 135, 18, 57),
+                                textStyle: TextStyle(fontSize: 15)),
                             onPressed: () {
                               // Validates form
                               if (_formKey.currentState!.validate()) {
@@ -207,7 +201,27 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                     buildingAssessment.toMessage().toString());
                               }
                             },
-                            child: const Text("Send"))
+                            child: Text("Send"))
+                      ],
+                    ),
+                  ),
+                  Flexible(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        AddObjectsSection(
+                          objectType: ObjectType.buildingPart,
+                          buildingAssessment: buildingAssessment,
+                          onPressed: () => {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => BuildingPartForm(
+                                  buildingAssessment: buildingAssessment,
+                                ),
+                              ),
+                            )
+                          },
+                        ),
                       ],
                     ),
                   ),

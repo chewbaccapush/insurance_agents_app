@@ -36,9 +36,9 @@ class _CustomDateFormFieldState extends State<CustomDateFormField> {
       ),
       Column(
         children: [
-          OutlinedButton(
+          IconButton(
               onPressed: () => _selectDate(context),
-              child: const Icon(Icons.calendar_month)),
+              icon: const Icon(Icons.calendar_month)),
         ],
       )
     ]);
