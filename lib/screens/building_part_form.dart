@@ -193,6 +193,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                     AddObjectsSection(
                         objectType: ObjectType.measurement,
                         buildingPart: buildingPart,
+                        buildingAssessment: buildingAssessment,
                         onPressed: () => {
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => BuildingMeasurementForm(

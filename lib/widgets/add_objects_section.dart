@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:msg/models/BuildingAssessment/building_assessment.dart';
 import 'package:msg/models/BuildingPart/building_part.dart';
-import 'package:msg/models/Measurement/measurement.dart';
+import 'package:msg/screens/building_measurement_form.dart';
+import 'package:msg/screens/building_part_form.dart';
 
 enum ObjectType { buildingPart, measurement }
 
 class AddObjectsSection extends StatefulWidget {
   final dynamic onPressed;
-  final BuildingAssessment? buildingAssessment;
+  final BuildingAssessment buildingAssessment;
   final BuildingPart? buildingPart;
   final ObjectType objectType;
 
   const AddObjectsSection(
       {Key? key,
       this.onPressed,
-      this.buildingAssessment,
+      required this.buildingAssessment,
       this.buildingPart,
       required this.objectType})
       : super(key: key);
@@ -29,11 +30,30 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
   @override
   void initState() {
     objects = widget.objectType == ObjectType.buildingPart
-        ? widget.buildingAssessment!.buildingParts
-            .map((e) => ListTile(title: Text(e.description!)))
+        ? widget.buildingAssessment.buildingParts
+            .map((e) => ListTile(
+                  title: Text(e.description!),
+                  onTap: () => {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => BuildingPartForm(buildingPart: e),
+                      ),
+                    )
+                  },
+                ))
             .toList()
         : widget.buildingPart!.measurements
-            .map((e) => ListTile(title: Text(e.description!)))
+            .map((e) => ListTile(
+                  title: Text(e.description!),
+                  onTap: () => {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            BuildingMeasurementForm(measurement: e),
+                      ),
+                    )
+                  },
+                ))
             .toList();
     super.initState();
   }
