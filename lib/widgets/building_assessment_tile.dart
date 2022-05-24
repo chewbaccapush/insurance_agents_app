@@ -3,18 +3,13 @@ import 'package:intl/intl.dart';
 
 import '../models/BuildingAssessment/building_assessment.dart';
 
-class BuildingAssessmentTile extends StatefulWidget {
+class BuildingAssessmentTile extends StatelessWidget {
   final BuildingAssessment? entry;
   final List<Widget>? buildingParts;
 
   const BuildingAssessmentTile({Key? key, this.entry, this.buildingParts})
       : super(key: key);
 
-  @override
-  State<BuildingAssessmentTile> createState() => _BuildingAssessmentTileState();
-}
-
-class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,11 +23,11 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding:
-                    EdgeInsets.only(top: 35, bottom: 10, left: 40, right: 40),
+                padding: const EdgeInsets.only(
+                    top: 35, bottom: 10, left: 40, right: 40),
                 child: Text(
-                  'Building Assessment #' + widget.entry!.id.toString(),
-                  style: TextStyle(fontSize: 30),
+                  'Building Assessment #' + entry!.id.toString(),
+                  style: const TextStyle(fontSize: 30),
                 ),
               ),
               Padding(
@@ -43,7 +38,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                   Padding(
                     padding: const EdgeInsets.only(left: 5),
                     child: Text(DateFormat.yMMMd()
-                        .format(widget.entry!.appointmentDate as DateTime)),
+                        .format(entry!.appointmentDate as DateTime)),
                   )
                 ]),
               ),
@@ -62,8 +57,8 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                           style: TextStyle(fontSize: 22),
                         ),
                         Text(
-                            DateFormat.yMMMMd().format(
-                                widget.entry!.appointmentDate as DateTime),
+                            DateFormat.yMMMMd()
+                                .format(entry!.appointmentDate as DateTime),
                             style: const TextStyle(
                                 fontSize: 20,
                                 color: Color.fromARGB(255, 219, 219, 219)))
@@ -77,7 +72,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                           'Number of Apartments:    ',
                           style: TextStyle(fontSize: 22),
                         ),
-                        Text(widget.entry!.numOfAppartments.toString(),
+                        Text(entry!.numOfAppartments.toString(),
                             style: const TextStyle(
                                 fontSize: 20,
                                 color: Color.fromARGB(255, 219, 219, 219)))
@@ -91,7 +86,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                           'Voluntary Deduction:    ',
                           style: TextStyle(fontSize: 22),
                         ),
-                        Text(widget.entry!.voluntaryDeduction.toString() + " %",
+                        Text(entry!.voluntaryDeduction.toString() + " %",
                             style: const TextStyle(
                                 fontSize: 20,
                                 color: Color.fromARGB(255, 219, 219, 219)))
@@ -105,7 +100,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                           'Assessment Fee:    ',
                           style: TextStyle(fontSize: 22),
                         ),
-                        Text(widget.entry!.assessmentFee.toString() + " €",
+                        Text(entry!.assessmentFee.toString() + " €",
                             style: const TextStyle(
                                 fontSize: 20,
                                 color: Color.fromARGB(255, 219, 219, 219)))
@@ -127,7 +122,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                 'Description:    ',
                                 style: TextStyle(fontSize: 22),
                               ),
-                              Text(widget.entry!.description.toString(),
+                              Text(entry!.description.toString(),
                                   style: const TextStyle(
                                       fontSize: 20,
                                       color:
@@ -142,7 +137,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                 'Assessment Cause:    ',
                                 style: TextStyle(fontSize: 22),
                               ),
-                              Text(widget.entry!.assessmentCause.toString(),
+                              Text(entry!.assessmentCause.toString(),
                                   style: const TextStyle(
                                       fontSize: 20,
                                       color:
@@ -165,7 +160,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                         'Building parts',
                         style: TextStyle(fontSize: 28, color: Colors.white),
                       ),
-                      children: widget.buildingParts as List<Widget>)))
+                      children: buildingParts as List<Widget>)))
         ]));
   }
 }

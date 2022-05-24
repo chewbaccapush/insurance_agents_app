@@ -17,6 +17,7 @@ import '../models/Database/database_helper.dart';
 import '../models/Measurement/measurement.dart';
 import '../services/sqs_sender.dart';
 import '../widgets/alert.dart';
+import '../widgets/routing_button.dart';
 
 class BuildingAssessmentForm extends StatefulWidget {
   final BuildingAssessment? buildingAssessment;
@@ -123,29 +124,17 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
           child: Column(
             children: [
               Row(
-                children: <Widget>[
-                  OutlinedButton.icon(
-                    label: const Text("History"),
-                    icon: const Icon(Icons.history),
-                    onPressed: () => {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const HistoryPage(),
-                        ),
-                      )
-                    },
+                children: const <Widget>[
+                  RoutingButton(
+                    label: Text("History"),
+                    icon: Icon(Icons.history),
+                    destination: HistoryPage(),
                   ),
-                  OutlinedButton.icon(
-                    label: const Text("Settings"),
-                    icon: const Icon(Icons.settings),
-                    onPressed: () => {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const SettingsPage(),
-                        ),
-                      )
-                    },
-                  )
+                  RoutingButton(
+                    label: Text("Settings"),
+                    icon: Icon(Icons.settings),
+                    destination: SettingsPage(),
+                  ),
                 ],
               ),
               Row(
