@@ -181,6 +181,30 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                         }
                       },
                     ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: Color.fromARGB(148, 135, 18, 57),
+                          textStyle: TextStyle(fontSize: 15)),
+                      onPressed: () => {
+                        if (_formKey.currentState!.validate())
+                          {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Saving..')),
+                            ),
+                            setState(() {
+                              buildingAssessment.buildingParts
+                                  .add(buildingPart);
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => BuildingAssessmentForm(
+                                      buildingAssessment: buildingAssessment),
+                                ),
+                              );
+                            })
+                          },
+                      },
+                      child: const Text("Add"),
+                    ),
                     //Cubature
                     //Value
                     //Sum Insured
@@ -191,32 +215,17 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                 child: Column(
                   children: <Widget>[
                     AddObjectsSection(
-                        objectType: ObjectType.measurement,
-                        buildingPart: buildingPart,
-                        buildingAssessment: buildingAssessment,
-                        onPressed: () => {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    MeasurementForm(buildingPart: buildingPart),
-                              )),
-                            }),
-                    OutlinedButton(
+                      objectType: ObjectType.measurement,
+                      buildingPart: buildingPart,
+                      buildingAssessment: buildingAssessment,
                       onPressed: () => {
-                        if (_formKey.currentState!.validate())
-                          {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Saving..')),
-                            ),
-                            setState(() {
-                              buildingAssessment.buildingParts
-                                  .add(buildingPart);
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => BuildingAssessmentForm(
-                                      buildingAssessment: buildingAssessment)));
-                            })
-                          },
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                MeasurementForm(buildingPart: buildingPart),
+                          ),
+                        ),
                       },
-                      child: const Text("Add"),
                     ),
                   ],
                 ),

@@ -33,6 +33,10 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
         ? widget.buildingAssessment.buildingParts
             .map((e) => ListTile(
                   title: Text(e.description!),
+                  trailing: IconButton(
+                    onPressed: () => {},
+                    icon: const Icon(Icons.delete),
+                  ),
                   onTap: () => {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -45,6 +49,10 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
         : widget.buildingPart!.measurements
             .map((e) => ListTile(
                   title: Text(e.description!),
+                  trailing: IconButton(
+                    onPressed: () => {},
+                    icon: const Icon(Icons.delete),
+                  ),
                   onTap: () => {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -61,13 +69,34 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        OutlinedButton(
-            onPressed: widget.onPressed, child: const Icon(Icons.add)),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: OutlinedButton.icon(
+            style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: Colors.transparent)),
+            onPressed: widget.onPressed,
+            label: Text(
+              widget.objectType == ObjectType.buildingPart
+                  ? "Add Building Part"
+                  : "Add Measurement",
+              style: const TextStyle(color: Color.fromRGBO(255, 255, 255, 1)),
+            ),
+            icon: const Icon(
+              Icons.add,
+              color: Color.fromRGBO(255, 255, 255, 1),
+            ),
+          ),
+        ),
         SizedBox(
           height: 500,
           width: 500,
-          child: ListView(
-            children: objects,
+          child: Card(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            color: const Color.fromRGBO(255, 255, 255, 0.05),
+            child: ListView(
+              children: objects,
+            ),
           ),
         )
       ],

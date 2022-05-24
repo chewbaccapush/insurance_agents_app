@@ -101,20 +101,27 @@ class _MeasurementFormState extends State<MeasurementForm> {
                       validator: (value) =>
                           Validators.measurementValidator(value!),
                     ),
-                    OutlinedButton(
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: Color.fromARGB(148, 135, 18, 57),
+                          textStyle: TextStyle(fontSize: 15)),
                       onPressed: () => {
                         if (_formKey.currentState!.validate())
                           {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Saving..')),
+                              const SnackBar(
+                                content: Text('Saving..'),
+                              ),
                             ),
                             setState(
                               () {
-                                print(buildingPart.measurements);
                                 buildingPart.measurements.add(measurement);
-                                Navigator.of(context).push(MaterialPageRoute(
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
                                     builder: (context) => BuildingPartForm(
-                                        buildingPart: buildingPart)));
+                                        buildingPart: buildingPart),
+                                  ),
+                                );
                               },
                             ),
                           },
