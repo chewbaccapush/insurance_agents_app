@@ -26,7 +26,7 @@ class CustomTextFormField extends StatelessWidget {
         SizedBox(
           width: width,
           child: TextFormField(
-            initialValue: initialValue,
+            initialValue: initialValue == "null" ? "" : initialValue,
             onChanged: onChanged,
             decoration: inputDecoration(labelText, width),
             keyboardType: type,
