@@ -87,9 +87,10 @@ class BuildingAssessment {
             json[BuildingAssessmentFields.assessmentCause] as String,
         numOfAppartments:
             json[BuildingAssessmentFields.numOfAppartments] as int?,
-        voluntaryDeduction:
-            json[BuildingAssessmentFields.voluntaryDeduction] as double,
-        assessmentFee: json[BuildingAssessmentFields.assessmentFee] as double,
+        voluntaryDeduction: double.parse(
+            json[BuildingAssessmentFields.voluntaryDeduction].toString()),
+        assessmentFee: double.parse(
+            json[BuildingAssessmentFields.assessmentFee].toString()),
       );
 
   BuildingAssessment copy({

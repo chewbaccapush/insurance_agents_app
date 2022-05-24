@@ -15,6 +15,7 @@ class BuildingAssessmentTile extends StatefulWidget {
 }
 
 class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
+  bool _isExpanded = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,30 +25,21 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
         ),
         margin: const EdgeInsets.only(bottom: 30.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+          Padding(
+            padding:
+                const EdgeInsets.only(top: 35, bottom: 10, left: 35, right: 40),
+            child: Row(children: [
+              const Icon(Icons.check_circle_rounded,
+                  size: 40, color: Colors.greenAccent),
               Padding(
-                padding:
-                    EdgeInsets.only(top: 35, bottom: 10, left: 40, right: 40),
+                padding: const EdgeInsets.only(left: 10),
                 child: Text(
-                  'Building Assessment #' + widget.entry!.id.toString(),
-                  style: TextStyle(fontSize: 30),
+                  DateFormat.yMMMd()
+                      .format(widget.entry!.appointmentDate as DateTime),
+                  style: const TextStyle(fontSize: 30),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 35, bottom: 10, left: 40, right: 40),
-                child: Row(children: [
-                  const Icon(Icons.event_available),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 5),
-                    child: Text(DateFormat.yMMMd()
-                        .format(widget.entry!.appointmentDate as DateTime)),
-                  )
-                ]),
-              ),
-            ],
+              )
+            ]),
           ),
           Row(children: [
             Column(
@@ -158,9 +150,19 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                   data: ThemeData()
                       .copyWith(dividerColor: Color.fromARGB(0, 246, 0, 0)),
                   child: ExpansionTile(
+                      onExpansionChanged: (value) {
+                        setState(() {
+                          _isExpanded = value;
+                        });
+                      },
                       collapsedIconColor: Colors.white,
                       iconColor: Colors.white,
                       textColor: Colors.white,
+                      trailing: AnimatedRotation(
+                          turns: _isExpanded ? .5 : 0,
+                          duration: Duration(milliseconds: 00),
+                          child: Icon(Icons.expand_circle_down_outlined,
+                              size: 35)),
                       title: const Text(
                         'Building parts',
                         style: TextStyle(fontSize: 28, color: Colors.white),

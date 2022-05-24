@@ -16,6 +16,7 @@ class BuildingPartTile extends StatefulWidget {
 }
 
 class _BuildingPartTileState extends State<BuildingPartTile> {
+  bool _isExpanded = false;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -219,9 +220,18 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                 data: ThemeData()
                     .copyWith(dividerColor: Color.fromARGB(0, 246, 0, 0)),
                 child: ExpansionTile(
+                    onExpansionChanged: (value) {
+                      setState(() {
+                        _isExpanded = value;
+                      });
+                    },
                     collapsedIconColor: Colors.white,
                     iconColor: Colors.white,
                     textColor: Colors.white,
+                    trailing: AnimatedRotation(
+                        turns: _isExpanded ? .5 : 0,
+                        duration: Duration(milliseconds: 400),
+                        child: Icon(Icons.expand_circle_down_outlined)),
                     title: const Text(
                       'Measurements',
                       style: TextStyle(fontSize: 25, color: Colors.white),

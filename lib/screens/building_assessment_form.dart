@@ -58,8 +58,10 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
 
   // // Locally save order to users device
   void localSave() async {
-    await DatabaseHelper.instance
+    BuildingAssessment assessment = await DatabaseHelper.instance
         .createAssessment(buildingAssessment, buildingAssessment.buildingParts);
+
+    print(assessment);
   }
 
   @override
@@ -211,7 +213,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
 
                                 //TODO: Remove for production!
                                 print(buildingAssessment.toMessage());
-
+                                localSave();
                                 sendMessage(
                                     buildingAssessment.toMessage().toString());
                               }
