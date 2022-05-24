@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:msg/models/Measurement/measurement.dart';
 import 'package:msg/widgets/search_bar.dart';
 
+import 'package:intl/intl.dart';
+
 import '../models/BuildingAssessment/building_assessment.dart';
 import '../models/BuildingPart/building_part.dart';
 import '../models/Database/database_helper.dart';
@@ -27,6 +29,7 @@ class _HistoryPageState extends State<HistoryPage> {
 
   @override
   void dispose() {
+    textController.dispose();
     super.dispose();
   }
 
@@ -44,61 +47,27 @@ class _HistoryPageState extends State<HistoryPage> {
       return;
     }
 
-    buildingAssessments.forEach((assessment) {
+    for (var assessment in buildingAssessments) {
       if (assessment.description!.contains(text) ||
           assessment.assessmentCause!.contains(text) ||
           assessment.appointmentDate.toString().contains(text)) {
         searchResults.add(assessment);
       }
-    });
+    }
 
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    print(searchResults);
     double c_width = MediaQuery.of(context).size.width * 0.5;
+
     return Scaffold(
         body: Padding(
             padding: const EdgeInsets.only(top: 80, right: 50, left: 50),
             child: Column(
               children: [
-                Row(
-                  children: [
-                    Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(40),
-                          color: Colors.grey,
-                        ),
-                        margin: const EdgeInsets.only(bottom: 45),
-                        width: c_width,
-                        height: 55,
-                        child: Row(children: [
-                          Container(
-                              width: c_width - 50,
-                              child: Padding(
-                                  padding: EdgeInsets.only(left: 25),
-                                  child: TextField(
-                                    style: TextStyle(fontSize: 18),
-                                    cursorColor: Colors.white,
-                                    controller: textController,
-                                    decoration: const InputDecoration(
-                                        fillColor: Colors.grey,
-                                        hintText: 'Search',
-                                        border: InputBorder.none),
-                                    onChanged: onSearchTextChanged,
-                                  ))),
-                          IconButton(
-                            icon: Icon(Icons.cancel),
-                            onPressed: () {
-                              textController.clear();
-                              onSearchTextChanged('');
-                            },
-                          ),
-                        ])),
-                  ],
-                ),
+                searchBar(c_width),
                 if (searchResults.isNotEmpty ||
                     textController.text.isNotEmpty) ...[
                   buildSearchView()
@@ -107,6 +76,47 @@ class _HistoryPageState extends State<HistoryPage> {
                 ],
               ],
             )));
+  }
+
+  Widget searchBar(width) {
+    return Row(
+      children: [
+        Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(40),
+              color: Colors.grey,
+            ),
+            margin: const EdgeInsets.only(bottom: 45),
+            width: width,
+            height: 55,
+            child: Row(children: [
+              const Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Icon(Icons.search)),
+              Container(
+                  width: width - 85,
+                  child: Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: TextField(
+                        style: TextStyle(fontSize: 18),
+                        cursorColor: Colors.white,
+                        controller: textController,
+                        decoration: const InputDecoration(
+                            fillColor: Colors.grey,
+                            hintText: 'Search',
+                            border: InputBorder.none),
+                        onChanged: onSearchTextChanged,
+                      ))),
+              IconButton(
+                icon: Icon(Icons.cancel),
+                onPressed: () {
+                  textController.clear();
+                  onSearchTextChanged('');
+                },
+              ),
+            ])),
+      ],
+    );
   }
 
   Widget buildView() {
@@ -138,14 +148,27 @@ class _HistoryPageState extends State<HistoryPage> {
         margin: const EdgeInsets.only(bottom: 30.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(
-            children: const [
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
               Padding(
                 padding:
                     EdgeInsets.only(top: 35, bottom: 10, left: 40, right: 40),
                 child: Text(
-                  'Building Assessment',
+                  'Building Assessment #' + entry.id.toString(),
                   style: TextStyle(fontSize: 30),
                 ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 35, bottom: 10, left: 40, right: 40),
+                child: Row(children: [
+                  const Icon(Icons.event_available),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: Text(DateFormat.yMMMd()
+                        .format(entry.appointmentDate as DateTime)),
+                  )
+                ]),
               ),
             ],
           ),
@@ -161,8 +184,12 @@ class _HistoryPageState extends State<HistoryPage> {
                           'Appointment Date:    ',
                           style: TextStyle(fontSize: 22),
                         ),
-                        Text(entry.appointmentDate.toString().substring(0, 19),
-                            style: const TextStyle(fontSize: 20))
+                        Text(
+                            DateFormat.yMMMMd()
+                                .format(entry.appointmentDate as DateTime),
+                            style: const TextStyle(
+                                fontSize: 20,
+                                color: Color.fromARGB(255, 219, 219, 219)))
                       ],
                     )),
                 Padding(
@@ -174,7 +201,9 @@ class _HistoryPageState extends State<HistoryPage> {
                           style: TextStyle(fontSize: 22),
                         ),
                         Text(entry.numOfAppartments.toString(),
-                            style: const TextStyle(fontSize: 20))
+                            style: const TextStyle(
+                                fontSize: 20,
+                                color: Color.fromARGB(255, 219, 219, 219)))
                       ],
                     )),
                 Padding(
@@ -186,7 +215,9 @@ class _HistoryPageState extends State<HistoryPage> {
                           style: TextStyle(fontSize: 22),
                         ),
                         Text(entry.voluntaryDeduction.toString() + " %",
-                            style: const TextStyle(fontSize: 20))
+                            style: const TextStyle(
+                                fontSize: 20,
+                                color: Color.fromARGB(255, 219, 219, 219)))
                       ],
                     )),
                 Padding(
@@ -198,7 +229,9 @@ class _HistoryPageState extends State<HistoryPage> {
                           style: TextStyle(fontSize: 22),
                         ),
                         Text(entry.assessmentFee.toString() + " €",
-                            style: const TextStyle(fontSize: 20))
+                            style: const TextStyle(
+                                fontSize: 20,
+                                color: Color.fromARGB(255, 219, 219, 219)))
                       ],
                     )),
               ],
@@ -218,7 +251,10 @@ class _HistoryPageState extends State<HistoryPage> {
                                 style: TextStyle(fontSize: 22),
                               ),
                               Text(entry.description.toString(),
-                                  style: const TextStyle(fontSize: 20))
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      color:
+                                          Color.fromARGB(255, 219, 219, 219)))
                             ],
                           )),
                       Padding(
@@ -230,7 +266,10 @@ class _HistoryPageState extends State<HistoryPage> {
                                 style: TextStyle(fontSize: 22),
                               ),
                               Text(entry.assessmentCause.toString(),
-                                  style: const TextStyle(fontSize: 20))
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      color:
+                                          Color.fromARGB(255, 225, 225, 225)))
                             ],
                           )),
                     ])),
@@ -291,7 +330,9 @@ class _HistoryPageState extends State<HistoryPage> {
                         style: TextStyle(fontSize: 20),
                       ),
                       Text(entry.buildingYear.toString(),
-                          style: const TextStyle(fontSize: 18))
+                          style: const TextStyle(
+                              fontSize: 18,
+                              color: Color.fromARGB(255, 219, 219, 219)))
                     ],
                   )),
               Padding(
@@ -304,7 +345,9 @@ class _HistoryPageState extends State<HistoryPage> {
                         style: TextStyle(fontSize: 20),
                       ),
                       Text(EnumToString.convertToString(entry.fireProtection),
-                          style: const TextStyle(fontSize: 18))
+                          style: const TextStyle(
+                              fontSize: 18,
+                              color: Color.fromARGB(255, 219, 219, 219)))
                     ],
                   )),
               Padding(
@@ -318,7 +361,9 @@ class _HistoryPageState extends State<HistoryPage> {
                       ),
                       Text(
                           EnumToString.convertToString(entry.constructionClass),
-                          style: const TextStyle(fontSize: 18))
+                          style: const TextStyle(
+                              fontSize: 18,
+                              color: Color.fromARGB(255, 219, 219, 219)))
                     ],
                   )),
               Padding(
@@ -331,7 +376,9 @@ class _HistoryPageState extends State<HistoryPage> {
                         style: TextStyle(fontSize: 20),
                       ),
                       Text(EnumToString.convertToString(entry.riskClass),
-                          style: const TextStyle(fontSize: 18))
+                          style: const TextStyle(
+                              fontSize: 18,
+                              color: Color.fromARGB(255, 219, 219, 219)))
                     ],
                   )),
               Padding(
@@ -344,7 +391,9 @@ class _HistoryPageState extends State<HistoryPage> {
                         style: TextStyle(fontSize: 20),
                       ),
                       Text(entry.unitPrice.toString() + ' €',
-                          style: const TextStyle(fontSize: 18))
+                          style: const TextStyle(
+                              fontSize: 18,
+                              color: Color.fromARGB(255, 219, 219, 219)))
                     ],
                   )),
               Padding(
@@ -357,7 +406,9 @@ class _HistoryPageState extends State<HistoryPage> {
                         style: TextStyle(fontSize: 20),
                       ),
                       Text(EnumToString.convertToString(entry.insuredType),
-                          style: const TextStyle(fontSize: 18))
+                          style: const TextStyle(
+                              fontSize: 18,
+                              color: Color.fromARGB(255, 219, 219, 219)))
                     ],
                   )),
               Padding(
@@ -370,7 +421,9 @@ class _HistoryPageState extends State<HistoryPage> {
                         style: TextStyle(fontSize: 20),
                       ),
                       Text(entry.devaluationPercentage.toString() + ' %',
-                          style: const TextStyle(fontSize: 18))
+                          style: const TextStyle(
+                              fontSize: 18,
+                              color: Color.fromARGB(255, 219, 219, 219)))
                     ],
                   )),
             ]),
@@ -391,7 +444,10 @@ class _HistoryPageState extends State<HistoryPage> {
                                   style: TextStyle(fontSize: 20),
                                 ),
                                 Text(entry.description.toString(),
-                                    style: const TextStyle(fontSize: 18))
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        color:
+                                            Color.fromARGB(255, 219, 219, 219)))
                               ],
                             )),
                         Padding(
@@ -404,7 +460,10 @@ class _HistoryPageState extends State<HistoryPage> {
                                   style: TextStyle(fontSize: 20),
                                 ),
                                 Text(entry.cubature.toString(),
-                                    style: const TextStyle(fontSize: 18))
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        color:
+                                            Color.fromARGB(255, 219, 219, 219)))
                               ],
                             )),
                         Padding(
@@ -417,7 +476,10 @@ class _HistoryPageState extends State<HistoryPage> {
                                   style: TextStyle(fontSize: 20),
                                 ),
                                 Text(entry.value.toString(),
-                                    style: const TextStyle(fontSize: 18))
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        color:
+                                            Color.fromARGB(255, 219, 219, 219)))
                               ],
                             )),
                         Padding(
@@ -430,7 +492,10 @@ class _HistoryPageState extends State<HistoryPage> {
                                   style: TextStyle(fontSize: 20),
                                 ),
                                 Text(entry.sumInsured.toString(),
-                                    style: const TextStyle(fontSize: 18))
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        color:
+                                            Color.fromARGB(255, 219, 219, 219)))
                               ],
                             )),
                       ],
@@ -499,7 +564,9 @@ Widget measurementTile(Measurement entry) {
                               style: TextStyle(fontSize: 20),
                             ),
                             Text(entry.length.toString(),
-                                style: const TextStyle(fontSize: 18))
+                                style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Color.fromARGB(255, 219, 219, 219)))
                           ],
                         )),
                     Padding(
@@ -512,7 +579,9 @@ Widget measurementTile(Measurement entry) {
                               style: TextStyle(fontSize: 20),
                             ),
                             Text(entry.height.toString(),
-                                style: const TextStyle(fontSize: 18))
+                                style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Color.fromARGB(255, 219, 219, 219)))
                           ],
                         )),
                     Padding(
@@ -525,7 +594,9 @@ Widget measurementTile(Measurement entry) {
                               style: TextStyle(fontSize: 20),
                             ),
                             Text(entry.width.toString(),
-                                style: const TextStyle(fontSize: 18))
+                                style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Color.fromARGB(255, 219, 219, 219)))
                           ],
                         )),
                     Padding(
@@ -538,7 +609,9 @@ Widget measurementTile(Measurement entry) {
                               style: TextStyle(fontSize: 20),
                             ),
                             Text(entry.radius.toString(),
-                                style: const TextStyle(fontSize: 18))
+                                style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Color.fromARGB(255, 219, 219, 219)))
                           ],
                         )),
                   ]))),
@@ -560,7 +633,10 @@ Widget measurementTile(Measurement entry) {
                                 style: TextStyle(fontSize: 20),
                               ),
                               Text(entry.description.toString(),
-                                  style: const TextStyle(fontSize: 18))
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      color:
+                                          Color.fromARGB(255, 219, 219, 219)))
                             ],
                           )),
                     ],

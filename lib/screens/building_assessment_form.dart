@@ -7,17 +7,14 @@ import 'package:msg/widgets/add_objects_section.dart';
 import 'package:msg/widgets/custom_text_form_field.dart';
 import 'package:msg/widgets/date_form_field.dart';
 
-<<<<<<< HEAD
 import '../models/BuildingPart/construction_class.dart';
 import '../models/BuildingPart/fire_protection.dart';
 import '../models/BuildingPart/insured_type.dart';
 import '../models/BuildingPart/risk_class.dart';
 import '../models/Database/database_helper.dart';
 import '../models/Measurement/measurement.dart';
-=======
 import '../services/sqs_sender.dart';
 import '../widgets/alert.dart';
->>>>>>> fac67acebafaba1acabe70789bf1d720459b9f98
 
 class BuildingAssessmentForm extends StatefulWidget {
   final BuildingAssessment? buildingAssessment;
@@ -48,6 +45,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
       showDialogPopup("Error", "Assessment not sent.");
     }
   }
+
   void showDialogPopup(String title, String content) {
     showDialog(
         context: context,
@@ -175,7 +173,8 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                       labelText: "Description",
                       initialValue: buildingAssessment.description,
                       onChanged: (newValue) => {
-                        setState(() => {buildingAssessment.description = newValue})
+                        setState(
+                            () => {buildingAssessment.description = newValue})
                       },
                       validator: (value) => Validators.defaultValidator(value!),
                     ),
@@ -201,7 +200,8 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                   int.parse(newValue)
                             })
                       },
-                      validator: (value) => Validators.numberOfApartmentsValidator(value!),
+                      validator: (value) =>
+                          Validators.numberOfApartmentsValidator(value!),
                     ),
                     CustomTextFormField(
                       type:
@@ -258,15 +258,16 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                             );
                             _formKey.currentState!.save();
                             print(buildingAssessment.toMessage());
-                            
-                            sendMessage(buildingAssessment.toMessage().toString());
+
+                            sendMessage(
+                                buildingAssessment.toMessage().toString());
 
                             // print(buildingAssessment.toJson());
                             // print(buildingAssessment.buildingParts[0].toJson());
                             // print(buildingAssessment
                             //   .buildingParts[0].measurements[1]
                             //   .toJson());
-                          }                     
+                          }
                         },
                         child: const Text("Send"))
                   ],
