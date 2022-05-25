@@ -144,22 +144,36 @@ class _HistoryPageState extends State<HistoryPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       searchBar(cWidth),
-                      OutlinedButton(
-                          onPressed: () => resendAll(), child: Text("Resend")),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Padding(
-                              padding: EdgeInsets.only(right: 20),
-                              child: RoutingButton(
+                                padding: EdgeInsets.only(right: 40),
+                                child: ElevatedButton.icon(
+                                    icon: Icon(
+                                      Icons.send_and_archive_outlined,
+                                      size: 22,
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      shape: StadiumBorder(),
+                                      primary: Color.fromARGB(147, 200, 35, 90),
+                                    ),
+                                    onPressed: () => resendAll(),
+                                    label: Text(
+                                      "Resend",
+                                      style: TextStyle(fontSize: 15),
+                                    ))),
+                            const Padding(
+                              padding: const EdgeInsets.only(right: 20),
+                              child: const RoutingButton(
                                 destination: BuildingAssessmentForm(),
-                                icon: Icon(Icons.send_rounded),
+                                icon: const Icon(Icons.send_rounded),
                                 tooltip: 'Send',
                               ),
                             ),
-                            RoutingButton(
+                            const RoutingButton(
                               destination: SettingsPage(),
-                              icon: Icon(Icons.settings),
+                              icon: const Icon(Icons.settings),
                               tooltip: 'Settings',
                             )
                           ])
