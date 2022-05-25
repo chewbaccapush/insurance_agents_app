@@ -6,15 +6,20 @@ import 'package:msg/models/BuildingPart/construction_class.dart';
 import 'package:msg/models/BuildingPart/insured_type.dart';
 import 'package:msg/models/BuildingPart/risk_class.dart';
 import 'package:msg/screens/building_assessment_form.dart';
+import 'package:msg/screens/history.dart';
 import 'package:msg/screens/measurement_form.dart';
+import 'package:msg/screens/settings.dart';
 import 'package:msg/validators/validators.dart';
 import 'package:msg/widgets/add_objects_section.dart';
 import 'package:msg/widgets/custom_text_form_field.dart';
 
+import '../widgets/custom_navbar.dart';
+
 class BuildingPartForm extends StatefulWidget {
-  final BuildingAssessment? buildingAssessment;
+  final BuildingAssessment buildingAssessment;
   final BuildingPart? buildingPart;
-  const BuildingPartForm({Key? key, this.buildingAssessment, this.buildingPart})
+  const BuildingPartForm(
+      {Key? key, required this.buildingAssessment, this.buildingPart})
       : super(key: key);
 
   @override
@@ -24,7 +29,6 @@ class BuildingPartForm extends StatefulWidget {
 class _BuildingPartFormState extends State<BuildingPartForm> {
   final _formKey = GlobalKey<FormState>();
   BuildingPart buildingPart = BuildingPart();
-  BuildingAssessment buildingAssessment = BuildingAssessment();
 
   @override
   void initState() {
@@ -35,7 +39,6 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
           riskClass: RiskClass.one,
           insuredType: InsuredType.newValue,
         );
-    buildingAssessment = widget.buildingAssessment ?? BuildingAssessment();
     super.initState();
   }
 
@@ -76,162 +79,196 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
     }).toList();
 
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-      ),
+      resizeToAvoidBottomInset: true,
       body: Container(
         padding: const EdgeInsets.all(50.0),
-        child: Form(
-          key: _formKey,
-          child: Row(
-            children: <Widget>[
-              Flexible(
-                child: Column(
-                  children: <Widget>[
-                    CustomTextFormField(
-                      type: TextInputType.text,
-                      labelText: "Description",
-                      initialValue: buildingPart.description,
-                      onChanged: (newValue) => {
-                        setState(() {
-                          buildingPart.description = newValue;
-                        })
-                      },
-                      validator: (value) => Validators.defaultValidator(value!),
-                    ),
-                    CustomTextFormField(
-                      type:
-                          const TextInputType.numberWithOptions(decimal: false),
-                      labelText: "Building Year",
-                      initialValue: buildingPart.buildingYear.toString(),
-                      onChanged: (newValue) => {
-                        setState(() {
-                          buildingPart.buildingYear = int.parse(newValue);
-                        })
-                      },
-                      validator: (value) => Validators.intValidator(value!),
-                    ),
-                    DropdownButton<FireProtection>(
-                      value: buildingPart.fireProtection,
-                      items: fireProtectionList,
-                      onChanged: (newValue) {
-                        setState(() {
-                          buildingPart.fireProtection = newValue;
-                        });
-                      },
-                    ),
-                    DropdownButton<ConstructionClass>(
-                      value: buildingPart.constructionClass,
-                      items: constructionClassList,
-                      onChanged: (newValue) {
-                        setState(() {
-                          buildingPart.constructionClass = newValue;
-                        });
-                      },
-                    ),
-                    DropdownButton<RiskClass>(
-                      value: buildingPart.riskClass,
-                      items: riskClassList,
-                      onChanged: (newValue) {
-                        setState(() {
-                          buildingPart.riskClass = newValue;
-                        });
-                      },
-                    ),
-                    CustomTextFormField(
-                      type:
-                          const TextInputType.numberWithOptions(decimal: true),
-                      labelText: "Unit Price",
-                      initialValue: buildingPart.unitPrice.toString(),
-                      onChanged: (newValue) => {
-                        setState(() {
-                          buildingPart.unitPrice = double.parse(newValue);
-                        })
-                      },
-                      validator: (value) => Validators.floatValidator(value!),
-                    ),
-                    DropdownButton<InsuredType>(
-                      value: buildingPart.insuredType,
-                      items: insuredTypeList,
-                      onChanged: (newValue) {
-                        setState(() {
-                          buildingPart.insuredType = newValue;
-                        });
-                      },
-                    ),
-                    CustomTextFormField(
-                      type:
-                          const TextInputType.numberWithOptions(decimal: true),
-                      labelText: "Devaluation percentage",
-                      initialValue:
-                          buildingPart.devaluationPercentage.toString(),
-                      onChanged: (newValue) => {
-                        setState(() {
-                          buildingPart.devaluationPercentage =
-                              double.parse(newValue);
-                        })
-                      },
-                      validator: (value) {
-                        if (buildingPart.getInsuredType ==
-                            InsuredType.timeValue) {
-                          return Validators.floatValidator(value!);
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(148, 135, 18, 57),
-                          textStyle: TextStyle(fontSize: 15)),
-                      onPressed: () => {
-                        if (_formKey.currentState!.validate())
-                          {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Saving..')),
-                            ),
+        child: Column(
+          children: [
+            CustomNavbar(
+              leading: Row(
+                children: [
+                  IconButton(
+                    onPressed: () => {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: ((context) => BuildingAssessmentForm(
+                              buildingAssessment: widget.buildingAssessment)),
+                        ),
+                      )
+                    },
+                    icon: const Icon(Icons.arrow_back),
+                  ),
+                  const Text(
+                    "Add Building Part",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
+              firstIcon: Icon(Icons.history),
+              secondIcon: Icon(Icons.settings),
+              firstDestination: HistoryPage(),
+              secondDestination: SettingsPage(),
+            ),
+            const Padding(padding: EdgeInsets.only(bottom: 20)),
+            Form(
+              key: _formKey,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Flexible(
+                    child: Column(
+                      children: <Widget>[
+                        CustomTextFormField(
+                          type: TextInputType.text,
+                          labelText: "Description",
+                          initialValue: buildingPart.description,
+                          onChanged: (newValue) => {
                             setState(() {
-                              buildingAssessment.buildingParts
-                                  .add(buildingPart);
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => BuildingAssessmentForm(
-                                      buildingAssessment: buildingAssessment),
-                                ),
-                              );
+                              buildingPart.description = newValue;
                             })
                           },
-                      },
-                      child: const Text("Add"),
-                    ),
-                    //Cubature
-                    //Value
-                    //Sum Insured
-                  ],
-                ),
-              ),
-              Flexible(
-                child: Column(
-                  children: <Widget>[
-                    AddObjectsSection(
-                      objectType: ObjectType.measurement,
-                      buildingPart: buildingPart,
-                      buildingAssessment: buildingAssessment,
-                      onPressed: () => {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                MeasurementForm(buildingPart: buildingPart),
-                          ),
+                          validator: (value) =>
+                              Validators.defaultValidator(value!),
                         ),
-                      },
+                        CustomTextFormField(
+                          type: const TextInputType.numberWithOptions(
+                              decimal: false),
+                          labelText: "Building Year",
+                          initialValue: buildingPart.buildingYear.toString(),
+                          onChanged: (newValue) => {
+                            setState(() {
+                              buildingPart.buildingYear = int.parse(newValue);
+                            })
+                          },
+                          validator: (value) => Validators.intValidator(value!),
+                        ),
+                        DropdownButton<FireProtection>(
+                          value: buildingPart.fireProtection,
+                          items: fireProtectionList,
+                          onChanged: (newValue) {
+                            setState(() {
+                              buildingPart.fireProtection = newValue;
+                            });
+                          },
+                        ),
+                        DropdownButton<ConstructionClass>(
+                          value: buildingPart.constructionClass,
+                          items: constructionClassList,
+                          onChanged: (newValue) {
+                            setState(() {
+                              buildingPart.constructionClass = newValue;
+                            });
+                          },
+                        ),
+                        DropdownButton<RiskClass>(
+                          value: buildingPart.riskClass,
+                          items: riskClassList,
+                          onChanged: (newValue) {
+                            setState(() {
+                              buildingPart.riskClass = newValue;
+                            });
+                          },
+                        ),
+                        CustomTextFormField(
+                          type: const TextInputType.numberWithOptions(
+                              decimal: true),
+                          labelText: "Unit Price",
+                          initialValue: buildingPart.unitPrice.toString(),
+                          onChanged: (newValue) => {
+                            setState(() {
+                              buildingPart.unitPrice = double.parse(newValue);
+                            })
+                          },
+                          validator: (value) =>
+                              Validators.floatValidator(value!),
+                        ),
+                        DropdownButton<InsuredType>(
+                          value: buildingPart.insuredType,
+                          items: insuredTypeList,
+                          onChanged: (newValue) {
+                            setState(() {
+                              buildingPart.insuredType = newValue;
+                            });
+                          },
+                        ),
+                        CustomTextFormField(
+                          type: const TextInputType.numberWithOptions(
+                              decimal: true),
+                          labelText: "Devaluation percentage",
+                          initialValue:
+                              buildingPart.devaluationPercentage.toString(),
+                          onChanged: (newValue) => {
+                            setState(() {
+                              buildingPart.devaluationPercentage =
+                                  double.parse(newValue);
+                            })
+                          },
+                          validator: (value) {
+                            if (buildingPart.getInsuredType ==
+                                InsuredType.timeValue) {
+                              return Validators.floatValidator(value!);
+                            } else {
+                              return null;
+                            }
+                          },
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Color.fromARGB(148, 135, 18, 57),
+                              textStyle: TextStyle(fontSize: 15)),
+                          onPressed: () => {
+                            if (_formKey.currentState!.validate())
+                              {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Saving..')),
+                                ),
+                                setState(() {
+                                  widget.buildingAssessment.buildingParts
+                                      .add(buildingPart);
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          BuildingAssessmentForm(
+                                              buildingAssessment:
+                                                  widget.buildingAssessment),
+                                    ),
+                                  );
+                                })
+                              },
+                          },
+                          child: const Text("Add"),
+                        ),
+                        //Cubature
+                        //Value
+                        //Sum Insured
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  Flexible(
+                    child: Column(
+                      children: <Widget>[
+                        AddObjectsSection(
+                          objectType: ObjectType.measurement,
+                          buildingPart: buildingPart,
+                          buildingAssessment: widget.buildingAssessment,
+                          onPressed: () => {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => MeasurementForm(
+                                    buildingAssessment:
+                                        widget.buildingAssessment,
+                                    buildingPart: buildingPart),
+                              ),
+                            ),
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

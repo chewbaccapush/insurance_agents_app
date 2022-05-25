@@ -40,7 +40,10 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
                   onTap: () => {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => BuildingPartForm(buildingPart: e),
+                        builder: (context) => BuildingPartForm(
+                          buildingPart: e,
+                          buildingAssessment: widget.buildingAssessment,
+                        ),
                       ),
                     )
                   },
@@ -56,7 +59,11 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
                   onTap: () => {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => MeasurementForm(measurement: e),
+                        builder: (context) => MeasurementForm(
+                          measurement: e,
+                          buildingPart: widget.buildingPart,
+                          buildingAssessment: widget.buildingAssessment,
+                        ),
                       ),
                     )
                   },
@@ -68,23 +75,21 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Align(
-          alignment: Alignment.centerLeft,
-          child: OutlinedButton.icon(
-            style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: Colors.transparent)),
-            onPressed: widget.onPressed,
-            label: Text(
-              widget.objectType == ObjectType.buildingPart
-                  ? "Add Building Part"
-                  : "Add Measurement",
-              style: const TextStyle(color: Color.fromRGBO(255, 255, 255, 1)),
-            ),
-            icon: const Icon(
-              Icons.add,
-              color: Color.fromRGBO(255, 255, 255, 1),
-            ),
+        OutlinedButton.icon(
+          style: OutlinedButton.styleFrom(
+              side: const BorderSide(color: Colors.transparent)),
+          onPressed: widget.onPressed,
+          label: Text(
+            widget.objectType == ObjectType.buildingPart
+                ? "Add Building Part"
+                : "Add Measurement",
+            style: const TextStyle(color: Color.fromRGBO(255, 255, 255, 1)),
+          ),
+          icon: const Icon(
+            Icons.add,
+            color: Color.fromRGBO(255, 255, 255, 1),
           ),
         ),
         SizedBox(

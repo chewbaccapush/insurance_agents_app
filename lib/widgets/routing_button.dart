@@ -14,7 +14,6 @@ class RoutingButton extends StatelessWidget {
     return IconButton(
       icon: icon,
       tooltip: tooltip,
-      iconSize: 40,
       onPressed: () => {
         Navigator.of(context).push(
           MaterialPageRoute(

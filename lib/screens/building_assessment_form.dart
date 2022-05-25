@@ -65,20 +65,21 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
       resizeToAvoidBottomInset: true,
       body: Container(
         padding: const EdgeInsets.all(50.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              const CustomNavbar(
-                leading: Text('Send building assessement',
-                    style: TextStyle(fontSize: 35)),
-                firstIcon: Icon(Icons.history),
-                secondIcon: Icon(Icons.settings),
-                firstDestination: HistoryPage(),
-                secondDestination: SettingsPage(),
-              ),
-              const Padding(padding: EdgeInsets.only(bottom: 20)),
-              Row(
+        child: Column(
+          children: [
+            const CustomNavbar(
+              leading: Text('Send building assessement',
+                  style: TextStyle(fontSize: 20)),
+              firstIcon: Icon(Icons.history),
+              secondIcon: Icon(Icons.settings),
+              firstDestination: HistoryPage(),
+              secondDestination: SettingsPage(),
+            ),
+            const Padding(padding: EdgeInsets.only(bottom: 20)),
+            Form(
+              key: _formKey,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Flexible(
                     child: Column(
@@ -202,8 +203,8 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
