@@ -40,7 +40,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       body: Container(
         padding: const EdgeInsets.all(50.0),
         child: Column(

@@ -37,20 +37,21 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
 
   void sendMessage(String message) async {
     try {
-      await sqsSender.sendToSQS(message).then((value) => buildingAssessment.sent = true);
+      await sqsSender
+          .sendToSQS(message)
+          .then((value) => buildingAssessment.sent = true);
       showDialogPopup("Info", "Assessment successfully sent.");
       buildingAssessment.sent = true;
     } catch (e) {
       showDialogPopup("Error", "Assessment not sent.");
       buildingAssessment.sent = false;
     } finally {
-      
       // Saves to database
       localSave();
     }
   }
 
-  // TODO: move to 
+  // TODO: move to
   void showDialogPopup(String title, String content) {
     showDialog(
         context: context,
@@ -71,14 +72,30 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       body: Container(
         padding: const EdgeInsets.all(50.0),
         child: Column(
           children: [
-            const CustomNavbar(
-              leading: Text('Send building assessement',
-                  style: TextStyle(fontSize: 20)),
+            CustomNavbar(
+              leading: Row(
+                children: [
+                  IconButton(
+                    onPressed: () => {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: ((context) => const HistoryPage()),
+                        ),
+                      )
+                    },
+                    icon: const Icon(Icons.arrow_back),
+                  ),
+                  const Text(
+                    "Edit Building Assessment",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
               firstIcon: Icon(Icons.history),
               secondIcon: Icon(Icons.settings),
               firstDestination: HistoryPage(),
@@ -174,6 +191,8 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               primary: Color.fromARGB(148, 135, 18, 57),
                               textStyle: TextStyle(fontSize: 15)),
                           onPressed: () {
+                            // DatabaseHelper.instance.deleteDatabase(
+                            //     "/data/user/0/com.example.msg/databases/msgDatabase.db");
                             // Validates form
                             if (_formKey.currentState!.validate()) {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -181,11 +200,12 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               );
                               _formKey.currentState!.save();
 
-                              debugPrint(buildingAssessment.toMessage().toString());
+                              debugPrint(
+                                  buildingAssessment.toMessage().toString());
 
                               // Starts sending message process
-                              sendMessage(buildingAssessment.toMessage().toString());
-
+                              sendMessage(
+                                  buildingAssessment.toMessage().toString());
                             }
                           },
                           child: const Text("Send"),

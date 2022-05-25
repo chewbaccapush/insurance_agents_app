@@ -80,7 +80,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
     }).toList();
 
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       body: Container(
         padding: const EdgeInsets.all(50.0),
         child: Column(
@@ -200,7 +200,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                     buildingPart.insuredType = newValue;
                                   });
                                 },
-                                width: 100),
+                                width: 110),
                             CustomTextFormField(
                               enabeled: buildingPart.insuredType ==
                                       InsuredType.timeValue

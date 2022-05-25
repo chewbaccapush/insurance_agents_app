@@ -83,9 +83,9 @@ class BuildingPart {
       BuildingPartFields.description: description,
       BuildingPartFields.buildingYear: buildingYear,
       BuildingPartFields.fireProtection:
-      EnumToString.convertToString(fireProtection),
+          EnumToString.convertToString(fireProtection),
       BuildingPartFields.constructionClass:
-      EnumToString.convertToString(constructionClass),
+          EnumToString.convertToString(constructionClass),
       BuildingPartFields.riskClass: EnumToString.convertToString(riskClass),
       BuildingPartFields.unitPrice: unitPrice,
       BuildingPartFields.insuredType: EnumToString.convertToString(insuredType),
@@ -99,16 +99,16 @@ class BuildingPart {
 
   Map<String, dynamic> toMessage() {
     List measurementsJson = [];
-    measurements.forEach((measrement) { 
+    measurements.forEach((measrement) {
       measurementsJson.add(measrement.toMessage());
     });
     return {
       BuildingPartFields.description: description,
       BuildingPartFields.buildingYear: buildingYear,
       BuildingPartFields.fireProtection:
-      EnumToString.convertToString(fireProtection),
+          EnumToString.convertToString(fireProtection),
       BuildingPartFields.constructionClass:
-      EnumToString.convertToString(constructionClass),
+          EnumToString.convertToString(constructionClass),
       BuildingPartFields.riskClass: EnumToString.convertToString(riskClass),
       BuildingPartFields.unitPrice: unitPrice,
       BuildingPartFields.insuredType: EnumToString.convertToString(insuredType),
@@ -132,7 +132,7 @@ class BuildingPart {
           json[BuildingPartFields.constructionClass]) as ConstructionClass,
       riskClass: EnumToString.fromString(
           RiskClass.values, json[BuildingPartFields.riskClass]) as RiskClass,
-      unitPrice: json[BuildingPartFields.unitPrice] as double,
+      unitPrice: double.parse(json[BuildingPartFields.unitPrice].toString()),
       insuredType: EnumToString.fromString(
               InsuredType.values, json[BuildingPartFields.insuredType])
           as InsuredType,

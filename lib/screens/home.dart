@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
-          child: const BuildingAssessmentForm()),
+          child: const HistoryPage()),
     );
     /*
     bottomNavigationBar:
