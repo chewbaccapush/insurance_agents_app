@@ -168,6 +168,16 @@ class DatabaseHelper {
     return assessments;
   }
 
+  Future<void> updateAssessment(BuildingAssessment assessment) async {
+    final db = await instance.database;
+    await db.update(
+      tableBuildingAssesment, 
+      assessment.toJson(),
+      where: '${BuildingAssessmentFields.id} = ?',
+      whereArgs: [assessment.id]
+    );
+  }
+
   Future close() async {
     final db = await instance.database;
     _database = null;

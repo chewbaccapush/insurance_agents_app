@@ -1,6 +1,9 @@
+import 'dart:ffi';
+
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:msg/models/Measurement/measurement.dart';
+import 'package:msg/widgets/alert.dart';
 import 'package:msg/screens/building_assessment_form.dart';
 import 'package:msg/screens/settings.dart';
 import 'package:msg/widgets/building_assessment_tile.dart';
@@ -10,10 +13,12 @@ import 'package:msg/widgets/routing_button.dart';
 import 'package:msg/widgets/search_bar.dart';
 
 import 'package:intl/intl.dart';
+import 'package:connectivity/connectivity.dart';
 
 import '../models/BuildingAssessment/building_assessment.dart';
 import '../models/BuildingPart/building_part.dart';
 import '../models/Database/database_helper.dart';
+import '../services/sqs_sender.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({Key? key}) : super(key: key);
@@ -26,6 +31,8 @@ class _HistoryPageState extends State<HistoryPage> {
   List<BuildingAssessment> buildingAssessments = [];
   List<BuildingAssessment> searchResults = [];
   TextEditingController textController = TextEditingController();
+  Connectivity _connectivity = Connectivity();
+  final SQSSender sqsSender = SQSSender();
 
   @override
   void initState() {
@@ -37,14 +44,71 @@ class _HistoryPageState extends State<HistoryPage> {
   void dispose() {
     textController.dispose();
     super.dispose();
+
+  }
+
+  void resendAll() async {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Sending..')),
+    );
+    debugPrint("Sending");
+    List<BuildingAssessment> unsentAssessments = [];
+    int numOfUnsent = 0;
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+    List unsent = await iterateAssessments();
+    print("UNSENT:" + unsent[0].toString());
+    print(unsentAssessments.length);
+
+    if(unsent[0] != 0) {
+      if (unsent[1].length == 0) {
+        if (unsent[0] == 1) {
+          showDialogPopup("Info", "Assessments successfully sent");
+        } else {
+          showDialogPopup("Info", "All ${unsent[0]} assessments successfully sent");
+        }
+      } else {
+        showDialogPopup("Alert", "${unsent[1].length} assessment has not been sent!");
+      }
+    }
+  }
+
+  // TODO: async
+  List iterateAssessments() {
+    int numOfUnsent = 0;
+    List<BuildingAssessment> unsentAssessments = [];
+    buildingAssessments.forEach((element) async {
+        if (element.sent == false) {
+          numOfUnsent++;
+          debugPrint("Sending" + element.id.toString());
+          await sqsSender.sendToSQS(element.toMessage().toString()).then((value) {
+            print("ok");
+            element.sent = true;
+            DatabaseHelper.instance.updateAssessment(element);
+          }).onError((error, stackTrace) {
+            print(error);
+            print(stackTrace);
+            unsentAssessments.add(element);
+          });
+        }
+      });
+    return [numOfUnsent, unsentAssessments];
+  }
+
+    // TODO: move to
+  void showDialogPopup(String title, String content) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return new Alert(title: title, content: content);
+        });
   }
 
   // Get orders from users local storage
   _localGet() async {
     buildingAssessments = await DatabaseHelper.instance.readAllAssessments();
 
-    print(buildingAssessments[buildingAssessments.length-1].toJson());
-
+    // print(buildingAssessments[buildingAssessments.length-1].toJson());
     setState(() {});
   }
 
@@ -69,7 +133,6 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     double cWidth = MediaQuery.of(context).size.width * 0.5;
-
     return Scaffold(
         body: Padding(
             padding: const EdgeInsets.only(top: 60, right: 50, left: 50),
@@ -79,6 +142,10 @@ class _HistoryPageState extends State<HistoryPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       searchBar(cWidth),
+                      OutlinedButton(
+                          onPressed: () => resendAll(),
+                          child: Text("Resend")
+                      ),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -118,7 +185,9 @@ class _HistoryPageState extends State<HistoryPage> {
             margin: const EdgeInsets.only(bottom: 10),
             width: width,
             height: 55,
-            child: Row(children: [
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
               const Padding(
                   padding: EdgeInsets.only(left: 10),
                   child: Icon(Icons.search)),
@@ -142,8 +211,9 @@ class _HistoryPageState extends State<HistoryPage> {
                   textController.clear();
                   onSearchTextChanged('');
                 },
-              ),
-            ])),
+              )
+            ])
+          ),
       ],
     );
   }
@@ -158,7 +228,8 @@ class _HistoryPageState extends State<HistoryPage> {
                   entry: buildingAssessments[position],
                   buildingParts:
                       _getBuildingParts(buildingAssessments[position]));
-            }));
+            })
+    );
   }
 
   Widget buildSearchView() {
