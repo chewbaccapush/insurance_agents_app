@@ -11,6 +11,7 @@ import 'package:msg/screens/measurement_form.dart';
 import 'package:msg/screens/settings.dart';
 import 'package:msg/validators/validators.dart';
 import 'package:msg/widgets/add_objects_section.dart';
+import 'package:msg/widgets/custom_dropdown.dart';
 import 'package:msg/widgets/custom_text_form_field.dart';
 
 import '../widgets/custom_navbar.dart';
@@ -117,6 +118,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                 children: <Widget>[
                   Flexible(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
                         CustomTextFormField(
                           type: TextInputType.text,
@@ -142,32 +144,37 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                           },
                           validator: (value) => Validators.intValidator(value!),
                         ),
-                        DropdownButton<FireProtection>(
-                          value: buildingPart.fireProtection,
-                          items: fireProtectionList,
-                          onChanged: (newValue) {
-                            setState(() {
-                              buildingPart.fireProtection = newValue;
-                            });
-                          },
-                        ),
-                        DropdownButton<ConstructionClass>(
-                          value: buildingPart.constructionClass,
-                          items: constructionClassList,
-                          onChanged: (newValue) {
-                            setState(() {
-                              buildingPart.constructionClass = newValue;
-                            });
-                          },
-                        ),
-                        DropdownButton<RiskClass>(
-                          value: buildingPart.riskClass,
-                          items: riskClassList,
-                          onChanged: (newValue) {
-                            setState(() {
-                              buildingPart.riskClass = newValue;
-                            });
-                          },
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomDropdown(
+                                value: buildingPart.fireProtection,
+                                items: fireProtectionList,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    buildingPart.fireProtection = newValue;
+                                  });
+                                },
+                                width: 170),
+                            CustomDropdown(
+                                value: buildingPart.constructionClass,
+                                items: constructionClassList,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    buildingPart.constructionClass = newValue;
+                                  });
+                                },
+                                width: 170),
+                            CustomDropdown(
+                                value: buildingPart.riskClass,
+                                items: riskClassList,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    buildingPart.riskClass = newValue;
+                                  });
+                                },
+                                width: 170),
+                          ],
                         ),
                         CustomTextFormField(
                           type: const TextInputType.numberWithOptions(
@@ -182,35 +189,45 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                           validator: (value) =>
                               Validators.floatValidator(value!),
                         ),
-                        DropdownButton<InsuredType>(
-                          value: buildingPart.insuredType,
-                          items: insuredTypeList,
-                          onChanged: (newValue) {
-                            setState(() {
-                              buildingPart.insuredType = newValue;
-                            });
-                          },
-                        ),
-                        CustomTextFormField(
-                          type: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          labelText: "Devaluation percentage",
-                          initialValue:
-                              buildingPart.devaluationPercentage.toString(),
-                          onChanged: (newValue) => {
-                            setState(() {
-                              buildingPart.devaluationPercentage =
-                                  double.parse(newValue);
-                            })
-                          },
-                          validator: (value) {
-                            if (buildingPart.getInsuredType ==
-                                InsuredType.timeValue) {
-                              return Validators.floatValidator(value!);
-                            } else {
-                              return null;
-                            }
-                          },
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomDropdown(
+                                value: buildingPart.insuredType,
+                                items: insuredTypeList,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    buildingPart.insuredType = newValue;
+                                  });
+                                },
+                                width: 100),
+                            CustomTextFormField(
+                              enabeled: buildingPart.insuredType ==
+                                      InsuredType.timeValue
+                                  ? true
+                                  : false,
+                              width: 450,
+                              type: const TextInputType.numberWithOptions(
+                                  decimal: true),
+                              labelText: "Devaluation percentage",
+                              initialValue:
+                                  buildingPart.devaluationPercentage.toString(),
+                              onChanged: (newValue) => {
+                                setState(() {
+                                  buildingPart.devaluationPercentage =
+                                      double.parse(newValue);
+                                })
+                              },
+                              validator: (value) {
+                                if (buildingPart.getInsuredType ==
+                                    InsuredType.timeValue) {
+                                  return Validators.floatValidator(value!);
+                                } else {
+                                  return null;
+                                }
+                              },
+                            ),
+                          ],
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
