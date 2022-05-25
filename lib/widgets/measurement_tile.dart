@@ -28,12 +28,12 @@ class MeasurementTile extends StatelessWidget {
                           children: [
                             const Text(
                               'Length:    ',
-                              style: TextStyle(fontSize: 20),
+                              style: TextStyle(fontSize: 18),
                             ),
                             Text(
                               entry.length.toString(),
                               style: const TextStyle(
-                                fontSize: 18,
+                                fontSize: 16,
                                 color: Color.fromARGB(255, 219, 219, 219),
                               ),
                             ),
@@ -47,11 +47,11 @@ class MeasurementTile extends StatelessWidget {
                           children: [
                             const Text(
                               'Height:    ',
-                              style: TextStyle(fontSize: 20),
+                              style: TextStyle(fontSize: 18),
                             ),
                             Text(entry.height.toString(),
                                 style: const TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     color: Color.fromARGB(255, 219, 219, 219)))
                           ],
                         ),
@@ -63,11 +63,11 @@ class MeasurementTile extends StatelessWidget {
                           children: [
                             const Text(
                               'Width:    ',
-                              style: TextStyle(fontSize: 20),
+                              style: TextStyle(fontSize: 18),
                             ),
                             Text(entry.width.toString(),
                                 style: const TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     color: Color.fromARGB(255, 219, 219, 219)))
                           ],
                         ),
@@ -79,12 +79,12 @@ class MeasurementTile extends StatelessWidget {
                           children: [
                             const Text(
                               'Radius:    ',
-                              style: TextStyle(fontSize: 20),
+                              style: TextStyle(fontSize: 18),
                             ),
                             Text(
                               entry.radius.toString(),
                               style: const TextStyle(
-                                fontSize: 18,
+                                fontSize: 16,
                                 color: Color.fromARGB(255, 219, 219, 219),
                               ),
                             ),
@@ -110,12 +110,12 @@ class MeasurementTile extends StatelessWidget {
                           children: [
                             const Text(
                               'Description:    ',
-                              style: TextStyle(fontSize: 20),
+                              style: TextStyle(fontSize: 18),
                             ),
                             Text(
                               entry.description.toString(),
                               style: const TextStyle(
-                                fontSize: 18,
+                                fontSize: 16,
                                 color: Color.fromARGB(255, 219, 219, 219),
                               ),
                             )

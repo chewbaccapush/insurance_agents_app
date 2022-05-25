@@ -31,7 +31,7 @@ class _HistoryPageState extends State<HistoryPage> {
   List<BuildingAssessment> buildingAssessments = [];
   List<BuildingAssessment> searchResults = [];
   TextEditingController textController = TextEditingController();
-  Connectivity _connectivity = Connectivity();
+  final Connectivity _connectivity = Connectivity();
   final SQSSender sqsSender = SQSSender();
 
   @override
@@ -44,7 +44,6 @@ class _HistoryPageState extends State<HistoryPage> {
   void dispose() {
     textController.dispose();
     super.dispose();
-
   }
 
   void resendAll() async {
@@ -60,15 +59,17 @@ class _HistoryPageState extends State<HistoryPage> {
     print("UNSENT:" + unsent[0].toString());
     print(unsentAssessments.length);
 
-    if(unsent[0] != 0) {
+    if (unsent[0] != 0) {
       if (unsent[1].length == 0) {
         if (unsent[0] == 1) {
           showDialogPopup("Info", "Assessments successfully sent");
         } else {
-          showDialogPopup("Info", "All ${unsent[0]} assessments successfully sent");
+          showDialogPopup(
+              "Info", "All ${unsent[0]} assessments successfully sent");
         }
       } else {
-        showDialogPopup("Alert", "${unsent[1].length} assessment has not been sent!");
+        showDialogPopup(
+            "Alert", "${unsent[1].length} assessment has not been sent!");
       }
     }
   }
@@ -78,24 +79,24 @@ class _HistoryPageState extends State<HistoryPage> {
     int numOfUnsent = 0;
     List<BuildingAssessment> unsentAssessments = [];
     buildingAssessments.forEach((element) async {
-        if (element.sent == false) {
-          numOfUnsent++;
-          debugPrint("Sending" + element.id.toString());
-          await sqsSender.sendToSQS(element.toMessage().toString()).then((value) {
-            print("ok");
-            element.sent = true;
-            DatabaseHelper.instance.updateAssessment(element);
-          }).onError((error, stackTrace) {
-            print(error);
-            print(stackTrace);
-            unsentAssessments.add(element);
-          });
-        }
-      });
+      if (element.sent == false) {
+        numOfUnsent++;
+        debugPrint("Sending" + element.id.toString());
+        await sqsSender.sendToSQS(element.toMessage().toString()).then((value) {
+          print("ok");
+          element.sent = true;
+          DatabaseHelper.instance.updateAssessment(element);
+        }).onError((error, stackTrace) {
+          print(error);
+          print(stackTrace);
+          unsentAssessments.add(element);
+        });
+      }
+    });
     return [numOfUnsent, unsentAssessments];
   }
 
-    // TODO: move to
+  // TODO: move to
   void showDialogPopup(String title, String content) {
     showDialog(
         context: context,
@@ -135,7 +136,8 @@ class _HistoryPageState extends State<HistoryPage> {
     double cWidth = MediaQuery.of(context).size.width * 0.5;
     return Scaffold(
         body: Padding(
-            padding: const EdgeInsets.only(top: 60, right: 50, left: 50),
+            padding:
+                const EdgeInsets.only(top: 60, right: 50, left: 50, bottom: 20),
             child: Column(
               children: [
                 Row(
@@ -143,9 +145,7 @@ class _HistoryPageState extends State<HistoryPage> {
                     children: [
                       searchBar(cWidth),
                       OutlinedButton(
-                          onPressed: () => resendAll(),
-                          child: Text("Resend")
-                      ),
+                          onPressed: () => resendAll(), child: Text("Resend")),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -186,34 +186,33 @@ class _HistoryPageState extends State<HistoryPage> {
             width: width,
             height: 55,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-              const Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Icon(Icons.search)),
-              Container(
-                  width: width - 85,
-                  child: Padding(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Padding(
                       padding: EdgeInsets.only(left: 10),
-                      child: TextField(
-                        style: TextStyle(fontSize: 18),
-                        cursorColor: Colors.white,
-                        controller: textController,
-                        decoration: const InputDecoration(
-                            fillColor: Colors.grey,
-                            hintText: 'Search',
-                            border: InputBorder.none),
-                        onChanged: onSearchTextChanged,
-                      ))),
-              IconButton(
-                icon: Icon(Icons.cancel),
-                onPressed: () {
-                  textController.clear();
-                  onSearchTextChanged('');
-                },
-              )
-            ])
-          ),
+                      child: Icon(Icons.search)),
+                  Container(
+                      width: width - 85,
+                      child: Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: TextField(
+                            style: TextStyle(fontSize: 18),
+                            cursorColor: Colors.white,
+                            controller: textController,
+                            decoration: const InputDecoration(
+                                fillColor: Colors.grey,
+                                hintText: 'Search',
+                                border: InputBorder.none),
+                            onChanged: onSearchTextChanged,
+                          ))),
+                  IconButton(
+                    icon: Icon(Icons.cancel),
+                    onPressed: () {
+                      textController.clear();
+                      onSearchTextChanged('');
+                    },
+                  )
+                ])),
       ],
     );
   }
@@ -228,8 +227,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   entry: buildingAssessments[position],
                   buildingParts:
                       _getBuildingParts(buildingAssessments[position]));
-            })
-    );
+            }));
   }
 
   Widget buildSearchView() {
