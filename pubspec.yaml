@@ -46,6 +46,7 @@ dependencies:
   validators: ^3.0.0
   date_format: ^2.0.6
   intl: ^0.17.0
+  connectivity: ^3.0.6
 
 dev_dependencies:
   flutter_test:

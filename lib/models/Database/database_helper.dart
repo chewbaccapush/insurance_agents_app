@@ -35,6 +35,7 @@ class DatabaseHelper {
     const stringType = 'TEXT NOT NULL';
     const numericType = 'NUMERIC NOT NULL';
     const numericNullable = "NUMERIC";
+    const boolType = "BOOLEAN";
 
     await db.execute('''
       CREATE TABLE $tableBuildingAssesment(
@@ -42,9 +43,10 @@ class DatabaseHelper {
           ${BuildingAssessmentFields.appointmentDate} $stringType,
           ${BuildingAssessmentFields.description} $stringType,
           ${BuildingAssessmentFields.assessmentCause} $stringType,
-          ${BuildingAssessmentFields.numOfAppartments} $intagerType,
+          ${BuildingAssessmentFields.numOfAppartments} $intagerNullable,
           ${BuildingAssessmentFields.voluntaryDeduction} $numericType,
-          ${BuildingAssessmentFields.assessmentFee} $numericType     
+          ${BuildingAssessmentFields.assessmentFee} $numericType,
+          ${BuildingAssessmentFields.sent} $boolType   
       )''');
 
     await db.execute('''
@@ -164,6 +166,16 @@ class DatabaseHelper {
     }
 
     return assessments;
+  }
+
+  Future<void> updateAssessment(BuildingAssessment assessment) async {
+    final db = await instance.database;
+    await db.update(
+      tableBuildingAssesment, 
+      assessment.toJson(),
+      where: '${BuildingAssessmentFields.id} = ?',
+      whereArgs: [assessment.id]
+    );
   }
 
   Future close() async {
