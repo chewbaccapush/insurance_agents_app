@@ -16,6 +16,17 @@ class BuildingAssessmentTile extends StatefulWidget {
 
 class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
   bool _isExpanded = false;
+
+  // Creates icon for sent/unsent
+  Icon getIcon() {
+    if (widget.entry!.sent == true) {
+      return const Icon(Icons.check_circle_rounded,
+          size: 40, color: Colors.green);
+    } else {
+      return const Icon(Icons.error_rounded, size: 40, color: Colors.red);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,8 +40,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
             padding:
                 const EdgeInsets.only(top: 30, bottom: 0, left: 35, right: 40),
             child: Row(children: [
-              const Icon(Icons.check_circle_rounded,
-                  size: 30, color: Colors.green),
+              getIcon(),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: Text(
@@ -161,7 +171,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                       trailing: AnimatedRotation(
                           turns: _isExpanded ? .5 : 0,
                           duration: Duration(milliseconds: 400),
-                          child: Icon(Icons.expand_circle_down_outlined,
+                          child: const Icon(Icons.expand_circle_down_outlined,
                               size: 30)),
                       title: const Text(
                         'Building parts',

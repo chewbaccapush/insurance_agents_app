@@ -13,7 +13,8 @@ class BuildingAssessmentFields {
     assessmentCause,
     numOfAppartments,
     voluntaryDeduction,
-    assessmentFee
+    assessmentFee,
+    sent
   ];
 
   static const String id = 'buildingAssessmentId';
@@ -24,6 +25,7 @@ class BuildingAssessmentFields {
   static const String voluntaryDeduction = 'voluntaryDeduction';
   static const String assessmentFee = 'assessmentFee';
   static const String buildingParts = 'buildingParts';
+  static const String sent = 'sent';
 }
 
 class BuildingAssessment {
@@ -35,6 +37,7 @@ class BuildingAssessment {
   double? voluntaryDeduction;
   double? assessmentFee;
   List<BuildingPart> buildingParts;
+  bool? sent = false;
 
   BuildingAssessment(
       {this.id,
@@ -44,6 +47,7 @@ class BuildingAssessment {
       this.numOfAppartments,
       this.voluntaryDeduction,
       this.assessmentFee,
+      this.sent,
       List<BuildingPart>? buildingParts})
       : buildingParts = buildingParts ?? [];
 
@@ -56,7 +60,8 @@ class BuildingAssessment {
       BuildingAssessmentFields.assessmentCause: assessmentCause,
       BuildingAssessmentFields.numOfAppartments: numOfAppartments,
       BuildingAssessmentFields.voluntaryDeduction: voluntaryDeduction,
-      BuildingAssessmentFields.assessmentFee: assessmentFee
+      BuildingAssessmentFields.assessmentFee: assessmentFee,
+      BuildingAssessmentFields.sent: sent
     };
   }
 
@@ -77,21 +82,25 @@ class BuildingAssessment {
     };
   }
 
-  static BuildingAssessment fromJson(Map<String, Object?> json) =>
-      BuildingAssessment(
-        id: json[BuildingAssessmentFields.id] as int?,
-        appointmentDate: DateTime.parse(
-            json[BuildingAssessmentFields.appointmentDate] as String),
-        description: json[BuildingAssessmentFields.description] as String,
-        assessmentCause:
-            json[BuildingAssessmentFields.assessmentCause] as String,
-        numOfAppartments:
-            json[BuildingAssessmentFields.numOfAppartments] as int?,
-        voluntaryDeduction: double.parse(
-            json[BuildingAssessmentFields.voluntaryDeduction].toString()),
-        assessmentFee: double.parse(
-            json[BuildingAssessmentFields.assessmentFee].toString()),
-      );
+  static BuildingAssessment fromJson(Map<String, Object?> json) {
+    bool sentBoolean = json[BuildingAssessmentFields.sent].toString() == "1" ? true : false;
+    return BuildingAssessment(
+      id: json[BuildingAssessmentFields.id] as int?,
+      appointmentDate: DateTime.parse(
+          json[BuildingAssessmentFields.appointmentDate] as String),
+      description: json[BuildingAssessmentFields.description] as String,
+      assessmentCause:
+          json[BuildingAssessmentFields.assessmentCause] as String,
+      numOfAppartments:
+          json[BuildingAssessmentFields.numOfAppartments] as int?,
+      voluntaryDeduction: double.parse(
+          json[BuildingAssessmentFields.voluntaryDeduction].toString()),
+      assessmentFee: double.parse(
+          json[BuildingAssessmentFields.assessmentFee].toString()),
+      sent: sentBoolean 
+    );
+  }
+
 
   BuildingAssessment copy({
     int? id,
@@ -102,6 +111,7 @@ class BuildingAssessment {
     double? voluntaryDeduction,
     double? assessmentFee,
     List<BuildingPart>? buildingParts,
+    bool? sent,
   }) =>
       BuildingAssessment(
           id: id ?? this.id,
@@ -111,7 +121,8 @@ class BuildingAssessment {
           numOfAppartments: numOfAppartments ?? this.numOfAppartments,
           voluntaryDeduction: voluntaryDeduction ?? this.voluntaryDeduction,
           assessmentFee: assessmentFee ?? this.assessmentFee,
-          buildingParts: buildingParts ?? this.buildingParts);
+          buildingParts: buildingParts ?? this.buildingParts,
+          sent: sent ?? this.sent);
 
   get getId => this.id;
 
@@ -148,4 +159,8 @@ class BuildingAssessment {
   get getBuildingParts => this.buildingParts;
 
   set setBuildingParts(buildingParts) => this.buildingParts = buildingParts;
+
+  set setSent(sent) => this.sent = sent;
+
+  
 }
