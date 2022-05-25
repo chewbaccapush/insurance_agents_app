@@ -72,31 +72,34 @@ class _HistoryPageState extends State<HistoryPage> {
 
     return Scaffold(
         body: Padding(
-            padding: const EdgeInsets.only(top: 60, right: 50, left: 50),
+            padding:
+                const EdgeInsets.only(top: 60, right: 50, left: 50, bottom: 20),
             child: Column(
               children: [
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      searchBar(cWidth),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(right: 20),
-                              child: RoutingButton(
-                                destination: BuildingAssessmentForm(),
-                                icon: Icon(Icons.send_rounded),
-                                tooltip: 'Send',
-                              ),
-                            ),
-                            RoutingButton(
-                              destination: SettingsPage(),
-                              icon: Icon(Icons.settings),
-                              tooltip: 'Settings',
-                            )
-                          ])
-                    ]),
+                Padding(
+                    padding: const EdgeInsets.only(bottom: 5),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          searchBar(cWidth),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: const [
+                                Padding(
+                                  padding: EdgeInsets.only(right: 20),
+                                  child: RoutingButton(
+                                    destination: BuildingAssessmentForm(),
+                                    icon: Icon(Icons.send_rounded),
+                                    tooltip: 'Send',
+                                  ),
+                                ),
+                                RoutingButton(
+                                  destination: SettingsPage(),
+                                  icon: Icon(Icons.settings),
+                                  tooltip: 'Settings',
+                                )
+                              ])
+                        ])),
                 if (searchResults.isNotEmpty ||
                     textController.text.isNotEmpty) ...[
                   buildSearchView()

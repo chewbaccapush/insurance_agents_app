@@ -31,11 +31,11 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                     children: [
                       const Text(
                         'Building Year:    ',
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: 18),
                       ),
                       Text(widget.entry!.buildingYear.toString(),
                           style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               color: Color.fromARGB(255, 219, 219, 219)))
                     ],
                   )),
@@ -46,13 +46,13 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                     children: [
                       const Text(
                         'Fire Protection:    ',
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: 18),
                       ),
                       Text(
                           EnumToString.convertToString(
                               widget.entry!.fireProtection),
                           style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               color: Color.fromARGB(255, 219, 219, 219)))
                     ],
                   )),
@@ -63,13 +63,13 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                     children: [
                       const Text(
                         'Construction Class:    ',
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: 18),
                       ),
                       Text(
                           EnumToString.convertToString(
                               widget.entry!.constructionClass),
                           style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               color: Color.fromARGB(255, 219, 219, 219)))
                     ],
                   )),
@@ -80,12 +80,12 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                     children: [
                       const Text(
                         'Risk Class:    ',
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: 18),
                       ),
                       Text(
                           EnumToString.convertToString(widget.entry!.riskClass),
                           style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               color: Color.fromARGB(255, 219, 219, 219)))
                     ],
                   )),
@@ -96,11 +96,11 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                     children: [
                       const Text(
                         'Unit Price:    ',
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: 18),
                       ),
                       Text(widget.entry!.unitPrice.toString() + ' €',
                           style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               color: Color.fromARGB(255, 219, 219, 219)))
                     ],
                   )),
@@ -111,13 +111,13 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                     children: [
                       const Text(
                         'Insured Type:    ',
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: 18),
                       ),
                       Text(
                           EnumToString.convertToString(
                               widget.entry!.insuredType),
                           style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               color: Color.fromARGB(255, 219, 219, 219)))
                     ],
                   )),
@@ -128,12 +128,12 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                     children: [
                       const Text(
                         'Devaluation Percentage:    ',
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: 18),
                       ),
                       Text(
                           widget.entry!.devaluationPercentage.toString() + ' %',
                           style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               color: Color.fromARGB(255, 219, 219, 219)))
                     ],
                   )),
@@ -147,16 +147,16 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                       children: [
                         Padding(
                             padding: const EdgeInsets.only(
-                                top: 35, bottom: 105, left: 20, right: 20),
+                                top: 35, bottom: 95, left: 20, right: 20),
                             child: Row(
                               children: [
                                 const Text(
                                   'Description:    ',
-                                  style: TextStyle(fontSize: 20),
+                                  style: TextStyle(fontSize: 18),
                                 ),
                                 Text(widget.entry!.description.toString(),
                                     style: const TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         color:
                                             Color.fromARGB(255, 219, 219, 219)))
                               ],
@@ -168,11 +168,11 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                               children: [
                                 const Text(
                                   'Cubature:    ',
-                                  style: TextStyle(fontSize: 20),
+                                  style: TextStyle(fontSize: 18),
                                 ),
                                 Text(widget.entry!.cubature.toString(),
                                     style: const TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         color:
                                             Color.fromARGB(255, 219, 219, 219)))
                               ],
@@ -184,27 +184,27 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                               children: [
                                 const Text(
                                   'Value:    ',
-                                  style: TextStyle(fontSize: 20),
+                                  style: TextStyle(fontSize: 18),
                                 ),
                                 Text(widget.entry!.value.toString(),
                                     style: const TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         color:
                                             Color.fromARGB(255, 219, 219, 219)))
                               ],
                             )),
                         Padding(
                             padding: const EdgeInsets.only(
-                                top: 5, bottom: 5, left: 20, right: 20),
+                                top: 5, bottom: 0, left: 20, right: 20),
                             child: Row(
                               children: [
                                 const Text(
                                   'Sum Insured:    ',
-                                  style: TextStyle(fontSize: 20),
+                                  style: TextStyle(fontSize: 18),
                                 ),
                                 Text(widget.entry!.sumInsured.toString(),
                                     style: const TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         color:
                                             Color.fromARGB(255, 219, 219, 219)))
                               ],
@@ -214,7 +214,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
           ]),
         ),
         Padding(
-            padding: const EdgeInsets.only(bottom: 30, left: 15, right: 30),
+            padding: const EdgeInsets.only(bottom: 15, left: 15, right: 30),
             child: Theme(
                 data: ThemeData()
                     .copyWith(dividerColor: Color.fromARGB(0, 246, 0, 0)),
@@ -234,7 +234,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                             Icon(Icons.expand_circle_down_outlined, size: 30)),
                     title: const Text(
                       'Measurements',
-                      style: TextStyle(fontSize: 25, color: Colors.white),
+                      style: TextStyle(fontSize: 22, color: Colors.white),
                     ),
                     children: widget.measurements!))),
       ],

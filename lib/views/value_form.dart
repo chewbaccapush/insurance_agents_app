@@ -124,17 +124,18 @@ class _ValueFormState extends State<ValueForm> {
     /*
     final instance = await SharedPreferences.getInstance();
 
-    PropretyValue propretyValue =
-        PropretyValue(_nameController.text, _areaController.text, 0);
-
     Map<String, dynamic> map = {
       'name': propretyValue.name,
       'area': propretyValue.area,
-      'value': propretyValue.value
+      'value': propretyValue.value,
     };
 
+    BuildingAsessment bA = prefs.get(key);
+    
 
     instance.setString(_nameController.text, jsonEncode(map));
+
+    
     */
     clearText();
   }

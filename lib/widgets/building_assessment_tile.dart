@@ -27,16 +27,16 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Padding(
             padding:
-                const EdgeInsets.only(top: 35, bottom: 10, left: 35, right: 40),
+                const EdgeInsets.only(top: 30, bottom: 0, left: 35, right: 40),
             child: Row(children: [
               const Icon(Icons.check_circle_rounded,
-                  size: 40, color: Colors.green),
+                  size: 30, color: Colors.green),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: Text(
                   DateFormat.yMMMd()
                       .format(widget.entry!.appointmentDate as DateTime),
-                  style: const TextStyle(fontSize: 30),
+                  style: const TextStyle(fontSize: 25),
                 ),
               )
             ]),
@@ -46,18 +46,18 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                    padding: const EdgeInsets.only(top: 15, left: 40),
+                    padding: const EdgeInsets.only(top: 10, left: 40),
                     child: Row(
                       children: [
                         const Text(
                           'Appointment Date:    ',
-                          style: TextStyle(fontSize: 22),
+                          style: TextStyle(fontSize: 18),
                         ),
                         Text(
                             DateFormat.yMMMMd().format(
                                 widget.entry!.appointmentDate as DateTime),
                             style: const TextStyle(
-                                fontSize: 20,
+                                fontSize: 16,
                                 color: Color.fromARGB(255, 219, 219, 219)))
                       ],
                     )),
@@ -67,11 +67,11 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                       children: [
                         const Text(
                           'Number of Apartments:    ',
-                          style: TextStyle(fontSize: 22),
+                          style: TextStyle(fontSize: 18),
                         ),
                         Text(widget.entry!.numOfAppartments.toString(),
                             style: const TextStyle(
-                                fontSize: 20,
+                                fontSize: 16,
                                 color: Color.fromARGB(255, 219, 219, 219)))
                       ],
                     )),
@@ -81,11 +81,11 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                       children: [
                         const Text(
                           'Voluntary Deduction:    ',
-                          style: TextStyle(fontSize: 22),
+                          style: TextStyle(fontSize: 18),
                         ),
                         Text(widget.entry!.voluntaryDeduction.toString() + " %",
                             style: const TextStyle(
-                                fontSize: 20,
+                                fontSize: 16,
                                 color: Color.fromARGB(255, 219, 219, 219)))
                       ],
                     )),
@@ -95,11 +95,11 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                       children: [
                         const Text(
                           'Assessment Fee:    ',
-                          style: TextStyle(fontSize: 22),
+                          style: TextStyle(fontSize: 18),
                         ),
                         Text(widget.entry!.assessmentFee.toString() + " €",
                             style: const TextStyle(
-                                fontSize: 20,
+                                fontSize: 16,
                                 color: Color.fromARGB(255, 219, 219, 219)))
                       ],
                     )),
@@ -112,31 +112,31 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
-                          padding: const EdgeInsets.only(bottom: 20, top: 40),
+                          padding: const EdgeInsets.only(bottom: 20, top: 25),
                           child: Row(
                             children: [
                               const Text(
                                 'Description:    ',
-                                style: TextStyle(fontSize: 22),
+                                style: TextStyle(fontSize: 18),
                               ),
                               Text(widget.entry!.description.toString(),
                                   style: const TextStyle(
-                                      fontSize: 20,
+                                      fontSize: 16,
                                       color:
                                           Color.fromARGB(255, 219, 219, 219)))
                             ],
                           )),
                       Padding(
-                          padding: const EdgeInsets.only(top: 40, bottom: 65),
+                          padding: const EdgeInsets.only(top: 40, bottom: 50),
                           child: Row(
                             children: [
                               const Text(
                                 'Assessment Cause:    ',
-                                style: TextStyle(fontSize: 22),
+                                style: TextStyle(fontSize: 18),
                               ),
                               Text(widget.entry!.assessmentCause.toString(),
                                   style: const TextStyle(
-                                      fontSize: 20,
+                                      fontSize: 16,
                                       color:
                                           Color.fromARGB(255, 225, 225, 225)))
                             ],
@@ -145,7 +145,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
           ]),
           Padding(
               padding: const EdgeInsets.only(
-                  bottom: 25, top: 10, left: 25, right: 25),
+                  bottom: 25, top: 0, left: 25, right: 25),
               child: Theme(
                   data: ThemeData()
                       .copyWith(dividerColor: Color.fromARGB(0, 246, 0, 0)),
@@ -162,10 +162,10 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                           turns: _isExpanded ? .5 : 0,
                           duration: Duration(milliseconds: 400),
                           child: Icon(Icons.expand_circle_down_outlined,
-                              size: 35)),
+                              size: 30)),
                       title: const Text(
                         'Building parts',
-                        style: TextStyle(fontSize: 28, color: Colors.white),
+                        style: TextStyle(fontSize: 24, color: Colors.white),
                       ),
                       children: widget.buildingParts as List<Widget>)))
         ]));
