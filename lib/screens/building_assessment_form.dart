@@ -8,6 +8,7 @@ import 'package:msg/widgets/add_objects_section.dart';
 import 'package:msg/widgets/custom_navbar.dart';
 import 'package:msg/widgets/custom_text_form_field.dart';
 import 'package:msg/widgets/date_form_field.dart';
+import 'package:sqflite/sqflite.dart';
 
 import '../models/Database/database_helper.dart';
 import '../services/sqs_sender.dart';
@@ -36,10 +37,16 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
 
   void sendMessage(String message) async {
     try {
-      await sqsSender.sendToSQS(message);
+      await sqsSender.sendToSQS(message).then((value) => buildingAssessment.sent = true);
       showDialogPopup("Info", "Assessment successfully sent.");
+      buildingAssessment.sent = true;
     } catch (e) {
       showDialogPopup("Error", "Assessment not sent.");
+      buildingAssessment.sent = false;
+    } finally {
+      
+      // Saves to database
+      localSave();
     }
   }
 
@@ -53,10 +60,11 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
 
   // // Locally save order to users device
   void localSave() async {
+    debugPrint("SQL: saving...");
+    print("SQL:");
+    print(buildingAssessment);
     BuildingAssessment assessment = await DatabaseHelper.instance
         .createAssessment(buildingAssessment, buildingAssessment.buildingParts);
-
-    print(assessment);
   }
 
   @override
@@ -172,9 +180,11 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               );
                               _formKey.currentState!.save();
 
-                              localSave();
-                              sendMessage(
-                                  buildingAssessment.toMessage().toString());
+                              debugPrint(buildingAssessment.toMessage().toString());
+
+                              // Starts sending message process
+                              sendMessage(buildingAssessment.toMessage().toString());
+
                             }
                           },
                           child: const Text("Send"),

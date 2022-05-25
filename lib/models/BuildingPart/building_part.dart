@@ -83,9 +83,9 @@ class BuildingPart {
       BuildingPartFields.description: description,
       BuildingPartFields.buildingYear: buildingYear,
       BuildingPartFields.fireProtection:
-          EnumToString.convertToString(fireProtection),
+      EnumToString.convertToString(fireProtection),
       BuildingPartFields.constructionClass:
-          EnumToString.convertToString(constructionClass),
+      EnumToString.convertToString(constructionClass),
       BuildingPartFields.riskClass: EnumToString.convertToString(riskClass),
       BuildingPartFields.unitPrice: unitPrice,
       BuildingPartFields.insuredType: EnumToString.convertToString(insuredType),
@@ -106,9 +106,9 @@ class BuildingPart {
       BuildingPartFields.description: description,
       BuildingPartFields.buildingYear: buildingYear,
       BuildingPartFields.fireProtection:
-          EnumToString.convertToString(fireProtection),
+      EnumToString.convertToString(fireProtection),
       BuildingPartFields.constructionClass:
-          EnumToString.convertToString(constructionClass),
+      EnumToString.convertToString(constructionClass),
       BuildingPartFields.riskClass: EnumToString.convertToString(riskClass),
       BuildingPartFields.unitPrice: unitPrice,
       BuildingPartFields.insuredType: EnumToString.convertToString(insuredType),

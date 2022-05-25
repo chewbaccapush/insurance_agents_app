@@ -6,8 +6,8 @@ class SQSSender {
   static final _service = SQS(
       region: 'us-east-1', 
       credentials: AwsClientCredentials(
-        accessKey: '', 
-        secretKey: ''
+        accessKey: 'AKIAUGVLRA7EVVMPQG4T', 
+        secretKey: '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'
       )
   );
 

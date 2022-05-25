@@ -43,7 +43,7 @@ class _HistoryPageState extends State<HistoryPage> {
   _localGet() async {
     buildingAssessments = await DatabaseHelper.instance.readAllAssessments();
 
-    print(buildingAssessments);
+    print(buildingAssessments[buildingAssessments.length-1].toJson());
 
     setState(() {});
   }
