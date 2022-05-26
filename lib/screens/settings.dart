@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:msg/screens/building_assessment_form.dart';
 import 'package:msg/screens/history.dart';
+import 'package:msg/services/theme_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import '../widgets/custom_navbar.dart';
@@ -24,15 +26,38 @@ class _SettingsPageState extends State<SettingsPage> {
       body: Container(
         padding: const EdgeInsets.all(50.0),
         child: Column(
-          children: const [
-            CustomNavbar(
+          children: [
+            const CustomNavbar(
               leading: Text("Settings"),
               firstIcon: Icon(Icons.send),
               secondIcon: Icon(Icons.history),
               firstDestination: BuildingAssessmentForm(),
               secondDestination: HistoryPage(),
             ),
-            Padding(padding: EdgeInsets.only(bottom: 20)),
+            const Padding(padding: EdgeInsets.only(bottom: 20)),
+            Row(
+              children: [
+                Column(
+                  children: [
+                    ElevatedButton.icon(
+                      label: Text('Theme',
+                          style: TextStyle(
+                              color:
+                                  Theme.of(context).colorScheme.onSecondary)),
+                      icon: Icon(
+                        Icons.dark_mode,
+                        color: Theme.of(context).colorScheme.onSecondary,
+                      ),
+                      onPressed: () {
+                        ThemeProvider themeProvider =
+                            Provider.of(context, listen: false);
+                        themeProvider.swapTheme();
+                      },
+                    )
+                  ],
+                )
+              ],
+            )
           ],
         ),
       ),

@@ -153,16 +153,22 @@ class _HistoryPageState extends State<HistoryPage> {
                                     icon: Icon(
                                       Icons.send_and_archive_outlined,
                                       size: 22,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondary,
                                     ),
                                     style: ElevatedButton.styleFrom(
                                       shape: StadiumBorder(),
-                                      primary: Color.fromARGB(147, 200, 35, 90),
+                                      primary:
+                                          Theme.of(context).colorScheme.primary,
                                     ),
                                     onPressed: () => resendAll(),
-                                    label: Text(
-                                      "Resend",
-                                      style: TextStyle(fontSize: 15),
-                                    ))),
+                                    label: Text("Resend",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondary)))),
                             const Padding(
                               padding: const EdgeInsets.only(right: 20),
                               child: const RoutingButton(
@@ -194,7 +200,7 @@ class _HistoryPageState extends State<HistoryPage> {
         Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(40),
-              color: Colors.grey,
+              color: Theme.of(context).colorScheme.primaryContainer,
             ),
             margin: const EdgeInsets.only(bottom: 10),
             width: width,
@@ -210,8 +216,11 @@ class _HistoryPageState extends State<HistoryPage> {
                       child: Padding(
                           padding: EdgeInsets.only(left: 10),
                           child: TextField(
-                            style: TextStyle(fontSize: 18),
-                            cursorColor: Colors.white,
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: Theme.of(context).colorScheme.onPrimary),
+                            cursorColor:
+                                Theme.of(context).colorScheme.onPrimary,
                             controller: textController,
                             decoration: const InputDecoration(
                                 fillColor: Colors.grey,
@@ -238,6 +247,7 @@ class _HistoryPageState extends State<HistoryPage> {
             itemCount: buildingAssessments.length,
             itemBuilder: (context, position) {
               return BuildingAssessmentTile(
+                  context: context,
                   entry: buildingAssessments[position],
                   buildingParts:
                       _getBuildingParts(buildingAssessments[position]));
@@ -251,6 +261,7 @@ class _HistoryPageState extends State<HistoryPage> {
             itemCount: searchResults.length,
             itemBuilder: (context, position) {
               return BuildingAssessmentTile(
+                  context: context,
                   entry: searchResults[position],
                   buildingParts: _getBuildingParts(searchResults[position]));
             }));
@@ -265,7 +276,7 @@ class _HistoryPageState extends State<HistoryPage> {
           margin: const EdgeInsets.only(top: 20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: const Color.fromARGB(147, 129, 32, 64),
+            color: Theme.of(context).colorScheme.secondary,
           ),
           child: ListView(
             physics: const BouncingScrollPhysics(),
@@ -273,7 +284,9 @@ class _HistoryPageState extends State<HistoryPage> {
             shrinkWrap: true,
             children: [
               BuildingPartTile(
-                  entry: element, measurements: _getMeasurements(element))
+                  context: context,
+                  entry: element,
+                  measurements: _getMeasurements(element))
             ],
           )));
     });
@@ -289,14 +302,15 @@ class _HistoryPageState extends State<HistoryPage> {
           margin: EdgeInsets.only(top: 20, left: 10, right: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: Color.fromARGB(121, 154, 56, 91),
+            color: Theme.of(context).colorScheme.tertiary,
+            //color: Color.fromARGB(121, 154, 56, 91),
             //color: Color.fromARGB(124, 90, 17, 43),
           ),
           child: ListView(
             physics: const BouncingScrollPhysics(),
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            children: [MeasurementTile(entry: element)],
+            children: [MeasurementTile(widgetContext: context, entry: element)],
           )));
     });
     return children;

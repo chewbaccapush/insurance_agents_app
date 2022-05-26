@@ -4,10 +4,12 @@ import 'package:intl/intl.dart';
 import '../models/BuildingAssessment/building_assessment.dart';
 
 class BuildingAssessmentTile extends StatefulWidget {
+  final BuildContext context;
   final BuildingAssessment? entry;
   final List<Widget>? buildingParts;
 
-  const BuildingAssessmentTile({Key? key, this.entry, this.buildingParts})
+  const BuildingAssessmentTile(
+      {Key? key, required this.context, this.entry, this.buildingParts})
       : super(key: key);
 
   @override
@@ -31,9 +33,8 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          color: const Color.fromARGB(148, 135, 18, 57),
-        ),
+            borderRadius: BorderRadius.circular(30),
+            color: Theme.of(widget.context).colorScheme.primary),
         margin: const EdgeInsets.only(bottom: 30.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Padding(
@@ -46,7 +47,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                 child: Text(
                   DateFormat.yMMMd()
                       .format(widget.entry!.appointmentDate as DateTime),
-                  style: const TextStyle(fontSize: 25),
+                  style: Theme.of(widget.context).textTheme.headline1,
                 ),
               )
             ]),
@@ -59,58 +60,50 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                     padding: const EdgeInsets.only(top: 10, left: 40),
                     child: Row(
                       children: [
-                        const Text(
+                        Text(
                           'Appointment Date:    ',
-                          style: TextStyle(fontSize: 18),
+                          style: Theme.of(widget.context).textTheme.bodyText1,
                         ),
                         Text(
                             DateFormat.yMMMMd().format(
                                 widget.entry!.appointmentDate as DateTime),
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: Color.fromARGB(255, 219, 219, 219)))
+                            style: Theme.of(widget.context).textTheme.bodyText2)
                       ],
                     )),
                 Padding(
                     padding: const EdgeInsets.only(top: 15, left: 40),
                     child: Row(
                       children: [
-                        const Text(
+                        Text(
                           'Number of Apartments:    ',
-                          style: TextStyle(fontSize: 18),
+                          style: Theme.of(widget.context).textTheme.bodyText1,
                         ),
                         Text(widget.entry!.numOfAppartments.toString(),
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: Color.fromARGB(255, 219, 219, 219)))
+                            style: Theme.of(widget.context).textTheme.bodyText2)
                       ],
                     )),
                 Padding(
                     padding: const EdgeInsets.only(top: 15, left: 40),
                     child: Row(
                       children: [
-                        const Text(
+                        Text(
                           'Voluntary Deduction:    ',
-                          style: TextStyle(fontSize: 18),
+                          style: Theme.of(widget.context).textTheme.bodyText1,
                         ),
                         Text(widget.entry!.voluntaryDeduction.toString() + " %",
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: Color.fromARGB(255, 219, 219, 219)))
+                            style: Theme.of(widget.context).textTheme.bodyText2)
                       ],
                     )),
                 Padding(
                     padding: const EdgeInsets.only(top: 15, left: 40),
                     child: Row(
                       children: [
-                        const Text(
+                        Text(
                           'Assessment Fee:    ',
-                          style: TextStyle(fontSize: 18),
+                          style: Theme.of(widget.context).textTheme.bodyText1,
                         ),
                         Text(widget.entry!.assessmentFee.toString() + " €",
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: Color.fromARGB(255, 219, 219, 219)))
+                            style: Theme.of(widget.context).textTheme.bodyText2)
                       ],
                     )),
               ],
@@ -125,30 +118,32 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                           padding: const EdgeInsets.only(bottom: 20, top: 25),
                           child: Row(
                             children: [
-                              const Text(
+                              Text(
                                 'Description:    ',
-                                style: TextStyle(fontSize: 18),
+                                style: Theme.of(widget.context)
+                                    .textTheme
+                                    .bodyText1,
                               ),
                               Text(widget.entry!.description.toString(),
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      color:
-                                          Color.fromARGB(255, 219, 219, 219)))
+                                  style: Theme.of(widget.context)
+                                      .textTheme
+                                      .bodyText2)
                             ],
                           )),
                       Padding(
                           padding: const EdgeInsets.only(top: 40, bottom: 50),
                           child: Row(
                             children: [
-                              const Text(
+                              Text(
                                 'Assessment Cause:    ',
-                                style: TextStyle(fontSize: 18),
+                                style: Theme.of(widget.context)
+                                    .textTheme
+                                    .bodyText1,
                               ),
                               Text(widget.entry!.assessmentCause.toString(),
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      color:
-                                          Color.fromARGB(255, 225, 225, 225)))
+                                  style: Theme.of(widget.context)
+                                      .textTheme
+                                      .bodyText2)
                             ],
                           )),
                     ])),
@@ -173,9 +168,9 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                           duration: Duration(milliseconds: 400),
                           child: const Icon(Icons.expand_circle_down_outlined,
                               size: 30)),
-                      title: const Text(
+                      title: Text(
                         'Building parts',
-                        style: TextStyle(fontSize: 24, color: Colors.white),
+                        style: Theme.of(widget.context).textTheme.headline2,
                       ),
                       children: widget.buildingParts as List<Widget>)))
         ]));
