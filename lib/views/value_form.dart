@@ -119,7 +119,7 @@ class _ValueFormState extends State<ValueForm> {
         voluntaryDeduction: 22.2,
         assessmentFee: 22.2);
 
-    await DatabaseHelper.instance.createAssessment(assessment, buildingParts);
+    // await DatabaseHelper.instance.createAssessment(assessment, buildingParts);
 
     /*
     final instance = await SharedPreferences.getInstance();

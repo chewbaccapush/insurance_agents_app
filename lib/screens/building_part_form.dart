@@ -5,6 +5,7 @@ import 'package:msg/models/BuildingPart/fire_protection.dart';
 import 'package:msg/models/BuildingPart/construction_class.dart';
 import 'package:msg/models/BuildingPart/insured_type.dart';
 import 'package:msg/models/BuildingPart/risk_class.dart';
+import 'package:msg/models/Database/database_helper.dart';
 import 'package:msg/screens/building_assessment_form.dart';
 import 'package:msg/screens/history.dart';
 import 'package:msg/screens/measurement_form.dart';
@@ -41,6 +42,11 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
           insuredType: InsuredType.newValue,
         );
     super.initState();
+  }
+
+  Future<BuildingPart> saveBuildingPart() async {
+    // BuildingAssessment tempAssessment = await DatabaseHelper.instance.persistAssessmentFromPart(widget.buildingAssessment);
+    return await DatabaseHelper.instance.persistBuildingPart(buildingPart, widget.buildingAssessment.id.toString());
   }
 
   @override
@@ -229,12 +235,13 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                           style: ElevatedButton.styleFrom(
                               primary: Color.fromARGB(148, 135, 18, 57),
                               textStyle: TextStyle(fontSize: 15)),
-                          onPressed: () => {
-                            if (_formKey.currentState!.validate())
-                              {
+                          onPressed: () async => {
+                            if (_formKey.currentState!.validate()) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text('Saving..')),
                                 ),
+    await saveBuildingPart()
+        .then((value) => widget.buildingAssessment.id = value.fk_buildingAssesmentId),
                                 if (!widget.buildingAssessment.buildingParts
                                     .contains(buildingPart))
                                   {

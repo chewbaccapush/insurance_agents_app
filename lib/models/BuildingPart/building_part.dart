@@ -54,7 +54,7 @@ class BuildingPart {
   double? unitPrice;
   InsuredType? insuredType;
   double? devaluationPercentage;
-  double? cubature;
+  double? cubature = 0.0;
   double? value;
   double? sumInsured;
   int? fk_buildingAssesmentId;
@@ -123,24 +123,21 @@ class BuildingPart {
   static BuildingPart fromJson(Map<String, dynamic> json) {
     return BuildingPart(
       id: json[BuildingPartFields.id] as int?,
-      description: json[BuildingPartFields.description] as String,
-      buildingYear: json[BuildingPartFields.buildingYear] as int,
-      fireProtection: EnumToString.fromString(
-              FireProtection.values, json[BuildingPartFields.fireProtection])
-          as FireProtection,
+      description: json[BuildingPartFields.description] as String?,
+      buildingYear: json[BuildingPartFields.buildingYear] as int?,
+      fireProtection: EnumToString.fromString(FireProtection.values, json[BuildingPartFields.fireProtection]) as FireProtection?,
       constructionClass: EnumToString.fromString(ConstructionClass.values,
-          json[BuildingPartFields.constructionClass]) as ConstructionClass,
-      riskClass: EnumToString.fromString(
-          RiskClass.values, json[BuildingPartFields.riskClass]) as RiskClass,
-      unitPrice: double.parse(json[BuildingPartFields.unitPrice].toString()),
+          json[BuildingPartFields.constructionClass]) as ConstructionClass?,
+      riskClass: EnumToString.fromString(RiskClass.values, json[BuildingPartFields.riskClass]) as RiskClass?,
+      unitPrice: double.tryParse(json[BuildingPartFields.unitPrice].toString()),
       insuredType: EnumToString.fromString(
               InsuredType.values, json[BuildingPartFields.insuredType])
-          as InsuredType,
-      cubature: double.parse(json[BuildingPartFields.cubature].toString()),
-      devaluationPercentage: double.parse(
+          as InsuredType?,
+      cubature: double.tryParse(json[BuildingPartFields.cubature].toString()),
+      devaluationPercentage: double.tryParse(
           json[BuildingPartFields.devaluationPercentage].toString()),
-      value: double.parse(json[BuildingPartFields.value].toString()),
-      sumInsured: double.parse(json[BuildingPartFields.sumInsured].toString()),
+      value: double.tryParse(json[BuildingPartFields.value].toString()),
+      sumInsured: double.tryParse(json[BuildingPartFields.sumInsured].toString()),
     );
   }
 
@@ -157,6 +154,7 @@ class BuildingPart {
     double? cubature,
     double? value,
     double? sumInsured,
+    int? fk_buildingAssesmentId,
   }) =>
       BuildingPart(
         id: id ?? this.id,
@@ -172,6 +170,7 @@ class BuildingPart {
         cubature: cubature ?? this.cubature,
         value: value ?? this.value,
         sumInsured: sumInsured ?? this.sumInsured,
+        fk_buildingAssesmentId: fk_buildingAssesmentId ?? this.fk_buildingAssesmentId
       );
 
   calculateAll(Measurement measurement) {

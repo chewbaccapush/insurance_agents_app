@@ -93,9 +93,9 @@ class BuildingAssessment {
           json[BuildingAssessmentFields.assessmentCause] as String,
       numOfAppartments:
           json[BuildingAssessmentFields.numOfAppartments] as int?,
-      voluntaryDeduction: double.parse(
+      voluntaryDeduction: double.tryParse(
           json[BuildingAssessmentFields.voluntaryDeduction].toString()),
-      assessmentFee: double.parse(
+      assessmentFee: double.tryParse(
           json[BuildingAssessmentFields.assessmentFee].toString()),
       sent: sentBoolean 
     );

@@ -70,12 +70,11 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
   }
 
   // // Locally save order to users device
-  void localSave() async {
+  Future<void> localSave() async {
     debugPrint("SQL: saving...");
     print("SQL:");
     print(buildingAssessment);
-    BuildingAssessment assessment = await DatabaseHelper.instance
-        .createAssessment(buildingAssessment, buildingAssessment.buildingParts);
+    BuildingAssessment assessment = await DatabaseHelper.instance.persistAssessment(buildingAssessment);
   }
 
   @override
@@ -107,6 +106,10 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                   ),
                 ],
               ),
+              firstIcon: Icon(Icons.history),
+              secondIcon: Icon(Icons.settings),
+              firstDestination: HistoryPage(),
+              secondDestination: SettingsPage(),
             ),
             const Padding(padding: EdgeInsets.only(bottom: 20)),
             Form(
@@ -193,67 +196,55 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                           validator: (value) =>
                               Validators.floatValidator(value!),
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
                               primary: Theme.of(context).colorScheme.primary,
                               textStyle: TextStyle(fontSize: 15)),
-                          onPressed: () {
-                            // DatabaseHelper.instance.deleteDatabase(
-                            //     "/data/user/0/com.example.msg/databases/msgDatabase.db");
-                            // Validates form
-                            if (_formKey.currentState!.validate()) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    content: Text(
-                                  'Sending..',
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimary),
-                                )),
-                              );
-                              _formKey.currentState!.save();
+                              onPressed: () {
+                                // Validates form
+                                if (_formKey.currentState!.validate()) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Saving..')),
+                                  );
+                                  _formKey.currentState!.save();
+                                  localSave()
+                                  .then((val) {
+                                    print("sending.......");
+                                    showDialogPopup("", "Draft saved");
+                                  })
+                                  .onError((error, stackTrace) => null)
+                                  .then((value) => ScaffoldMessenger.of(context).hideCurrentSnackBar());
+                                }
+                              },
+                              child: const Text("Save Draft"),
+                            ),
+                            SizedBox(width: 10),
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                primary: Theme.of(context).colorScheme.onPrimary),
+                                textStyle: TextStyle(fontSize: 15)),
+                                onPressed: () {
+                                //DatabaseHelper.instance.deleteDatabase("/data/user/0/com.example.msg/databases/msgDatabase.db");
+                                // Validates form
+                                if (_formKey.currentState!.validate()) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Sending..')),
+                                  );
+                                  _formKey.currentState!.save();
 
-                              debugPrint(
-                                  buildingAssessment.toMessage().toString());
-
-                              // Starts sending message process
-                              sendMessage(
-                                  buildingAssessment.toMessage().toString());
-                            }
-                          },
-                          child: Text(
-                            "Send",
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.onPrimary),
-                          ),
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).colorScheme.primary,
-                              textStyle: const TextStyle(
-                                  fontSize: 15, color: Colors.white)),
-                          onPressed: () {
-                            DatabaseHelper.instance.deleteDatabase(
-                                "/data/user/0/com.example.msg/databases/msgDatabase.db");
-                            // Validates form
-                            /*
-                            if (_formKey.currentState!.validate()) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Sending..')),
-                              );
-                              _formKey.currentState!.save();
-
-                              debugPrint(
-                                  buildingAssessment.toMessage().toString());
-
-                              // Starts sending message process
-                              sendMessage(
-                                  buildingAssessment.toMessage().toString());
-                                  */
-                          },
-                          child: const Text("Delete Database"),
-                        ),
+                                  // Starts sending message process
+                                  sendMessage(
+                                      buildingAssessment.toMessage().toString());
+                                  }
+                                },
+                                child: const Text("Finalize"),
+                            ),
+                            ElevatedButton(onPressed: () => DatabaseHelper.instance.deleteDatabase("/data/user/0/com.example.msg/databases/msgDatabase.db"), child: Text("Pobrisi bazo"))
+                          ],
+                        )
                       ],
                     ),
                   ),
