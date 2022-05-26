@@ -243,6 +243,7 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget buildView() {
     return Expanded(
         child: ListView.builder(
+            reverse: true,
             physics: const BouncingScrollPhysics(),
             itemCount: buildingAssessments.length,
             itemBuilder: (context, position) {

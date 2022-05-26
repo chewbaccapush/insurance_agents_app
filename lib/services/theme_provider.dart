@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:msg/services/storage_service.dart';
 
 const Color customMagenta50 = Color(0xfffcd5ce);
 const Color customMagenta100 = Color(0xfffaac9d);
@@ -87,8 +88,17 @@ class ThemeProvider extends ChangeNotifier {
 
   ThemeData get getTheme => _selectedTheme;
 
-  void swapTheme() {
+  void swapTheme() async {
     _selectedTheme = _selectedTheme == dark ? light : dark;
+
+    if (_selectedTheme == dark) {
+      await StorageService.setAppThemeId(true)
+          .then((value) => print(StorageService.getAppThemeId().toString()));
+    } else if (_selectedTheme == light) {
+      await StorageService.setAppThemeId(false)
+          .then((value) => print(StorageService.getAppThemeId().toString()));
+    }
+
     notifyListeners();
   }
 }

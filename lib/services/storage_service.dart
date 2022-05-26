@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageService {
-  static const String _appThemeKey = 'app_theme';
+  static const String _appThemeKey = 'theme';
 
   static SharedPreferences? _prefs;
 
@@ -18,15 +18,35 @@ class StorageService {
       return null;
     }
 
-    return bool.fromEnvironment(_prefs!.getString(_appThemeKey)!);
+    return _prefs!.getBool(_appThemeKey);
+  }
+
+  static Future<bool?> getAppTheme() async {
+    if (!_checkInitialized()) {
+      return null;
+    }
+    _prefs = await SharedPreferences.getInstance();
+
+    if (_prefs!.containsKey(_appThemeKey)) {
+      return _prefs!.getBool(_appThemeKey);
+    } else {
+      _prefs!.setBool(_appThemeKey, false);
+    }
+
+    return _prefs!.getBool(_appThemeKey);
   }
 
   static Future<void> setAppThemeId(bool isDarkMode) async {
     if (!_checkInitialized()) {
+      print("Not initialized.");
       return;
     }
 
-    await _prefs!.setString(_appThemeKey, isDarkMode.toString());
+    print("DarkMODDEEE " + isDarkMode.toString());
+
+    await _prefs!
+        .setBool(_appThemeKey, isDarkMode)
+        .then((value) => debugPrint("Storage updated."));
   }
 
   static bool _checkInitialized() {
