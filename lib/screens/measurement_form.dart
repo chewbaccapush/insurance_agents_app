@@ -12,12 +12,12 @@ import '../models/BuildingPart/building_part.dart';
 
 class MeasurementForm extends StatefulWidget {
   final BuildingAssessment buildingAssessment;
-  final BuildingPart? buildingPart;
+  final BuildingPart buildingPart;
   final Measurement? measurement;
   const MeasurementForm(
       {Key? key,
       this.measurement,
-      this.buildingPart,
+      required this.buildingPart,
       required this.buildingAssessment})
       : super(key: key);
 
@@ -28,11 +28,9 @@ class MeasurementForm extends StatefulWidget {
 class _MeasurementFormState extends State<MeasurementForm> {
   final _formKey = GlobalKey<FormState>();
   Measurement measurement = Measurement();
-  BuildingPart buildingPart = BuildingPart();
 
   @override
   void initState() {
-    buildingPart = widget.buildingPart ?? BuildingPart();
     measurement = widget.measurement ?? Measurement();
     super.initState();
   }
@@ -54,7 +52,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
                         MaterialPageRoute(
                           builder: ((context) => BuildingPartForm(
                               buildingAssessment: widget.buildingAssessment,
-                              buildingPart: buildingPart)),
+                              buildingPart: widget.buildingPart)),
                         ),
                       )
                     },
@@ -66,10 +64,6 @@ class _MeasurementFormState extends State<MeasurementForm> {
                   ),
                 ],
               ),
-              firstIcon: const Icon(Icons.history),
-              secondIcon: const Icon(Icons.settings),
-              firstDestination: const HistoryPage(),
-              secondDestination: const SettingsPage(),
             ),
             const Padding(padding: EdgeInsets.only(bottom: 20)),
             Form(
@@ -149,18 +143,19 @@ class _MeasurementFormState extends State<MeasurementForm> {
                                     content: Text('Saving..'),
                                   ),
                                 ),
-                                setState(
-                                  () {
-                                    buildingPart.measurements.add(measurement);
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => BuildingPartForm(
-                                            buildingAssessment:
-                                                widget.buildingAssessment,
-                                            buildingPart: buildingPart),
-                                      ),
-                                    );
+                                if (!widget.buildingPart.measurements
+                                    .contains(measurement))
+                                  {
+                                    widget.buildingPart.measurements
+                                        .add(measurement)
                                   },
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => BuildingPartForm(
+                                        buildingAssessment:
+                                            widget.buildingAssessment,
+                                        buildingPart: widget.buildingPart),
+                                  ),
                                 ),
                               },
                           },
