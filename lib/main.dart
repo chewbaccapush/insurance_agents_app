@@ -3,7 +3,6 @@ import 'package:msg/screens/home.dart';
 import 'package:msg/services/storage_service.dart';
 import 'package:msg/services/theme_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:sqflite/sqflite.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

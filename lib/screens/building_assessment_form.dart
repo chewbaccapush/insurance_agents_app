@@ -210,6 +210,32 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                           },
                           child: const Text("Send"),
                         ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Theme.of(context).colorScheme.primary,
+                              textStyle: const TextStyle(
+                                  fontSize: 15, color: Colors.white)),
+                          onPressed: () {
+                            DatabaseHelper.instance.deleteDatabase(
+                                "/data/user/0/com.example.msg/databases/msgDatabase.db");
+                            // Validates form
+                            /*
+                            if (_formKey.currentState!.validate()) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Sending..')),
+                              );
+                              _formKey.currentState!.save();
+
+                              debugPrint(
+                                  buildingAssessment.toMessage().toString());
+
+                              // Starts sending message process
+                              sendMessage(
+                                  buildingAssessment.toMessage().toString());
+                                  */
+                          },
+                          child: const Text("Delete Database"),
+                        ),
                       ],
                     ),
                   ),

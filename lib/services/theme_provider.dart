@@ -1,32 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:msg/services/storage_service.dart';
 
-const Color customMagenta50 = Color(0xfffcd5ce);
-const Color customMagenta100 = Color(0xfffaac9d);
-const Color customMagenta300 = Color(0xfff8836c);
-const Color customMagenta400 = Color(0xfff65a3b);
-
-const Color customMagenta900 = Color(0xfff4310a);
-const Color customMagenta600 = Color(0xffc32708);
-
-const Color customErrorRed = Color(0xFFC5032B);
-
-const Color customSurfaceWhite = Color.fromARGB(255, 210, 210, 210);
-const Color customBackgroundWhite = Colors.white;
-
 const ColorScheme _customColorSchemeLight = ColorScheme(
   primary: Color.fromARGB(241, 158, 48, 85),
   secondary: Color.fromARGB(255, 151, 38, 76),
   tertiary: Color.fromARGB(255, 142, 31, 67),
   primaryContainer: Color.fromARGB(159, 184, 184, 184),
-  surface: Colors.white,
-  background: Colors.white,
-  error: Colors.white,
+  surface: Colors.black,
+  background: Colors.black,
+  error: Colors.black,
   onPrimary: Colors.black,
-  onSecondary: Colors.white,
-  onSurface: Colors.white,
-  onBackground: Colors.white,
-  onError: Colors.white,
+  onSecondary: Colors.black,
+  onSurface: Colors.black,
+  onBackground: Colors.black,
+  onError: Colors.black,
   brightness: Brightness.light,
 );
 
@@ -88,15 +75,13 @@ class ThemeProvider extends ChangeNotifier {
 
   ThemeData get getTheme => _selectedTheme;
 
-  void swapTheme() async {
+  void swapTheme() {
     _selectedTheme = _selectedTheme == dark ? light : dark;
 
     if (_selectedTheme == dark) {
-      await StorageService.setAppThemeId(true)
-          .then((value) => print(StorageService.getAppThemeId().toString()));
+      StorageService.setAppThemeId(true);
     } else if (_selectedTheme == light) {
-      await StorageService.setAppThemeId(false)
-          .then((value) => print(StorageService.getAppThemeId().toString()));
+      StorageService.setAppThemeId(false);
     }
 
     notifyListeners();

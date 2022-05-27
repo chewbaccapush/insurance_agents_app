@@ -9,7 +9,7 @@ class StorageService {
   static Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();
     if (kDebugMode) {
-      print('Initialized Storage');
+      debugPrint('Initialized Storage');
     }
   }
 
@@ -25,7 +25,6 @@ class StorageService {
     if (!_checkInitialized()) {
       return null;
     }
-    _prefs = await SharedPreferences.getInstance();
 
     if (_prefs!.containsKey(_appThemeKey)) {
       return _prefs!.getBool(_appThemeKey);
@@ -36,17 +35,12 @@ class StorageService {
     return _prefs!.getBool(_appThemeKey);
   }
 
-  static Future<void> setAppThemeId(bool isDarkMode) async {
+  static void setAppThemeId(bool isDarkMode) {
     if (!_checkInitialized()) {
-      print("Not initialized.");
       return;
     }
 
-    print("DarkMODDEEE " + isDarkMode.toString());
-
-    await _prefs!
-        .setBool(_appThemeKey, isDarkMode)
-        .then((value) => debugPrint("Storage updated."));
+    _prefs!.setBool(_appThemeKey, isDarkMode);
   }
 
   static bool _checkInitialized() {

@@ -2,12 +2,15 @@ import 'dart:ffi';
 
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:msg/models/Measurement/measurement.dart';
 import 'package:msg/widgets/alert.dart';
 import 'package:msg/screens/building_assessment_form.dart';
 import 'package:msg/screens/settings.dart';
 import 'package:msg/widgets/building_assessment_tile.dart';
 import 'package:msg/widgets/building_part_tile.dart';
+import 'package:msg/widgets/filter_assessments.dart';
+
 import 'package:msg/widgets/measurement_tile.dart';
 import 'package:msg/widgets/routing_button.dart';
 import 'package:msg/widgets/search_bar.dart';
@@ -20,6 +23,8 @@ import '../models/BuildingPart/building_part.dart';
 import '../models/Database/database_helper.dart';
 import '../services/sqs_sender.dart';
 
+enum AlignedTo { all, sent, queue }
+
 class HistoryPage extends StatefulWidget {
   const HistoryPage({Key? key}) : super(key: key);
 
@@ -30,9 +35,15 @@ class HistoryPage extends StatefulWidget {
 class _HistoryPageState extends State<HistoryPage> {
   List<BuildingAssessment> buildingAssessments = [];
   List<BuildingAssessment> searchResults = [];
+  List<BuildingAssessment> sentAssessments = [];
+  List<BuildingAssessment> unsentAssessments = [];
   TextEditingController textController = TextEditingController();
   final Connectivity _connectivity = Connectivity();
   final SQSSender sqsSender = SQSSender();
+  int numberOfUnsent = 0;
+  AlignedTo alignment = AlignedTo.all;
+  int countSentAssessments = 0;
+  int allAssessments = 0;
 
   @override
   void initState() {
@@ -105,10 +116,27 @@ class _HistoryPageState extends State<HistoryPage> {
         });
   }
 
+  void filterBuildingAssessments() {
+    for (var assessment in buildingAssessments) {
+      print(assessment.sent);
+      if (assessment.sent == true) {
+        sentAssessments.add(assessment);
+      } else if (assessment.sent == false) {
+        unsentAssessments.add(assessment);
+
+        print("hey");
+      }
+    }
+
+    setState(() {});
+  }
+
   // Get orders from users local storage
   _localGet() async {
     buildingAssessments = await DatabaseHelper.instance.readAllAssessments();
-
+    countSentAssessments =
+        buildingAssessments.where((c) => c.sent == true).length;
+    filterBuildingAssessments();
     // print(buildingAssessments[buildingAssessments.length-1].toJson());
     setState(() {});
   }
@@ -133,11 +161,12 @@ class _HistoryPageState extends State<HistoryPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(unsentAssessments);
+
     double cWidth = MediaQuery.of(context).size.width * 0.5;
     return Scaffold(
         body: Padding(
-            padding:
-                const EdgeInsets.only(top: 60, right: 50, left: 50, bottom: 20),
+            padding: const EdgeInsets.only(top: 50, right: 50, left: 50),
             child: Column(
               children: [
                 Row(
@@ -146,50 +175,86 @@ class _HistoryPageState extends State<HistoryPage> {
                       searchBar(cWidth),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Padding(
-                                padding: EdgeInsets.only(right: 40),
-                                child: ElevatedButton.icon(
-                                    icon: Icon(
-                                      Icons.send_and_archive_outlined,
-                                      size: 22,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSecondary,
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      shape: StadiumBorder(),
-                                      primary:
-                                          Theme.of(context).colorScheme.primary,
-                                    ),
-                                    onPressed: () => resendAll(),
-                                    label: Text("Resend",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSecondary)))),
-                            const Padding(
-                              padding: const EdgeInsets.only(right: 20),
-                              child: const RoutingButton(
-                                destination: BuildingAssessmentForm(),
-                                icon: const Icon(Icons.send_rounded),
-                                tooltip: 'Send',
-                              ),
-                            ),
-                            const RoutingButton(
+                          children: const [
+                            RoutingButton(
                               destination: SettingsPage(),
-                              icon: const Icon(Icons.settings),
+                              icon: Icon(Icons.settings),
                               tooltip: 'Settings',
                             )
                           ])
                     ]),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: 300,
+                          child: _buildFilterRow(),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        OutlinedButton.icon(
+                          style: OutlinedButton.styleFrom(
+                              side:
+                                  const BorderSide(color: Colors.transparent)),
+                          onPressed: () => {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const BuildingAssessmentForm(),
+                              ),
+                            ),
+                          },
+                          label: const Text(
+                            'Add Building Assessment',
+                            style: TextStyle(
+                                color: Color.fromRGBO(255, 255, 255, 1)),
+                          ),
+                          icon: const Icon(
+                            Icons.add,
+                            color: Color.fromRGBO(255, 255, 255, 1),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15.0),
+                          child: ElevatedButton.icon(
+                              icon: Icon(
+                                Icons.send_and_archive_outlined,
+                                size: 22,
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary,
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                shape: StadiumBorder(),
+                                primary: Theme.of(context).colorScheme.primary,
+                              ),
+                              onPressed: () => resendAll(),
+                              label: Text("Send All",
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondary))),
+                        )
+                      ],
+                    )
+                  ],
+                ),
                 if (searchResults.isNotEmpty ||
                     textController.text.isNotEmpty) ...[
-                  buildSearchView()
+                  buildView(searchResults),
+                ] else if (alignment == AlignedTo.sent &&
+                    (searchResults.isEmpty || textController.text.isEmpty)) ...[
+                  buildView(sentAssessments),
+                ] else if (alignment == AlignedTo.queue &&
+                    (searchResults.isEmpty || textController.text.isEmpty)) ...[
+                  buildView(unsentAssessments)
                 ] else ...[
-                  buildView(),
-                ],
+                  buildView(buildingAssessments)
+                ]
               ],
             )));
   }
@@ -202,19 +267,19 @@ class _HistoryPageState extends State<HistoryPage> {
               borderRadius: BorderRadius.circular(40),
               color: Theme.of(context).colorScheme.primaryContainer,
             ),
-            margin: const EdgeInsets.only(bottom: 10),
+            margin: const EdgeInsets.only(bottom: 20),
             width: width,
-            height: 55,
+            height: 50,
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Padding(
                       padding: EdgeInsets.only(left: 10),
                       child: Icon(Icons.search)),
-                  Container(
+                  SizedBox(
                       width: width - 85,
                       child: Padding(
-                          padding: EdgeInsets.only(left: 10),
+                          padding: const EdgeInsets.only(left: 10),
                           child: TextField(
                             style: TextStyle(
                                 fontSize: 18,
@@ -229,7 +294,7 @@ class _HistoryPageState extends State<HistoryPage> {
                             onChanged: onSearchTextChanged,
                           ))),
                   IconButton(
-                    icon: Icon(Icons.cancel),
+                    icon: const Icon(Icons.cancel),
                     onPressed: () {
                       textController.clear();
                       onSearchTextChanged('');
@@ -240,31 +305,17 @@ class _HistoryPageState extends State<HistoryPage> {
     );
   }
 
-  Widget buildView() {
+  Widget buildView(List<BuildingAssessment> assessments) {
     return Expanded(
         child: ListView.builder(
             reverse: true,
             physics: const BouncingScrollPhysics(),
-            itemCount: buildingAssessments.length,
+            itemCount: assessments.length,
             itemBuilder: (context, position) {
               return BuildingAssessmentTile(
                   context: context,
-                  entry: buildingAssessments[position],
-                  buildingParts:
-                      _getBuildingParts(buildingAssessments[position]));
-            }));
-  }
-
-  Widget buildSearchView() {
-    return Expanded(
-        child: ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            itemCount: searchResults.length,
-            itemBuilder: (context, position) {
-              return BuildingAssessmentTile(
-                  context: context,
-                  entry: searchResults[position],
-                  buildingParts: _getBuildingParts(searchResults[position]));
+                  entry: assessments[position],
+                  buildingParts: _getBuildingParts(assessments[position]));
             }));
   }
 
@@ -315,5 +366,183 @@ class _HistoryPageState extends State<HistoryPage> {
           )));
     });
     return children;
+  }
+
+  Widget _buildFilterRow() {
+    return AnimationConfiguration.staggeredList(
+      position: 1,
+      duration: const Duration(milliseconds: 200),
+      delay: const Duration(milliseconds: 25),
+      child: FadeInAnimation(
+        child: SlideAnimation(
+          verticalOffset: 35.0,
+          curve: Curves.easeOutCubic,
+          duration: const Duration(milliseconds: 500),
+          child: ScaleAnimation(
+            scale: .9,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 40.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .primaryContainer
+                        .withOpacity(0.25),
+                  ),
+                  child: Stack(
+                    children: [
+                      AnimatedAlign(
+                        duration: const Duration(milliseconds: 400),
+                        curve: Curves.easeOutCubic,
+                        alignment: getCorrectContainerAlignment(),
+                        child: FractionallySizedBox(
+                          widthFactor: .33,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 6.0,
+                              vertical: 5.0,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.0),
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                              child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                alignment = AlignedTo.all;
+                              });
+                            },
+                            child: Container(
+                              // DON'T REMOVE THIS CONTAINER! HIT TARGET IS ONLY TEXT WITHOUT IT
+                              color: Colors.transparent,
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      'All ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.white),
+                                    ),
+                                    Text(
+                                      '(' +
+                                          buildingAssessments.length
+                                              .toString() +
+                                          ")",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.white,
+                                          fontSize: 13.5),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )),
+                          Expanded(
+                              child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                alignment = AlignedTo.sent;
+                              });
+                            },
+                            child: Container(
+                              color: Colors.transparent,
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      'Sent ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.white),
+                                    ),
+                                    Text(
+                                      '(' +
+                                          sentAssessments.length.toString() +
+                                          ')',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.white,
+                                          fontSize: 13.5),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )),
+                          Expanded(
+                              child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                alignment = AlignedTo.queue;
+                              });
+                            },
+                            child: Container(
+                              color: Colors.transparent,
+                              child: Center(
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 18),
+                                      child: Text(
+                                        'Queue ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                    Text(
+                                      '(' +
+                                          (buildingAssessments.length -
+                                                  countSentAssessments)
+                                              .toString() +
+                                          ')',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.white,
+                                          fontSize: 13.5),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Alignment getCorrectContainerAlignment() {
+    switch (alignment) {
+      case AlignedTo.all:
+        return Alignment.centerLeft;
+      case AlignedTo.sent:
+        return Alignment.center;
+      case AlignedTo.queue:
+        return Alignment.centerRight;
+      default:
+        return Alignment.centerRight;
+    }
   }
 }

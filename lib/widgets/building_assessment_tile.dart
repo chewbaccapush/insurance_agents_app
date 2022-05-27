@@ -25,7 +25,8 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
       return const Icon(Icons.check_circle_rounded,
           size: 40, color: Colors.green);
     } else {
-      return const Icon(Icons.error_rounded, size: 40, color: Colors.red);
+      return const Icon(Icons.schedule_rounded,
+          size: 40, color: Color.fromARGB(225, 228, 209, 34));
     }
   }
 
