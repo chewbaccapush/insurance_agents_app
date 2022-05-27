@@ -239,18 +239,20 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text('Saving..')),
                                 ),
-                                setState(() {
-                                  widget.buildingAssessment.buildingParts
-                                      .add(buildingPart);
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          BuildingAssessmentForm(
-                                              buildingAssessment:
-                                                  widget.buildingAssessment),
-                                    ),
-                                  );
-                                })
+                                if (!widget.buildingAssessment.buildingParts
+                                    .contains(buildingPart))
+                                  {
+                                    widget.buildingAssessment.buildingParts
+                                        .add(buildingPart)
+                                  },
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        BuildingAssessmentForm(
+                                            buildingAssessment:
+                                                widget.buildingAssessment),
+                                  ),
+                                )
                               },
                           },
                           child: const Text("Add"),

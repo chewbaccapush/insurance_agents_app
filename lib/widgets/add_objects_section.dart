@@ -61,7 +61,7 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
                       MaterialPageRoute(
                         builder: (context) => MeasurementForm(
                           measurement: e,
-                          buildingPart: widget.buildingPart,
+                          buildingPart: widget.buildingPart!,
                           buildingAssessment: widget.buildingAssessment,
                         ),
                       ),
