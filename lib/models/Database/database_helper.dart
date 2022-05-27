@@ -110,18 +110,20 @@ class DatabaseHelper {
     return assessment.copy(id: assessmentId);
   }
 
-  Future<BuildingPart> persistBuildingPart(BuildingPart buildingPart, String assessmentId) async {
+  Future<BuildingPart> persistBuildingPart(BuildingPart buildingPart, BuildingAssessment assessment) async {
     debugPrint("SQL: saving building part");
 
     final db = await instance.database;
 
     int assessmentIdInteger;
-    if (assessmentId == "null") {
-      BuildingAssessment assessment = new BuildingAssessment();
+
+    if (assessment.id == null) {
+      //BuildingAssessment assessment = new BuildingAssessment();
       assessment.appointmentDate = new DateTime.now();
+      assessment.sent = false;
       buildingPart.fk_buildingAssesmentId = await db.insert(tableBuildingAssesment, assessment.toJson());
     } else {
-      buildingPart.fk_buildingAssesmentId = int.parse(assessmentId);
+      buildingPart.fk_buildingAssesmentId = assessment.id;
     }
 
     // TODO - calculate (not here)
@@ -139,33 +141,55 @@ class DatabaseHelper {
     return buildingPart.copy();
   } 
 
-  Future createBuildingPartMeasurement(
-      int assessmentId, List<BuildingPart> buildingParts) async {
-      final db = await instance.database;
 
-      if (buildingParts.isEmpty) {
-      throw Exception("No Building Parts inserted.");
+  Future<Measurement> persistMeasurement(Measurement measurement, BuildingPart buildingPart, BuildingAssessment assessment) async {
+    final db = await instance.database;
+
+    if (buildingPart.id == null) {
+      BuildingPart tempPart = await persistBuildingPart(buildingPart, assessment);
     }
 
-    // !!! NEED TO ALSO CALCULATE CUBATURE, SUM INSURED AND VALUE !!!
-    for (int i = 0; i < buildingParts.length; i++) {
-      buildingParts[i].fk_buildingAssesmentId = assessmentId;
-      buildingParts[i].cubature = 0.0;
-      buildingParts[i].value = 0.0;
-      buildingParts[i].sumInsured = 0.0;
+    return measurement;
+
 
       final buildingPartId =
           await db.insert(tableBuildingPart, buildingParts[i].toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
 
-      for (int j = 0; j < buildingParts[i].measurements.length; j++) {
-        buildingParts[i].measurements[j].fk_buildingPartId = buildingPartId;
-        await db.insert(
-            tableMeasurement, buildingParts[i].measurements[j].toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
-      }
-    }
+    // final measurementId = await db.insert(
+    //   tableMeasurement,
+    //   measurement.toJson()
+    // );
 
-    return "Successfully inserted Building Assessment.";
+    return measurement.copy();
   }
+
+  // Future createBuildingPartMeasurement(
+  //     int assessmentId, List<BuildingPart> buildingParts) async {
+  //     final db = await instance.database;
+
+  //     if (buildingParts.isEmpty) {
+  //     throw Exception("No Building Parts inserted.");
+  //   }
+
+  //   // !!! NEED TO ALSO CALCULATE CUBATURE, SUM INSURED AND VALUE !!!
+  //   for (int i = 0; i < buildingParts.length; i++) {
+  //     buildingParts[i].fk_buildingAssesmentId = assessmentId;
+  //     buildingParts[i].cubature = 0.0;
+  //     buildingParts[i].value = 0.0;
+  //     buildingParts[i].sumInsured = 0.0;
+
+  //     final buildingPartId =
+  //         await db.insert(tableBuildingPart, buildingParts[i].toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
+
+  //     for (int j = 0; j < buildingParts[i].measurements.length; j++) {
+  //       buildingParts[i].measurements[j].fk_buildingPartId = buildingPartId;
+  //       await db.insert(
+  //           tableMeasurement, buildingParts[i].measurements[j].toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
+  //     }
+  //   }
+
+  //   return "Successfully inserted Building Assessment.";
+  // }
 
   Future<BuildingAssessment> readAssessment(int id) async {
     final db = await instance.database;

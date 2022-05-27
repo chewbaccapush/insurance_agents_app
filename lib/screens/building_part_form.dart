@@ -46,7 +46,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
 
   Future<BuildingPart> saveBuildingPart() async {
     // BuildingAssessment tempAssessment = await DatabaseHelper.instance.persistAssessmentFromPart(widget.buildingAssessment);
-    return await DatabaseHelper.instance.persistBuildingPart(buildingPart, widget.buildingAssessment.id.toString());
+    return await DatabaseHelper.instance.persistBuildingPart(buildingPart, widget.buildingAssessment);
   }
 
   @override

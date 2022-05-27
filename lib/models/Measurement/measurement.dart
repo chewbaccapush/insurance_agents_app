@@ -61,7 +61,7 @@ class Measurement {
   }
 
   static Measurement fromJson(Map<String, Object?> json) => Measurement(
-        measurementId: json[MeasurementFields.id] as int?,
+        measurementId: int.tryParse([MeasurementFields.id].toString()),
         description: json[MeasurementFields.description] as String,
         length: double.tryParse(json[MeasurementFields.length].toString()),
         height: double.tryParse(json[MeasurementFields.height].toString()),

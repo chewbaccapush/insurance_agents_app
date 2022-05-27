@@ -83,16 +83,18 @@ class BuildingAssessment {
   }
 
   static BuildingAssessment fromJson(Map<String, Object?> json) {
-    bool sentBoolean = json[BuildingAssessmentFields.sent].toString() == "1" ? true : false;
+    print("Bool");
+    print(int.tryParse(json[BuildingAssessmentFields.sent].toString()));
+    bool sentBoolean = int.tryParse(json[BuildingAssessmentFields.sent].toString()) == 1 ? true : false;
     return BuildingAssessment(
-      id: json[BuildingAssessmentFields.id] as int?,
+      id: int.tryParse(json[BuildingAssessmentFields.id].toString()),
       appointmentDate: DateTime.parse(
           json[BuildingAssessmentFields.appointmentDate] as String),
-      description: json[BuildingAssessmentFields.description] as String,
+      description: json[BuildingAssessmentFields.description] as String?,
       assessmentCause:
-          json[BuildingAssessmentFields.assessmentCause] as String,
+          json[BuildingAssessmentFields.assessmentCause] as String?,
       numOfAppartments:
-          json[BuildingAssessmentFields.numOfAppartments] as int?,
+          int.tryParse(json[BuildingAssessmentFields.numOfAppartments].toString()),
       voluntaryDeduction: double.tryParse(
           json[BuildingAssessmentFields.voluntaryDeduction].toString()),
       assessmentFee: double.tryParse(

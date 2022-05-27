@@ -122,9 +122,9 @@ class BuildingPart {
 
   static BuildingPart fromJson(Map<String, dynamic> json) {
     return BuildingPart(
-      id: json[BuildingPartFields.id] as int?,
+      id: int.tryParse(json[BuildingPartFields.id].toString()),
       description: json[BuildingPartFields.description] as String?,
-      buildingYear: json[BuildingPartFields.buildingYear] as int?,
+      buildingYear: int.tryParse(json[BuildingPartFields.buildingYear].toString()),
       fireProtection: EnumToString.fromString(FireProtection.values, json[BuildingPartFields.fireProtection]) as FireProtection?,
       constructionClass: EnumToString.fromString(ConstructionClass.values,
           json[BuildingPartFields.constructionClass]) as ConstructionClass?,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:msg/models/BuildingAssessment/building_assessment.dart';
+import 'package:msg/models/Database/database_helper.dart';
 import 'package:msg/models/Measurement/measurement.dart';
 import 'package:msg/screens/building_part_form.dart';
 import 'package:msg/screens/history.dart';
@@ -28,11 +29,17 @@ class MeasurementForm extends StatefulWidget {
 class _MeasurementFormState extends State<MeasurementForm> {
   final _formKey = GlobalKey<FormState>();
   Measurement measurement = Measurement();
+  BuildingPart buildingPart = BuildingPart();
 
   @override
   void initState() {
+    buildingPart = widget.buildingPart ?? BuildingPart();
     measurement = widget.measurement ?? Measurement();
     super.initState();
+  }
+
+  Future<Measurement> saveMeasurement() async {
+    return await DatabaseHelper.instance.persistMeasurement(measurement, widget.buildingPart!, widget.buildingAssessment);
   }
 
   @override
@@ -143,12 +150,15 @@ class _MeasurementFormState extends State<MeasurementForm> {
                                     content: Text('Saving..'),
                                   ),
                                 ),
+                              await saveMeasurement()
+                                  .then((value) => widget.buildingPart?.id = value.fk_buildingPartId);
                                 if (!widget.buildingPart.measurements
                                     .contains(measurement))
                                   {
                                     widget.buildingPart.measurements
                                         .add(measurement)
                                   },
+
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => BuildingPartForm(

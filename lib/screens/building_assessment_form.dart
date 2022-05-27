@@ -74,6 +74,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
     debugPrint("SQL: saving...");
     print("SQL:");
     print(buildingAssessment);
+    buildingAssessment.sent = false;
     BuildingAssessment assessment = await DatabaseHelper.instance.persistAssessment(buildingAssessment);
   }
 
