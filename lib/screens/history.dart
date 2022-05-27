@@ -148,38 +148,33 @@ class _HistoryPageState extends State<HistoryPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Padding(
-                                padding: EdgeInsets.only(right: 40),
-                                child: ElevatedButton.icon(
-                                    icon: Icon(
-                                      Icons.send_and_archive_outlined,
-                                      size: 22,
+                              padding: EdgeInsets.only(right: 40),
+                              child: ElevatedButton.icon(
+                                icon: Icon(
+                                  Icons.send_and_archive_outlined,
+                                  size: 22,
+                                  color:
+                                      Theme.of(context).colorScheme.onSecondary,
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  shape: StadiumBorder(),
+                                  primary:
+                                      Theme.of(context).colorScheme.primary,
+                                ),
+                                onPressed: () => resendAll(),
+                                label: Text(
+                                  "Resend",
+                                  style: TextStyle(
+                                      fontSize: 15,
                                       color: Theme.of(context)
                                           .colorScheme
-                                          .onSecondary,
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      shape: StadiumBorder(),
-                                      primary:
-                                          Theme.of(context).colorScheme.primary,
-                                    ),
-                                    onPressed: () => resendAll(),
-                                    label: Text("Resend",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSecondary)))),
-                            const Padding(
-                              padding: const EdgeInsets.only(right: 20),
-                              child: const RoutingButton(
-                                destination: BuildingAssessmentForm(),
-                                icon: const Icon(Icons.send_rounded),
-                                tooltip: 'Send',
+                                          .onSecondary),
+                                ),
                               ),
                             ),
                             const RoutingButton(
                               destination: SettingsPage(),
-                              icon: const Icon(Icons.settings),
+                              icon: Icon(Icons.settings),
                               tooltip: 'Settings',
                             )
                           ])

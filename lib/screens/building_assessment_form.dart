@@ -96,10 +96,6 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                   ),
                 ],
               ),
-              firstIcon: Icon(Icons.history),
-              secondIcon: Icon(Icons.settings),
-              firstDestination: HistoryPage(),
-              secondDestination: SettingsPage(),
             ),
             const Padding(padding: EdgeInsets.only(bottom: 20)),
             Form(

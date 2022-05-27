@@ -64,10 +64,6 @@ class _MeasurementFormState extends State<MeasurementForm> {
                   ),
                 ],
               ),
-              firstIcon: const Icon(Icons.history),
-              secondIcon: const Icon(Icons.settings),
-              firstDestination: const HistoryPage(),
-              secondDestination: const SettingsPage(),
             ),
             const Padding(padding: EdgeInsets.only(bottom: 20)),
             Form(

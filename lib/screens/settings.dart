@@ -27,12 +27,25 @@ class _SettingsPageState extends State<SettingsPage> {
         padding: const EdgeInsets.all(50.0),
         child: Column(
           children: [
-            const CustomNavbar(
-              leading: Text("Settings"),
-              firstIcon: Icon(Icons.send),
-              secondIcon: Icon(Icons.history),
-              firstDestination: BuildingAssessmentForm(),
-              secondDestination: HistoryPage(),
+            CustomNavbar(
+              leading: Row(
+                children: [
+                  IconButton(
+                    onPressed: () => {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: ((context) => const HistoryPage()),
+                        ),
+                      )
+                    },
+                    icon: const Icon(Icons.arrow_back),
+                  ),
+                  const Text(
+                    "Settings",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
             ),
             const Padding(padding: EdgeInsets.only(bottom: 20)),
             Row(
