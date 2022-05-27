@@ -41,6 +41,7 @@ class Measurement {
 
   Map<String, dynamic> toJson() {
     return {
+      MeasurementFields.id: measurementId,
       MeasurementFields.description: description,
       MeasurementFields.length: length,
       MeasurementFields.height: height,

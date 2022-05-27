@@ -55,6 +55,17 @@ class _MeasurementFormState extends State<MeasurementForm> {
                 children: [
                   IconButton(
                     onPressed: () => {
+                      if (!widget.buildingPart!.measurements.contains(measurement))  {
+                        if (measurement.description == null) {
+                            measurement.description = "DRAFT",
+                        },
+                        saveMeasurement().then((value) {
+                          measurement.measurementId = value.measurementId;
+                          widget.buildingPart?.id = value.fk_buildingPartId;
+                          widget.buildingAssessment.id = widget.buildingPart?.fk_buildingAssesmentId;
+                        }),
+                        buildingPart.measurements.add(measurement),
+                      },
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: ((context) => BuildingPartForm(
@@ -150,8 +161,11 @@ class _MeasurementFormState extends State<MeasurementForm> {
                                     content: Text('Saving..'),
                                   ),
                                 ),
-                              await saveMeasurement()
-                                  .then((value) => widget.buildingPart?.id = value.fk_buildingPartId);
+                              await saveMeasurement().then((value) {
+                              widget.buildingPart?.id = value.fk_buildingPartId;
+                              widget.buildingAssessment.id = widget.buildingPart?.fk_buildingAssesmentId;
+                              measurement.measurementId = value.measurementId;
+                              }),
                                 if (!widget.buildingPart.measurements
                                     .contains(measurement))
                                   {
@@ -169,7 +183,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
                                 ),
                               },
                           },
-                          child: const Text("Add"),
+                          child: const Text("Save"),
                         ),
                       ],
                     ),

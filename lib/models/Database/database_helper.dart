@@ -18,6 +18,7 @@ class DatabaseHelper {
     if (_database != null) return _database!;
 
     _database = await _initDB('msgDatabase.db');
+    _database!.execute("PRAGMA foreign_keys = ON");
     return _database!;
   }
 
@@ -65,20 +66,20 @@ class DatabaseHelper {
           ${BuildingPartFields.cubature} $numericNullable,
           ${BuildingPartFields.value} $numericNullable,
           ${BuildingPartFields.sumInsured} $numericNullable,
-          FOREIGN KEY(${BuildingPartFields.buildingAssesment}) REFERENCES $tableBuildingAssesment(${BuildingAssessmentFields.id})
+          FOREIGN KEY(${BuildingPartFields.buildingAssesment}) REFERENCES $tableBuildingAssesment(${BuildingAssessmentFields.id}) ON DELETE CASCADE
           
       )''');
 
     await db.execute('''
       CREATE TABLE $tableMeasurement(
-          ${MeasurementFields.id} $idType,
+          ${MeasurementFields.id} $idType UNIQUE,
           ${MeasurementFields.buildingPart} $intagerNullable,
           ${MeasurementFields.description} $stringNullable,
           ${MeasurementFields.length} $numericNullable,
           ${MeasurementFields.height} $numericNullable,
           ${MeasurementFields.width} $numericNullable,
           ${MeasurementFields.radius} $numericNullable,
-          FOREIGN KEY(${MeasurementFields.buildingPart}) REFERENCES $tableBuildingPart(${BuildingPartFields.id})
+          FOREIGN KEY(${MeasurementFields.buildingPart}) REFERENCES $tableBuildingPart(${BuildingPartFields.id}) ON DELETE CASCADE
       )''');
   }
 
@@ -97,28 +98,15 @@ class DatabaseHelper {
 
     return assessment.copy(id: assessmentId);
   }
-
-  Future<BuildingAssessment> persistAssessmentFromPart(BuildingAssessment assessment) async {
-    final db = await instance.database;
-
-    final assessmentId = await db.insert(
-      tableBuildingAssesment, 
-      assessment.toJson(), 
-      conflictAlgorithm: ConflictAlgorithm.replace
-    );
-
-    return assessment.copy(id: assessmentId);
-  }
+  
 
   Future<BuildingPart> persistBuildingPart(BuildingPart buildingPart, BuildingAssessment assessment) async {
     debugPrint("SQL: saving building part");
-
     final db = await instance.database;
 
     int assessmentIdInteger;
 
     if (assessment.id == null) {
-      //BuildingAssessment assessment = new BuildingAssessment();
       assessment.appointmentDate = new DateTime.now();
       assessment.sent = false;
       buildingPart.fk_buildingAssesmentId = await db.insert(tableBuildingAssesment, assessment.toJson());
@@ -137,7 +125,9 @@ class DatabaseHelper {
       buildingPart.toJson(), 
       conflictAlgorithm: ConflictAlgorithm.replace
     );
-    
+
+    buildingPart.id = buildingPartId;
+
     return buildingPart.copy();
   } 
 
@@ -146,21 +136,36 @@ class DatabaseHelper {
     final db = await instance.database;
 
     if (buildingPart.id == null) {
+      buildingPart.description = "DRAFT";
       BuildingPart tempPart = await persistBuildingPart(buildingPart, assessment);
+      measurement.fk_buildingPartId = tempPart.id;
+    } else {
+      measurement.fk_buildingPartId = buildingPart.id;
     }
 
+    final measurementId = await db.insert(
+      tableMeasurement,
+      measurement.toJson(),
+      conflictAlgorithm: ConflictAlgorithm.replace
+    );
+
+    print("PRE SEND:");
+    measurement.measurementId = measurementId;
+    print(measurement.toJson());
+
     return measurement;
+  }
 
+  Future<int> deleteBuildingPart(int id) async {
+    final db = await instance.database;
 
-      final buildingPartId =
-          await db.insert(tableBuildingPart, buildingParts[i].toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
+    return await db.delete(tableBuildingPart, where: 'buildingPartId = ?', whereArgs: [id]);
+  }
 
-    // final measurementId = await db.insert(
-    //   tableMeasurement,
-    //   measurement.toJson()
-    // );
+  Future<int> deleteMeasurement(int id) async {
+    final db = await instance.database;
 
-    return measurement.copy();
+    return await db.delete(tableMeasurement, where: 'measurementId = ?', whereArgs: [id]);
   }
 
   // Future createBuildingPartMeasurement(

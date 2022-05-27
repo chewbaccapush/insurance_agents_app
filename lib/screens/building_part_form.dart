@@ -31,7 +31,7 @@ class BuildingPartForm extends StatefulWidget {
 class _BuildingPartFormState extends State<BuildingPartForm> {
   final _formKey = GlobalKey<FormState>();
   BuildingPart buildingPart = BuildingPart();
-
+  bool dirtyFlag = false;
   @override
   void initState() {
     buildingPart = widget.buildingPart ??
@@ -95,7 +95,17 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
               leading: Row(
                 children: [
                   IconButton(
-                    onPressed: () => {
+                    onPressed: () async => {
+                        if (!widget.buildingAssessment.buildingParts.contains(buildingPart)) {
+                          if (buildingPart.description == null) {
+                            buildingPart.description = "DRAFT",
+                          },
+                          await saveBuildingPart().then((value) {
+                            buildingPart.id = value.id;
+                            widget.buildingAssessment.id = value.fk_buildingAssesmentId;
+                          }),
+                          widget.buildingAssessment.buildingParts.add(buildingPart),
+                      },
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: ((context) => BuildingAssessmentForm(
@@ -240,8 +250,8 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text('Saving..')),
                                 ),
-    await saveBuildingPart()
-        .then((value) => widget.buildingAssessment.id = value.fk_buildingAssesmentId),
+                                await saveBuildingPart()
+                                    .then((value) => widget.buildingAssessment.id = value.fk_buildingAssesmentId),
                                 if (!widget.buildingAssessment.buildingParts
                                     .contains(buildingPart))
                                   {
@@ -252,13 +262,15 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         BuildingAssessmentForm(
-                                            buildingAssessment:
-                                                widget.buildingAssessment),
-                                  ),
-                                )
+                                          buildingAssessment:
+                                          widget.buildingAssessment
+                                        ),
+                                    ),
+                                  );
+                                })
                               },
                           },
-                          child: const Text("Add"),
+                          child: const Text("Save"),
                         ),
                         //Cubature
                         //Value
