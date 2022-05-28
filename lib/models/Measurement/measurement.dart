@@ -41,6 +41,7 @@ class Measurement {
 
   Map<String, dynamic> toJson() {
     return {
+      MeasurementFields.id: measurementId,
       MeasurementFields.description: description,
       MeasurementFields.length: length,
       MeasurementFields.height: height,
@@ -61,12 +62,12 @@ class Measurement {
   }
 
   static Measurement fromJson(Map<String, Object?> json) => Measurement(
-        measurementId: json[MeasurementFields.id] as int?,
+        measurementId: int.tryParse([MeasurementFields.id].toString()),
         description: json[MeasurementFields.description] as String,
-        length: double.parse(json[MeasurementFields.length].toString()),
-        height: double.parse(json[MeasurementFields.height].toString()),
-        width: double.parse(json[MeasurementFields.width].toString()),
-        radius: double.parse(json[MeasurementFields.radius].toString()),
+        length: double.tryParse(json[MeasurementFields.length].toString()),
+        height: double.tryParse(json[MeasurementFields.height].toString()),
+        width: double.tryParse(json[MeasurementFields.width].toString()),
+        radius: double.tryParse(json[MeasurementFields.radius].toString()),
       );
 
   Measurement copy({

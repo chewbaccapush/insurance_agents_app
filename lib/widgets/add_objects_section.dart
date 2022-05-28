@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:msg/models/BuildingAssessment/building_assessment.dart';
 import 'package:msg/models/BuildingPart/building_part.dart';
+import 'package:msg/models/Database/database_helper.dart';
 import 'package:msg/screens/measurement_form.dart';
 import 'package:msg/screens/building_part_form.dart';
 
@@ -34,7 +35,11 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
             .map((e) => ListTile(
                   title: Text(e.description!),
                   trailing: IconButton(
-                    onPressed: () => {},
+                    onPressed: () => {
+                      print("PART:"),
+                      print(e.toJson()),
+                      DatabaseHelper.instance.deleteBuildingPart(e.id!)
+                    },
                     icon: const Icon(Icons.delete),
                   ),
                   onTap: () => {
@@ -53,7 +58,11 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
             .map((e) => ListTile(
                   title: Text(e.description!),
                   trailing: IconButton(
-                    onPressed: () => {},
+                    onPressed: () => {
+                      // TODO: make working
+                      DatabaseHelper.instance
+                          .deleteMeasurement(e.measurementId!)
+                    },
                     icon: const Icon(Icons.delete),
                   ),
                   onTap: () => {

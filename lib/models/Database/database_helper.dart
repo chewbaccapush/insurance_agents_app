@@ -18,6 +18,7 @@ class DatabaseHelper {
     if (_database != null) return _database!;
 
     _database = await _initDB('msgDatabase.db');
+    _database!.execute("PRAGMA foreign_keys = ON");
     return _database!;
   }
 
@@ -33,6 +34,7 @@ class DatabaseHelper {
     const intagerType = 'INTAGER NOT NULL';
     const intagerNullable = 'INTAGER';
     const stringType = 'TEXT NOT NULL';
+    const stringNullable = 'TEXT';
     const numericType = 'NUMERIC NOT NULL';
     const numericNullable = "NUMERIC";
     const boolType = "BOOLEAN";
@@ -40,12 +42,12 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE $tableBuildingAssesment(
           ${BuildingAssessmentFields.id} $idType,
-          ${BuildingAssessmentFields.appointmentDate} $stringType,
-          ${BuildingAssessmentFields.description} $stringType,
-          ${BuildingAssessmentFields.assessmentCause} $stringType,
+          ${BuildingAssessmentFields.appointmentDate} $stringNullable,
+          ${BuildingAssessmentFields.description} $stringNullable,
+          ${BuildingAssessmentFields.assessmentCause} $stringNullable,
           ${BuildingAssessmentFields.numOfAppartments} $intagerNullable,
-          ${BuildingAssessmentFields.voluntaryDeduction} $numericType,
-          ${BuildingAssessmentFields.assessmentFee} $numericType,
+          ${BuildingAssessmentFields.voluntaryDeduction} $numericNullable,
+          ${BuildingAssessmentFields.assessmentFee} $numericNullable,
           ${BuildingAssessmentFields.sent} $boolType   
       )''');
 
@@ -53,75 +55,146 @@ class DatabaseHelper {
       CREATE TABLE $tableBuildingPart (
           ${BuildingPartFields.id} $idType,
           ${BuildingPartFields.buildingAssesment} $intagerNullable,
-          ${BuildingPartFields.description} $stringType,
-          ${BuildingPartFields.buildingYear} $intagerType,
-          ${BuildingPartFields.fireProtection} $stringType,
-          ${BuildingPartFields.constructionClass} $stringType,
-          ${BuildingPartFields.riskClass} $stringType,
-          ${BuildingPartFields.unitPrice} $numericType,
-          ${BuildingPartFields.insuredType} $stringType,
+          ${BuildingPartFields.description} $stringNullable,
+          ${BuildingPartFields.buildingYear} $intagerNullable,
+          ${BuildingPartFields.fireProtection} $stringNullable,
+          ${BuildingPartFields.constructionClass} $stringNullable,
+          ${BuildingPartFields.riskClass} $stringNullable,
+          ${BuildingPartFields.unitPrice} $numericNullable,
+          ${BuildingPartFields.insuredType} $stringNullable,
           ${BuildingPartFields.devaluationPercentage} $numericNullable,
-          ${BuildingPartFields.cubature} $numericType,
-          ${BuildingPartFields.value} $numericType,
-          ${BuildingPartFields.sumInsured} $numericType,
-          FOREIGN KEY(${BuildingPartFields.buildingAssesment}) REFERENCES $tableBuildingAssesment(${BuildingAssessmentFields.id})
+          ${BuildingPartFields.cubature} $numericNullable,
+          ${BuildingPartFields.value} $numericNullable,
+          ${BuildingPartFields.sumInsured} $numericNullable,
+          FOREIGN KEY(${BuildingPartFields.buildingAssesment}) REFERENCES $tableBuildingAssesment(${BuildingAssessmentFields.id}) ON DELETE CASCADE
           
       )''');
 
     await db.execute('''
       CREATE TABLE $tableMeasurement(
-          ${MeasurementFields.id} $idType,
+          ${MeasurementFields.id} $idType UNIQUE,
           ${MeasurementFields.buildingPart} $intagerNullable,
-          ${MeasurementFields.description} $stringType,
+          ${MeasurementFields.description} $stringNullable,
           ${MeasurementFields.length} $numericNullable,
           ${MeasurementFields.height} $numericNullable,
           ${MeasurementFields.width} $numericNullable,
           ${MeasurementFields.radius} $numericNullable,
-          FOREIGN KEY(${MeasurementFields.buildingPart}) REFERENCES $tableBuildingPart(${BuildingPartFields.id})
+          FOREIGN KEY(${MeasurementFields.buildingPart}) REFERENCES $tableBuildingPart(${BuildingPartFields.id}) ON DELETE CASCADE
       )''');
   }
 
-  Future<BuildingAssessment> createAssessment(
-      BuildingAssessment assessment, List<BuildingPart> buildingParts) async {
+  Future<BuildingAssessment> persistAssessment(BuildingAssessment assessment) async {
     final db = await instance.database;
 
-    final assessmentId =
-        await db.insert(tableBuildingAssesment, assessment.toJson());
-    final response =
-        await createBuildingPartMeasurement(assessmentId, buildingParts);
+    print("CLOG:");
+    print(assessment.buildingParts.length);
+    final assessmentId = await db.insert(
+      tableBuildingAssesment, 
+      assessment.toJson(), 
+      conflictAlgorithm: ConflictAlgorithm.replace
+    );
 
-    debugPrint(response);
+    // final response = await createBuildingPartMeasurement(assessmentId, buildingParts);
 
     return assessment.copy(id: assessmentId);
   }
+  
 
-  Future createBuildingPartMeasurement(
-      int assessmentId, List<BuildingPart> buildingParts) async {
+  Future<BuildingPart> persistBuildingPart(BuildingPart buildingPart, BuildingAssessment assessment) async {
+    debugPrint("SQL: saving building part");
     final db = await instance.database;
 
-    if (buildingParts.isEmpty) {
-      throw Exception("No Building Parts inserted.");
+    int assessmentIdInteger;
+
+    if (assessment.id == null) {
+      assessment.appointmentDate = new DateTime.now();
+      assessment.sent = false;
+      buildingPart.fk_buildingAssesmentId = await db.insert(tableBuildingAssesment, assessment.toJson());
+    } else {
+      buildingPart.fk_buildingAssesmentId = assessment.id;
     }
 
-    // !!! NEED TO ALSO CALCULATE CUBATURE, SUM INSURED AND VALUE !!!
-    for (int i = 0; i < buildingParts.length; i++) {
-      buildingParts[i].fk_buildingAssesmentId = assessmentId;
-      buildingParts[i].cubature = 0.0;
-      buildingParts[i].value = 0.0;
-      buildingParts[i].sumInsured = 0.0;
+    // TODO - calculate (not here)
+    buildingPart.cubature = 0;
+    buildingPart.value = 0;
+    buildingPart.sumInsured = 0;
 
-      final buildingPartId =
-          await db.insert(tableBuildingPart, buildingParts[i].toJson());
+    //print(buildingPart.toJson());
+    final buildingPartId = await db.insert(
+      tableBuildingPart,
+      buildingPart.toJson(), 
+      conflictAlgorithm: ConflictAlgorithm.replace
+    );
 
-      for (int j = 0; j < buildingParts[i].measurements.length; j++) {
-        buildingParts[i].measurements[j].fk_buildingPartId = buildingPartId;
-        await db.insert(
-            tableMeasurement, buildingParts[i].measurements[j].toJson());
-      }
+    buildingPart.id = buildingPartId;
+
+    return buildingPart.copy();
+  } 
+
+
+  Future<Measurement> persistMeasurement(Measurement measurement, BuildingPart buildingPart, BuildingAssessment assessment) async {
+    final db = await instance.database;
+
+    if (buildingPart.id == null) {
+      buildingPart.description = "DRAFT";
+      BuildingPart tempPart = await persistBuildingPart(buildingPart, assessment);
+      measurement.fk_buildingPartId = tempPart.id;
+    } else {
+      measurement.fk_buildingPartId = buildingPart.id;
     }
 
-    return "Successfully inserted Building Assessment.";
+    final measurementId = await db.insert(
+      tableMeasurement,
+      measurement.toJson(),
+      conflictAlgorithm: ConflictAlgorithm.replace
+    );
+
+    print("PRE SEND:");
+    measurement.measurementId = measurementId;
+    print(measurement.toJson());
+
+    return measurement;
   }
+
+  Future<int> deleteBuildingPart(int id) async {
+    final db = await instance.database;
+
+    return await db.delete(tableBuildingPart, where: 'buildingPartId = ?', whereArgs: [id]);
+  }
+
+  Future<int> deleteMeasurement(int id) async {
+    final db = await instance.database;
+
+    return await db.delete(tableMeasurement, where: 'measurementId = ?', whereArgs: [id]);
+  }
+
+  // Future createBuildingPartMeasurement(
+  //     int assessmentId, List<BuildingPart> buildingParts) async {
+  //     final db = await instance.database;
+
+  //     if (buildingParts.isEmpty) {
+  //     throw Exception("No Building Parts inserted.");
+  //   }
+
+  //   // !!! NEED TO ALSO CALCULATE CUBATURE, SUM INSURED AND VALUE !!!
+  //   for (int i = 0; i < buildingParts.length; i++) {
+  //     buildingParts[i].fk_buildingAssesmentId = assessmentId;
+  //     buildingParts[i].cubature = 0.0;
+  //     buildingParts[i].value = 0.0;
+  //     buildingParts[i].sumInsured = 0.0;
+
+  //     final buildingPartId =
+  //         await db.insert(tableBuildingPart, buildingParts[i].toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
+
+  //     for (int j = 0; j < buildingParts[i].measurements.length; j++) {
+  //       buildingParts[i].measurements[j].fk_buildingPartId = buildingPartId;
+  //       await db.insert(
+  //           tableMeasurement, buildingParts[i].measurements[j].toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
+  //     }
+  //   }
+
+  //   return "Successfully inserted Building Assessment.";
+  // }
 
   Future<BuildingAssessment> readAssessment(int id) async {
     final db = await instance.database;

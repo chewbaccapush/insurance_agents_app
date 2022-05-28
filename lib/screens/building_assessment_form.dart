@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:msg/models/BuildingAssessment/building_assessment.dart';
 import 'package:msg/screens/building_part_form.dart';
 import 'package:msg/screens/history.dart';
-import 'package:msg/screens/settings.dart';
 import 'package:msg/validators/validators.dart';
 import 'package:msg/widgets/add_objects_section.dart';
 import 'package:msg/widgets/custom_dialog.dart';
 import 'package:msg/widgets/custom_navbar.dart';
 import 'package:msg/widgets/custom_text_form_field.dart';
 import 'package:msg/widgets/date_form_field.dart';
-import 'package:sqflite/sqflite.dart';
 
 import '../models/Database/database_helper.dart';
 import '../services/sqs_sender.dart';
@@ -70,12 +68,13 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
   }
 
   // // Locally save order to users device
-  void localSave() async {
+  Future<void> localSave() async {
     debugPrint("SQL: saving...");
     print("SQL:");
     print(buildingAssessment);
-    BuildingAssessment assessment = await DatabaseHelper.instance
-        .createAssessment(buildingAssessment, buildingAssessment.buildingParts);
+    buildingAssessment.sent = false;
+    BuildingAssessment assessment =
+        await DatabaseHelper.instance.persistAssessment(buildingAssessment);
   }
 
   @override
@@ -193,67 +192,65 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                           validator: (value) =>
                               Validators.floatValidator(value!),
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).colorScheme.primary,
-                              textStyle: TextStyle(fontSize: 15)),
-                          onPressed: () {
-                            // DatabaseHelper.instance.deleteDatabase(
-                            //     "/data/user/0/com.example.msg/databases/msgDatabase.db");
-                            // Validates form
-                            if (_formKey.currentState!.validate()) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    content: Text(
-                                  'Sending..',
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimary),
-                                )),
-                              );
-                              _formKey.currentState!.save();
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary:
+                                      Theme.of(context).colorScheme.primary,
+                                  textStyle: TextStyle(fontSize: 15)),
+                              onPressed: () {
+                                // Validates form
+                                if (_formKey.currentState!.validate()) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Saving..')),
+                                  );
+                                  _formKey.currentState!.save();
+                                  localSave()
+                                      .then((val) {
+                                        print("sending.......");
+                                        showDialogPopup("", "Draft saved");
+                                      })
+                                      .onError((error, stackTrace) => null)
+                                      .then((value) =>
+                                          ScaffoldMessenger.of(context)
+                                              .hideCurrentSnackBar());
+                                }
+                              },
+                              child: const Text("Save Draft"),
+                            ),
+                            Padding(padding: EdgeInsets.only(right: 10)),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary:
+                                      Theme.of(context).colorScheme.primary,
+                                  textStyle: TextStyle(fontSize: 15)),
+                              onPressed: () {
+                                //DatabaseHelper.instance.deleteDatabase("/data/user/0/com.example.msg/databases/msgDatabase.db");
+                                // Validates form
+                                if (_formKey.currentState!.validate()) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Sending..')),
+                                  );
+                                  _formKey.currentState!.save();
 
-                              debugPrint(
-                                  buildingAssessment.toMessage().toString());
-
-                              // Starts sending message process
-                              sendMessage(
-                                  buildingAssessment.toMessage().toString());
-                            }
-                          },
-                          child: Text(
-                            "Send",
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.onPrimary),
-                          ),
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).colorScheme.primary,
-                              textStyle: const TextStyle(
-                                  fontSize: 15, color: Colors.white)),
-                          onPressed: () {
-                            DatabaseHelper.instance.deleteDatabase(
-                                "/data/user/0/com.example.msg/databases/msgDatabase.db");
-                            // Validates form
-                            /*
-                            if (_formKey.currentState!.validate()) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Sending..')),
-                              );
-                              _formKey.currentState!.save();
-
-                              debugPrint(
-                                  buildingAssessment.toMessage().toString());
-
-                              // Starts sending message process
-                              sendMessage(
-                                  buildingAssessment.toMessage().toString());
-                                  */
-                          },
-                          child: const Text("Delete Database"),
-                        ),
+                                  // Starts sending message process
+                                  sendMessage(buildingAssessment
+                                      .toMessage()
+                                      .toString());
+                                }
+                              },
+                              child: const Text("Finalize"),
+                            ),
+                            Padding(padding: EdgeInsets.only(left: 10)),
+                            ElevatedButton(
+                                onPressed: () => DatabaseHelper.instance
+                                    .deleteDatabase(
+                                        "/data/user/0/com.example.msg/databases/msgDatabase.db"),
+                                child: const Text("Pobrisi bazo"))
+                          ],
+                        )
                       ],
                     ),
                   ),

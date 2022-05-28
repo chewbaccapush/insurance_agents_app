@@ -5,6 +5,7 @@ import 'package:msg/models/BuildingPart/fire_protection.dart';
 import 'package:msg/models/BuildingPart/construction_class.dart';
 import 'package:msg/models/BuildingPart/insured_type.dart';
 import 'package:msg/models/BuildingPart/risk_class.dart';
+import 'package:msg/models/Database/database_helper.dart';
 import 'package:msg/screens/building_assessment_form.dart';
 import 'package:msg/screens/history.dart';
 import 'package:msg/screens/measurement_form.dart';
@@ -30,7 +31,7 @@ class BuildingPartForm extends StatefulWidget {
 class _BuildingPartFormState extends State<BuildingPartForm> {
   final _formKey = GlobalKey<FormState>();
   BuildingPart buildingPart = BuildingPart();
-
+  bool dirtyFlag = false;
   @override
   void initState() {
     buildingPart = widget.buildingPart ??
@@ -41,6 +42,12 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
           insuredType: InsuredType.newValue,
         );
     super.initState();
+  }
+
+  Future<BuildingPart> saveBuildingPart() async {
+    // BuildingAssessment tempAssessment = await DatabaseHelper.instance.persistAssessmentFromPart(widget.buildingAssessment);
+    return await DatabaseHelper.instance
+        .persistBuildingPart(buildingPart, widget.buildingAssessment);
   }
 
   @override
@@ -89,7 +96,22 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
               leading: Row(
                 children: [
                   IconButton(
-                    onPressed: () => {
+                    onPressed: () async => {
+                      if (!widget.buildingAssessment.buildingParts
+                          .contains(buildingPart))
+                        {
+                          if (buildingPart.description == null)
+                            {
+                              buildingPart.description = "DRAFT",
+                            },
+                          await saveBuildingPart().then((value) {
+                            buildingPart.id = value.id;
+                            widget.buildingAssessment.id =
+                                value.fk_buildingAssesmentId;
+                          }),
+                          widget.buildingAssessment.buildingParts
+                              .add(buildingPart),
+                        },
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: ((context) => BuildingAssessmentForm(
@@ -229,12 +251,15 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                           style: ElevatedButton.styleFrom(
                               primary: Color.fromARGB(148, 135, 18, 57),
                               textStyle: TextStyle(fontSize: 15)),
-                          onPressed: () => {
+                          onPressed: () async => {
                             if (_formKey.currentState!.validate())
                               {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text('Saving..')),
                                 ),
+                                await saveBuildingPart().then((value) => widget
+                                    .buildingAssessment
+                                    .id = value.fk_buildingAssesmentId),
                                 if (!widget.buildingAssessment.buildingParts
                                     .contains(buildingPart))
                                   {
@@ -249,10 +274,10 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                                 widget.buildingAssessment),
                                   ),
                                 )
-                              },
+                              }
                           },
-                          child: const Text("Add"),
-                        ),
+                          child: const Text("Save"),
+                        )
                         //Cubature
                         //Value
                         //Sum Insured

@@ -1,5 +1,8 @@
+// import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:msg/screens/building_assessment_form.dart';
 
 import '../models/BuildingAssessment/building_assessment.dart';
 
@@ -41,7 +44,8 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
           Padding(
             padding:
                 const EdgeInsets.only(top: 30, bottom: 0, left: 35, right: 40),
-            child: Row(children: [
+            child: Row(
+              children: [
               getIcon(),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
@@ -50,7 +54,32 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                       .format(widget.entry!.appointmentDate as DateTime),
                   style: Theme.of(widget.context).textTheme.headline1,
                 ),
-              )
+              ),
+              Spacer(),
+              ElevatedButton.icon(
+                icon: Icon(
+                  Icons.edit,
+                  size: 22,
+                ),
+                style: ElevatedButton.styleFrom(
+                  shape: StadiumBorder(),
+                  primary: Color.fromARGB(147, 200, 35, 90),
+                ),
+                onPressed: () {
+                  Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => 
+                      BuildingAssessmentForm(
+                        buildingAssessment: widget.entry,
+                      ),
+                    )
+                  );
+                },
+                label: Text(
+                  "Edit",
+                  style: TextStyle(fontSize: 15),
+              )),
+
             ]),
           ),
           IntrinsicHeight(
