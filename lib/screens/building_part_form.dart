@@ -46,7 +46,8 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
 
   Future<BuildingPart> saveBuildingPart() async {
     // BuildingAssessment tempAssessment = await DatabaseHelper.instance.persistAssessmentFromPart(widget.buildingAssessment);
-    return await DatabaseHelper.instance.persistBuildingPart(buildingPart, widget.buildingAssessment);
+    return await DatabaseHelper.instance
+        .persistBuildingPart(buildingPart, widget.buildingAssessment);
   }
 
   @override
@@ -96,16 +97,21 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                 children: [
                   IconButton(
                     onPressed: () async => {
-                        if (!widget.buildingAssessment.buildingParts.contains(buildingPart)) {
-                          if (buildingPart.description == null) {
-                            buildingPart.description = "DRAFT",
-                          },
+                      if (!widget.buildingAssessment.buildingParts
+                          .contains(buildingPart))
+                        {
+                          if (buildingPart.description == null)
+                            {
+                              buildingPart.description = "DRAFT",
+                            },
                           await saveBuildingPart().then((value) {
                             buildingPart.id = value.id;
-                            widget.buildingAssessment.id = value.fk_buildingAssesmentId;
+                            widget.buildingAssessment.id =
+                                value.fk_buildingAssesmentId;
                           }),
-                          widget.buildingAssessment.buildingParts.add(buildingPart),
-                      },
+                          widget.buildingAssessment.buildingParts
+                              .add(buildingPart),
+                        },
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: ((context) => BuildingAssessmentForm(
@@ -246,12 +252,14 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                               primary: Color.fromARGB(148, 135, 18, 57),
                               textStyle: TextStyle(fontSize: 15)),
                           onPressed: () async => {
-                            if (_formKey.currentState!.validate()) {
+                            if (_formKey.currentState!.validate())
+                              {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text('Saving..')),
                                 ),
-                                await saveBuildingPart()
-                                    .then((value) => widget.buildingAssessment.id = value.fk_buildingAssesmentId),
+                                await saveBuildingPart().then((value) => widget
+                                    .buildingAssessment
+                                    .id = value.fk_buildingAssesmentId),
                                 if (!widget.buildingAssessment.buildingParts
                                     .contains(buildingPart))
                                   {
@@ -262,16 +270,14 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         BuildingAssessmentForm(
-                                          buildingAssessment:
-                                          widget.buildingAssessment
-                                        ),
-                                    ),
-                                  );
-                                })
-                              },
+                                            buildingAssessment:
+                                                widget.buildingAssessment),
+                                  ),
+                                )
+                              }
                           },
                           child: const Text("Save"),
-                        ),
+                        )
                         //Cubature
                         //Value
                         //Sum Insured

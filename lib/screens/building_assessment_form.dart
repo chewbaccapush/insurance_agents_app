@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:msg/models/BuildingAssessment/building_assessment.dart';
 import 'package:msg/screens/building_part_form.dart';
 import 'package:msg/screens/history.dart';
-import 'package:msg/screens/settings.dart';
 import 'package:msg/validators/validators.dart';
 import 'package:msg/widgets/add_objects_section.dart';
 import 'package:msg/widgets/custom_dialog.dart';
 import 'package:msg/widgets/custom_navbar.dart';
 import 'package:msg/widgets/custom_text_form_field.dart';
 import 'package:msg/widgets/date_form_field.dart';
-import 'package:sqflite/sqflite.dart';
 
 import '../models/Database/database_helper.dart';
 import '../services/sqs_sender.dart';
@@ -75,7 +73,8 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
     print("SQL:");
     print(buildingAssessment);
     buildingAssessment.sent = false;
-    BuildingAssessment assessment = await DatabaseHelper.instance.persistAssessment(buildingAssessment);
+    BuildingAssessment assessment =
+        await DatabaseHelper.instance.persistAssessment(buildingAssessment);
   }
 
   @override
@@ -107,10 +106,6 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                   ),
                 ],
               ),
-              firstIcon: Icon(Icons.history),
-              secondIcon: Icon(Icons.settings),
-              firstDestination: HistoryPage(),
-              secondDestination: SettingsPage(),
             ),
             const Padding(padding: EdgeInsets.only(bottom: 20)),
             Form(
@@ -202,8 +197,9 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                           children: [
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).colorScheme.primary,
-                              textStyle: TextStyle(fontSize: 15)),
+                                  primary:
+                                      Theme.of(context).colorScheme.primary,
+                                  textStyle: TextStyle(fontSize: 15)),
                               onPressed: () {
                                 // Validates form
                                 if (_formKey.currentState!.validate()) {
@@ -212,22 +208,23 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                   );
                                   _formKey.currentState!.save();
                                   localSave()
-                                  .then((val) {
-                                    print("sending.......");
-                                    showDialogPopup("", "Draft saved");
-                                  })
-                                  .onError((error, stackTrace) => null)
-                                  .then((value) => ScaffoldMessenger.of(context).hideCurrentSnackBar());
+                                      .then((val) {
+                                        print("sending.......");
+                                        showDialogPopup("", "Draft saved");
+                                      })
+                                      .onError((error, stackTrace) => null)
+                                      .then((value) =>
+                                          ScaffoldMessenger.of(context)
+                                              .hideCurrentSnackBar());
                                 }
                               },
                               child: const Text("Save Draft"),
                             ),
-                            SizedBox(width: 10),
                             ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                primary: Theme.of(context).colorScheme.onPrimary),
-                                textStyle: TextStyle(fontSize: 15)),
-                                onPressed: () {
+                              style: ElevatedButton.styleFrom(
+                                  primary:
+                                      Theme.of(context).colorScheme.onPrimary),
+                              onPressed: () {
                                 //DatabaseHelper.instance.deleteDatabase("/data/user/0/com.example.msg/databases/msgDatabase.db");
                                 // Validates form
                                 if (_formKey.currentState!.validate()) {
@@ -237,13 +234,18 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                   _formKey.currentState!.save();
 
                                   // Starts sending message process
-                                  sendMessage(
-                                      buildingAssessment.toMessage().toString());
-                                  }
-                                },
-                                child: const Text("Finalize"),
+                                  sendMessage(buildingAssessment
+                                      .toMessage()
+                                      .toString());
+                                }
+                              },
+                              child: const Text("Finalize"),
                             ),
-                            ElevatedButton(onPressed: () => DatabaseHelper.instance.deleteDatabase("/data/user/0/com.example.msg/databases/msgDatabase.db"), child: Text("Pobrisi bazo"))
+                            ElevatedButton(
+                                onPressed: () => DatabaseHelper.instance
+                                    .deleteDatabase(
+                                        "/data/user/0/com.example.msg/databases/msgDatabase.db"),
+                                child: const Text("Pobrisi bazo"))
                           ],
                         )
                       ],

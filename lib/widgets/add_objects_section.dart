@@ -59,10 +59,9 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
                   title: Text(e.description!),
                   trailing: IconButton(
                     onPressed: () => {
-                      print("MEASUEREMENT:"),
-                      print(e.toJson()),
                       // TODO: make working
-                      DatabaseHelper.instance.deleteMeasurement(e.measurementId!)
+                      DatabaseHelper.instance
+                          .deleteMeasurement(e.measurementId!)
                     },
                     icon: const Icon(Icons.delete),
                   ),
