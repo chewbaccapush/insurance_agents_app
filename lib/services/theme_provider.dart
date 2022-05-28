@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:msg/services/storage_service.dart';
 
 const ColorScheme _customColorSchemeLight = ColorScheme(
-  primary: Color.fromARGB(241, 158, 48, 85),
-  secondary: Color.fromARGB(255, 151, 38, 76),
-  tertiary: Color.fromARGB(255, 142, 31, 67),
+  primary: Color.fromARGB(255, 154, 52, 86),
+  secondary: Color.fromARGB(255, 138, 47, 79),
+  tertiary: Color.fromARGB(255, 134, 37, 71),
   primaryContainer: Color.fromARGB(159, 184, 184, 184),
   surface: Colors.black,
   background: Colors.black,
@@ -18,9 +18,9 @@ const ColorScheme _customColorSchemeLight = ColorScheme(
 );
 
 const ColorScheme _customColorSchemeDark = ColorScheme(
-  primary: Color.fromARGB(148, 135, 18, 57),
-  secondary: Color.fromARGB(147, 129, 32, 64),
-  tertiary: Color.fromARGB(121, 154, 56, 91),
+  primary: Color.fromARGB(148, 112, 14, 46),
+  secondary: Color.fromARGB(110, 122, 16, 51),
+  tertiary: Color.fromARGB(97, 142, 18, 57),
   primaryContainer: Colors.grey,
   surface: Colors.grey,
   background: Colors.white,

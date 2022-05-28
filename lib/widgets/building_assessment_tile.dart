@@ -26,7 +26,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
           size: 40, color: Colors.green);
     } else {
       return const Icon(Icons.schedule_rounded,
-          size: 40, color: Color.fromARGB(225, 228, 209, 34));
+          size: 40, color: Color.fromARGB(224, 212, 194, 29));
     }
   }
 
@@ -53,102 +53,170 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
               )
             ]),
           ),
-          Row(children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 40),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Appointment Date:    ',
-                          style: Theme.of(widget.context).textTheme.bodyText1,
-                        ),
-                        Text(
-                            DateFormat.yMMMMd().format(
-                                widget.entry!.appointmentDate as DateTime),
-                            style: Theme.of(widget.context).textTheme.bodyText2)
-                      ],
-                    )),
-                Padding(
-                    padding: const EdgeInsets.only(top: 15, left: 40),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Number of Apartments:    ',
-                          style: Theme.of(widget.context).textTheme.bodyText1,
-                        ),
-                        Text(widget.entry!.numOfAppartments.toString(),
-                            style: Theme.of(widget.context).textTheme.bodyText2)
-                      ],
-                    )),
-                Padding(
-                    padding: const EdgeInsets.only(top: 15, left: 40),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Voluntary Deduction:    ',
-                          style: Theme.of(widget.context).textTheme.bodyText1,
-                        ),
-                        Text(widget.entry!.voluntaryDeduction.toString() + " %",
-                            style: Theme.of(widget.context).textTheme.bodyText2)
-                      ],
-                    )),
-                Padding(
-                    padding: const EdgeInsets.only(top: 15, left: 40),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Assessment Fee:    ',
-                          style: Theme.of(widget.context).textTheme.bodyText1,
-                        ),
-                        Text(widget.entry!.assessmentFee.toString() + " €",
-                            style: Theme.of(widget.context).textTheme.bodyText2)
-                      ],
-                    )),
-              ],
-            ),
-            Padding(
-                padding: const EdgeInsets.only(left: 150),
-                child: Column(
+          IntrinsicHeight(
+            child: Row(children: [
+              Expanded(
+                flex: 3,
+                child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                          padding: const EdgeInsets.only(top: 10, left: 40),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Appointment Date:    ',
+                                style: Theme.of(widget.context)
+                                    .textTheme
+                                    .bodyText1,
+                              ),
+                              Text(
+                                  DateFormat.yMMMMd().format(widget
+                                      .entry!.appointmentDate as DateTime),
+                                  style: Theme.of(widget.context)
+                                      .textTheme
+                                      .bodyText2)
+                            ],
+                          )),
+                      Padding(
+                          padding: const EdgeInsets.only(top: 15, left: 40),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Number of Apartments:    ',
+                                style: Theme.of(widget.context)
+                                    .textTheme
+                                    .bodyText1,
+                              ),
+                              Text(widget.entry!.numOfAppartments.toString(),
+                                  style: Theme.of(widget.context)
+                                      .textTheme
+                                      .bodyText2)
+                            ],
+                          )),
+                      Padding(
+                          padding: const EdgeInsets.only(top: 15, left: 40),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Voluntary Deduction:    ',
+                                style: Theme.of(widget.context)
+                                    .textTheme
+                                    .bodyText1,
+                              ),
+                              Text(
+                                  widget.entry!.voluntaryDeduction.toString() +
+                                      " %",
+                                  style: Theme.of(widget.context)
+                                      .textTheme
+                                      .bodyText2)
+                            ],
+                          )),
+                      Padding(
+                          padding: const EdgeInsets.only(top: 15, left: 40),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Assessment Fee:    ',
+                                style: Theme.of(widget.context)
+                                    .textTheme
+                                    .bodyText1,
+                              ),
+                              Text(
+                                  widget.entry!.assessmentFee.toString() + " €",
+                                  style: Theme.of(widget.context)
+                                      .textTheme
+                                      .bodyText2)
+                            ],
+                          )),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Container(
+                    margin: const EdgeInsets.only(top: 20, right: 30),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 10.0),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Description:    ',
+                                      style: Theme.of(widget.context)
+                                          .textTheme
+                                          .bodyText1,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                        widget.entry!.description.toString(),
+                                        //'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.',
+                                        style: Theme.of(widget.context)
+                                            .textTheme
+                                            .bodyText2),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ])),
+              ),
+              Expanded(
+                flex: 3,
+                child: Container(
+                  margin: const EdgeInsets.only(top: 20, right: 100),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Padding(
-                          padding: const EdgeInsets.only(bottom: 20, top: 25),
-                          child: Row(
-                            children: [
-                              Text(
-                                'Description:    ',
-                                style: Theme.of(widget.context)
-                                    .textTheme
-                                    .bodyText1,
-                              ),
-                              Text(widget.entry!.description.toString(),
+                      Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 10.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Assessment Cause:    ',
                                   style: Theme.of(widget.context)
                                       .textTheme
-                                      .bodyText2)
-                            ],
-                          )),
-                      Padding(
-                          padding: const EdgeInsets.only(top: 40, bottom: 50),
-                          child: Row(
+                                      .bodyText1,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Row(
                             children: [
-                              Text(
-                                'Assessment Cause:    ',
-                                style: Theme.of(widget.context)
-                                    .textTheme
-                                    .bodyText1,
+                              Flexible(
+                                child: Text(
+                                    widget.entry!.assessmentCause.toString(),
+                                    //'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.',
+                                    style: Theme.of(widget.context)
+                                        .textTheme
+                                        .bodyText2),
                               ),
-                              Text(widget.entry!.assessmentCause.toString(),
-                                  style: Theme.of(widget.context)
-                                      .textTheme
-                                      .bodyText2)
                             ],
-                          )),
-                    ])),
-          ]),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ]),
+          ),
           Padding(
               padding: const EdgeInsets.only(
                   bottom: 25, top: 0, left: 25, right: 25),

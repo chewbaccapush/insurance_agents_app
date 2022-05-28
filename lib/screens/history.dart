@@ -34,6 +34,7 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   List<BuildingAssessment> buildingAssessments = [];
+
   List<BuildingAssessment> searchResults = [];
   List<BuildingAssessment> sentAssessments = [];
   List<BuildingAssessment> unsentAssessments = [];
@@ -44,6 +45,7 @@ class _HistoryPageState extends State<HistoryPage> {
   AlignedTo alignment = AlignedTo.all;
   int countSentAssessments = 0;
   int allAssessments = 0;
+  bool _isExpanded = false;
 
   @override
   void initState() {
@@ -112,7 +114,7 @@ class _HistoryPageState extends State<HistoryPage> {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return new Alert(title: title, content: content);
+          return Alert(title: title, content: content);
         });
   }
 
@@ -133,7 +135,10 @@ class _HistoryPageState extends State<HistoryPage> {
 
   // Get orders from users local storage
   _localGet() async {
-    buildingAssessments = await DatabaseHelper.instance.readAllAssessments();
+    await DatabaseHelper.instance
+        .readAllAssessments()
+        .then((value) => buildingAssessments = value.reversed.toList());
+
     countSentAssessments =
         buildingAssessments.where((c) => c.sent == true).length;
     filterBuildingAssessments();
@@ -161,8 +166,6 @@ class _HistoryPageState extends State<HistoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(unsentAssessments);
-
     double cWidth = MediaQuery.of(context).size.width * 0.5;
     return Scaffold(
         body: Padding(
@@ -208,14 +211,14 @@ class _HistoryPageState extends State<HistoryPage> {
                               ),
                             ),
                           },
-                          label: const Text(
+                          label: Text(
                             'Add Building Assessment',
                             style: TextStyle(
-                                color: Color.fromRGBO(255, 255, 255, 1)),
+                                color: Theme.of(context).colorScheme.onPrimary),
                           ),
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.add,
-                            color: Color.fromRGBO(255, 255, 255, 1),
+                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                         ),
                         Padding(
@@ -224,20 +227,16 @@ class _HistoryPageState extends State<HistoryPage> {
                               icon: Icon(
                                 Icons.send_and_archive_outlined,
                                 size: 22,
-                                color:
-                                    Theme.of(context).colorScheme.onSecondary,
+                                color: Colors.white,
                               ),
                               style: ElevatedButton.styleFrom(
                                 shape: StadiumBorder(),
                                 primary: Theme.of(context).colorScheme.primary,
                               ),
                               onPressed: () => resendAll(),
-                              label: Text("Send All",
+                              label: const Text("Send All",
                                   style: TextStyle(
-                                      fontSize: 15,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSecondary))),
+                                      fontSize: 15, color: Colors.white))),
                         )
                       ],
                     )
@@ -308,7 +307,6 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget buildView(List<BuildingAssessment> assessments) {
     return Expanded(
         child: ListView.builder(
-            reverse: true,
             physics: const BouncingScrollPhysics(),
             itemCount: assessments.length,
             itemBuilder: (context, position) {
@@ -335,10 +333,37 @@ class _HistoryPageState extends State<HistoryPage> {
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             children: [
-              BuildingPartTile(
-                  context: context,
-                  entry: element,
-                  measurements: _getMeasurements(element))
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 10, right: 10, top: 10, bottom: 10),
+                child: ExpansionTile(
+                    onExpansionChanged: (value) {
+                      setState(() {
+                        _isExpanded = value;
+                      });
+                    },
+                    collapsedIconColor: Colors.white,
+                    iconColor: Colors.white,
+                    textColor: Colors.white,
+                    trailing: AnimatedRotation(
+                        turns: _isExpanded ? .5 : 0,
+                        duration: Duration(milliseconds: 400),
+                        child: const Icon(Icons.expand_circle_down_outlined,
+                            size: 30)),
+                    title: Text(
+                      element.description.toString(),
+                      overflow: TextOverflow.fade,
+                      maxLines: 1,
+                      softWrap: false,
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
+                    children: [
+                      BuildingPartTile(
+                          context: context,
+                          entry: element,
+                          measurements: _getMeasurements(element))
+                    ]),
+              )
             ],
           )));
     });
@@ -351,7 +376,7 @@ class _HistoryPageState extends State<HistoryPage> {
 
     parts.forEach((element) {
       children.add(Container(
-          margin: EdgeInsets.only(top: 20, left: 10, right: 10),
+          margin: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: Theme.of(context).colorScheme.tertiary,
@@ -429,20 +454,24 @@ class _HistoryPageState extends State<HistoryPage> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const Text(
+                                    Text(
                                       'All ',
                                       style: TextStyle(
                                           fontWeight: FontWeight.normal,
-                                          color: Colors.white),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary),
                                     ),
                                     Text(
                                       '(' +
                                           buildingAssessments.length
                                               .toString() +
                                           ")",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontWeight: FontWeight.normal,
-                                          color: Colors.white,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary,
                                           fontSize: 13.5),
                                     ),
                                   ],
@@ -463,19 +492,23 @@ class _HistoryPageState extends State<HistoryPage> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const Text(
+                                    Text(
                                       'Sent ',
                                       style: TextStyle(
                                           fontWeight: FontWeight.normal,
-                                          color: Colors.white),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary),
                                     ),
                                     Text(
                                       '(' +
                                           sentAssessments.length.toString() +
                                           ')',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontWeight: FontWeight.normal,
-                                          color: Colors.white,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary,
                                           fontSize: 13.5),
                                     ),
                                   ],
@@ -501,7 +534,9 @@ class _HistoryPageState extends State<HistoryPage> {
                                         'Queue ',
                                         style: TextStyle(
                                             fontWeight: FontWeight.normal,
-                                            color: Colors.white),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary),
                                       ),
                                     ),
                                     Text(
@@ -512,7 +547,9 @@ class _HistoryPageState extends State<HistoryPage> {
                                           ')',
                                       style: TextStyle(
                                           fontWeight: FontWeight.normal,
-                                          color: Colors.white,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary,
                                           fontSize: 13.5),
                                     ),
                                   ],
@@ -542,7 +579,7 @@ class _HistoryPageState extends State<HistoryPage> {
       case AlignedTo.queue:
         return Alignment.centerRight;
       default:
-        return Alignment.centerRight;
+        return Alignment.centerLeft;
     }
   }
 }

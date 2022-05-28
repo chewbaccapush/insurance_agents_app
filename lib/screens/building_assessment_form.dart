@@ -90,9 +90,11 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                     },
                     icon: const Icon(Icons.arrow_back),
                   ),
-                  const Text(
+                  Text(
                     "Edit Building Assessment",
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Theme.of(context).colorScheme.onPrimary),
                   ),
                 ],
               ),
@@ -184,7 +186,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: Color.fromARGB(148, 135, 18, 57),
+                              primary: Theme.of(context).colorScheme.primary,
                               textStyle: TextStyle(fontSize: 15)),
                           onPressed: () {
                             // DatabaseHelper.instance.deleteDatabase(
@@ -192,7 +194,14 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                             // Validates form
                             if (_formKey.currentState!.validate()) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Sending..')),
+                                SnackBar(
+                                    content: Text(
+                                  'Sending..',
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary),
+                                )),
                               );
                               _formKey.currentState!.save();
 
@@ -204,7 +213,11 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                   buildingAssessment.toMessage().toString());
                             }
                           },
-                          child: const Text("Send"),
+                          child: Text(
+                            "Send",
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.onPrimary),
+                          ),
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(

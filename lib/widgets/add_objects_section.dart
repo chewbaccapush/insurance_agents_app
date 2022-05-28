@@ -85,11 +85,11 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
             widget.objectType == ObjectType.buildingPart
                 ? "Add Building Part"
                 : "Add Measurement",
-            style: const TextStyle(color: Color.fromRGBO(255, 255, 255, 1)),
+            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
           ),
-          icon: const Icon(
+          icon: Icon(
             Icons.add,
-            color: Color.fromRGBO(255, 255, 255, 1),
+            color: Theme.of(context).colorScheme.onPrimary,
           ),
         ),
         SizedBox(

@@ -28,7 +28,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Padding(
                   padding: const EdgeInsets.only(
-                      top: 35, bottom: 5, left: 30, right: 20),
+                      top: 10, bottom: 5, left: 20, right: 20),
                   child: Row(
                     children: [
                       Text(
@@ -41,7 +41,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                   )),
               Padding(
                   padding: const EdgeInsets.only(
-                      top: 5, bottom: 5, left: 30, right: 20),
+                      top: 5, bottom: 5, left: 20, right: 20),
                   child: Row(
                     children: [
                       Text(
@@ -56,7 +56,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                   )),
               Padding(
                   padding: const EdgeInsets.only(
-                      top: 5, bottom: 5, left: 30, right: 20),
+                      top: 5, bottom: 5, left: 20, right: 20),
                   child: Row(
                     children: [
                       Text(
@@ -71,7 +71,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                   )),
               Padding(
                   padding: const EdgeInsets.only(
-                      top: 5, bottom: 5, left: 30, right: 20),
+                      top: 5, bottom: 5, left: 20, right: 20),
                   child: Row(
                     children: [
                       Text(
@@ -85,7 +85,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                   )),
               Padding(
                   padding: const EdgeInsets.only(
-                      top: 5, bottom: 5, left: 30, right: 20),
+                      top: 5, bottom: 5, left: 20, right: 20),
                   child: Row(
                     children: [
                       Text(
@@ -98,7 +98,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                   )),
               Padding(
                   padding: const EdgeInsets.only(
-                      top: 5, bottom: 5, left: 30, right: 20),
+                      top: 5, bottom: 5, left: 20, right: 20),
                   child: Row(
                     children: [
                       Text(
@@ -113,7 +113,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                   )),
               Padding(
                   padding: const EdgeInsets.only(
-                      top: 5, bottom: 30, left: 30, right: 20),
+                      top: 5, bottom: 15, left: 20, right: 20),
                   child: Row(
                     children: [
                       Text(
@@ -135,7 +135,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                       children: [
                         Padding(
                             padding: const EdgeInsets.only(
-                                top: 35, bottom: 95, left: 20, right: 20),
+                                top: 10, bottom: 95, left: 20, right: 20),
                             child: Row(
                               children: [
                                 Text(
@@ -206,7 +206,8 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
           ]),
         ),
         Padding(
-            padding: const EdgeInsets.only(bottom: 15, left: 15, right: 30),
+            padding:
+                const EdgeInsets.only(bottom: 15, left: 5, right: 30, top: 0),
             child: Theme(
                 data: ThemeData()
                     .copyWith(dividerColor: Color.fromARGB(0, 246, 0, 0)),

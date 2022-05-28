@@ -60,7 +60,7 @@ class DatabaseHelper {
           ${BuildingPartFields.riskClass} $stringType,
           ${BuildingPartFields.unitPrice} $numericType,
           ${BuildingPartFields.insuredType} $stringType,
-          ${BuildingPartFields.devaluationPercentage} $numericType,
+          ${BuildingPartFields.devaluationPercentage} $numericNullable,
           ${BuildingPartFields.cubature} $numericType,
           ${BuildingPartFields.value} $numericType,
           ${BuildingPartFields.sumInsured} $numericType,

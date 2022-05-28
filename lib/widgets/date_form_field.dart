@@ -37,6 +37,7 @@ class _CustomDateFormFieldState extends State<CustomDateFormField> {
       Column(
         children: [
           IconButton(
+              color: Theme.of(context).colorScheme.onPrimary,
               onPressed: () => _selectDate(context),
               icon: const Icon(Icons.calendar_month)),
         ],

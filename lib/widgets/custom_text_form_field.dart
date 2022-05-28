@@ -31,7 +31,10 @@ class CustomTextFormField extends StatelessWidget {
           width: width,
           child: TextFormField(
             enabled: enabeled,
-            style: TextStyle(fontSize: fontSize),
+            cursorColor: Theme.of(context).colorScheme.onPrimary,
+            style: TextStyle(
+                fontSize: fontSize,
+                color: Theme.of(context).colorScheme.onPrimary),
             initialValue: initialValue == "null" ? "" : initialValue,
             onChanged: onChanged,
             decoration: inputDecoration(labelText, width),

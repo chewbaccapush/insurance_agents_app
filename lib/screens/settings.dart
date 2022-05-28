@@ -40,9 +40,11 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                     icon: const Icon(Icons.arrow_back),
                   ),
-                  const Text(
+                  Text(
                     "Settings",
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Theme.of(context).colorScheme.onPrimary),
                   ),
                 ],
               ),
