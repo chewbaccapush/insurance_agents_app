@@ -220,10 +220,12 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               },
                               child: const Text("Save Draft"),
                             ),
+                            Padding(padding: EdgeInsets.only(right: 10)),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   primary:
-                                      Theme.of(context).colorScheme.onPrimary),
+                                      Theme.of(context).colorScheme.primary,
+                                  textStyle: TextStyle(fontSize: 15)),
                               onPressed: () {
                                 //DatabaseHelper.instance.deleteDatabase("/data/user/0/com.example.msg/databases/msgDatabase.db");
                                 // Validates form
@@ -241,6 +243,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               },
                               child: const Text("Finalize"),
                             ),
+                            Padding(padding: EdgeInsets.only(left: 10)),
                             ElevatedButton(
                                 onPressed: () => DatabaseHelper.instance
                                     .deleteDatabase(
