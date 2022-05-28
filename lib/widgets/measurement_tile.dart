@@ -35,7 +35,9 @@ class MeasurementTile extends StatelessWidget {
                                   Theme.of(widgetContext).textTheme.bodyText1,
                             ),
                             Text(
-                              entry.length.toString(),
+                              entry.length.toString() == "null"
+                                  ? ""
+                                  : entry.length.toString(),
                               style:
                                   Theme.of(widgetContext).textTheme.bodyText2,
                             ),
@@ -52,7 +54,10 @@ class MeasurementTile extends StatelessWidget {
                               style:
                                   Theme.of(widgetContext).textTheme.bodyText1,
                             ),
-                            Text(entry.height.toString(),
+                            Text(
+                                entry.height.toString() == "null"
+                                    ? ""
+                                    : entry.height.toString(),
                                 style:
                                     Theme.of(widgetContext).textTheme.bodyText2)
                           ],
@@ -68,7 +73,10 @@ class MeasurementTile extends StatelessWidget {
                               style:
                                   Theme.of(widgetContext).textTheme.bodyText1,
                             ),
-                            Text(entry.width.toString(),
+                            Text(
+                                entry.width.toString() == "null"
+                                    ? ""
+                                    : entry.width.toString(),
                                 style:
                                     Theme.of(widgetContext).textTheme.bodyText2)
                           ],
@@ -85,7 +93,9 @@ class MeasurementTile extends StatelessWidget {
                                   Theme.of(widgetContext).textTheme.bodyText1,
                             ),
                             Text(
-                              entry.radius.toString(),
+                              entry.radius.toString() == "null"
+                                  ? ""
+                                  : entry.radius.toString(),
                               style:
                                   Theme.of(widgetContext).textTheme.bodyText2,
                             ),

@@ -10,7 +10,7 @@ const ColorScheme _customColorSchemeLight = ColorScheme(
   background: Colors.black,
   error: Colors.black,
   onPrimary: Colors.black,
-  onSecondary: Colors.black,
+  onSecondary: Colors.white,
   onSurface: Colors.black,
   onBackground: Colors.black,
   onError: Colors.black,
@@ -25,8 +25,8 @@ const ColorScheme _customColorSchemeDark = ColorScheme(
   surface: Colors.grey,
   background: Colors.white,
   error: Colors.white,
-  onPrimary: Colors.white, // Used on search bar for font color
-  onSecondary: Colors.white, // For all buttons ---> TEXT AND ICON COLOR
+  onPrimary: Colors.white,
+  onSecondary: Colors.black,
   onSurface: Colors.white,
   onBackground: Colors.white,
   onError: Colors.white,
@@ -39,33 +39,41 @@ class ThemeProvider extends ChangeNotifier {
   ThemeData light = ThemeData.light().copyWith(
       scaffoldBackgroundColor: Color.fromARGB(255, 238, 238, 238),
       colorScheme: _customColorSchemeLight,
-      textTheme: const TextTheme(
-        headline1: TextStyle(
+      textTheme: TextTheme(
+        headline1: const TextStyle(
             fontSize: 26, color: Colors.white, fontWeight: FontWeight.normal),
-        headline2: TextStyle(
+        headline2: const TextStyle(
             fontSize: 24, color: Colors.white, fontWeight: FontWeight.normal),
-        headline3: TextStyle(
+        headline3: const TextStyle(
             fontSize: 22, color: Colors.white, fontWeight: FontWeight.normal),
-        bodyText1: TextStyle(
+        bodyText1: const TextStyle(
             fontSize: 18, color: Colors.white, fontWeight: FontWeight.normal),
-        bodyText2: TextStyle(
+        bodyText2: const TextStyle(
             fontSize: 16, color: Colors.white, fontWeight: FontWeight.normal),
+        caption: TextStyle(
+            fontSize: 20,
+            color: Colors.grey[700],
+            fontWeight: FontWeight.normal),
       ));
 
   ThemeData dark = ThemeData.dark().copyWith(
       colorScheme: _customColorSchemeDark,
-      textTheme: const TextTheme(
-        headline1: TextStyle(
+      textTheme: TextTheme(
+        headline1: const TextStyle(
             fontSize: 26, color: Colors.white, fontWeight: FontWeight.normal),
-        headline2: TextStyle(
+        headline2: const TextStyle(
             fontSize: 24, color: Colors.white, fontWeight: FontWeight.normal),
-        headline3: TextStyle(
+        headline3: const TextStyle(
             fontSize: 22, color: Colors.white, fontWeight: FontWeight.normal),
-        bodyText1: TextStyle(
+        bodyText1: const TextStyle(
             fontSize: 18, color: Colors.white, fontWeight: FontWeight.normal),
-        bodyText2: TextStyle(
+        bodyText2: const TextStyle(
             fontSize: 16,
             color: Color.fromARGB(255, 219, 219, 219),
+            fontWeight: FontWeight.normal),
+        caption: TextStyle(
+            fontSize: 20,
+            color: Colors.grey[400],
             fontWeight: FontWeight.normal),
       ));
 

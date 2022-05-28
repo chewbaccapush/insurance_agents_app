@@ -121,7 +121,11 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                         style: Theme.of(widget.context).textTheme.bodyText1,
                       ),
                       Text(
-                          widget.entry!.devaluationPercentage.toString() + ' %',
+                          widget.entry!.devaluationPercentage.toString() ==
+                                  "null"
+                              ? ""
+                              : widget.entry!.devaluationPercentage.toString() +
+                                  ' %',
                           style: Theme.of(widget.context).textTheme.bodyText2)
                     ],
                   )),

@@ -224,13 +224,13 @@ class _HistoryPageState extends State<HistoryPage> {
                         Padding(
                           padding: const EdgeInsets.only(left: 15.0),
                           child: ElevatedButton.icon(
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.send_and_archive_outlined,
                                 size: 22,
                                 color: Colors.white,
                               ),
                               style: ElevatedButton.styleFrom(
-                                shape: StadiumBorder(),
+                                shape: const StadiumBorder(),
                                 primary: Theme.of(context).colorScheme.primary,
                               ),
                               onPressed: () => resendAll(),
@@ -287,9 +287,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                 Theme.of(context).colorScheme.onPrimary,
                             controller: textController,
                             decoration: const InputDecoration(
-                                fillColor: Colors.grey,
-                                hintText: 'Search',
-                                border: InputBorder.none),
+                                hintText: 'Search', border: InputBorder.none),
                             onChanged: onSearchTextChanged,
                           ))),
                   IconButton(

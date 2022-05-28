@@ -25,8 +25,8 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
       return const Icon(Icons.check_circle_rounded,
           size: 40, color: Colors.green);
     } else {
-      return const Icon(Icons.schedule_rounded,
-          size: 40, color: Color.fromARGB(224, 212, 194, 29));
+      return const Icon(Icons.access_time_filled_rounded,
+          size: 40, color: Color.fromARGB(255, 197, 179, 24));
     }
   }
 
@@ -90,7 +90,12 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                     .textTheme
                                     .bodyText1,
                               ),
-                              Text(widget.entry!.numOfAppartments.toString(),
+                              Text(
+                                  widget.entry!.numOfAppartments.toString() ==
+                                          "null"
+                                      ? ""
+                                      : widget.entry!.numOfAppartments
+                                          .toString(),
                                   style: Theme.of(widget.context)
                                       .textTheme
                                       .bodyText2)

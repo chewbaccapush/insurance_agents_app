@@ -5,6 +5,7 @@ import 'package:msg/screens/history.dart';
 import 'package:msg/screens/settings.dart';
 import 'package:msg/validators/validators.dart';
 import 'package:msg/widgets/add_objects_section.dart';
+import 'package:msg/widgets/custom_dialog.dart';
 import 'package:msg/widgets/custom_navbar.dart';
 import 'package:msg/widgets/custom_text_form_field.dart';
 import 'package:msg/widgets/date_form_field.dart';
@@ -40,10 +41,18 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
       await sqsSender
           .sendToSQS(message)
           .then((value) => buildingAssessment.sent = true);
-      showDialogPopup("Info", "Assessment successfully sent.");
+      //showDialogPopup("Info", "Assessment successfully sent.");
+      Navigator.of(context).push(PageRouteBuilder(
+          opaque: false,
+          pageBuilder: (BuildContext context, _, __) => const CustomDialog(
+              text: 'Building assessment successfully sent')));
       buildingAssessment.sent = true;
     } catch (e) {
-      showDialogPopup("Error", "Assessment not sent.");
+      //showDialogPopup("Error", "Assessment not sent.");
+      Navigator.of(context).push(PageRouteBuilder(
+          opaque: false,
+          pageBuilder: (BuildContext context, _, __) =>
+              const CustomDialog(text: 'Building assessment not sent')));
       buildingAssessment.sent = false;
     } finally {
       // Saves to database
