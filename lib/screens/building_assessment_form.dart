@@ -178,6 +178,8 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               Validators.floatValidator(value!),
                         ),
                         CustomTextFormField(
+                          suffix: const Icon(Icons.euro_rounded,
+                              color: Colors.grey),
                           type: const TextInputType.numberWithOptions(
                               decimal: true),
                           labelText: "Assessment Fee",
@@ -195,37 +197,76 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
+                            ElevatedButton.icon(
+                                icon: const Icon(
+                                  Icons.check_rounded,
+                                  size: 18,
+                                  color: Colors.white,
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  shape: const StadiumBorder(),
                                   primary:
                                       Theme.of(context).colorScheme.primary,
-                                  textStyle: TextStyle(fontSize: 15)),
+                                ),
+                                onPressed: () {
+                                  // Validates form
+                                  if (_formKey.currentState!.validate()) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Saving..')),
+                                    );
+                                    _formKey.currentState!.save();
+                                    localSave()
+                                        .then((val) {
+                                          print("sending.......");
+                                          Navigator.of(context).push(
+                                              PageRouteBuilder(
+                                                  opaque: false,
+                                                  pageBuilder: (BuildContext
+                                                              context,
+                                                          _,
+                                                          __) =>
+                                                      const CustomDialog(
+                                                          text:
+                                                              'Draft saved')));
+                                        })
+                                        .onError((error, stackTrace) => null)
+                                        .then((value) =>
+                                            ScaffoldMessenger.of(context)
+                                                .hideCurrentSnackBar());
+                                  }
+                                },
+                                label: const Text("OK",
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.white))),
+                            Padding(padding: EdgeInsets.only(right: 10)),
+                            ElevatedButton.icon(
+                              icon: const Icon(
+                                Icons.cancel_rounded,
+                                size: 18,
+                                color: Colors.white,
+                              ),
                               onPressed: () {
-                                // Validates form
-                                if (_formKey.currentState!.validate()) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('Saving..')),
-                                  );
-                                  _formKey.currentState!.save();
-                                  localSave()
-                                      .then((val) {
-                                        print("sending.......");
-                                        showDialogPopup("", "Draft saved");
-                                      })
-                                      .onError((error, stackTrace) => null)
-                                      .then((value) =>
-                                          ScaffoldMessenger.of(context)
-                                              .hideCurrentSnackBar());
-                                }
+                                Navigator.of(context).push(PageRouteBuilder(
+                                    opaque: false,
+                                    pageBuilder:
+                                        (BuildContext context, _, __) =>
+                                            const HistoryPage()));
                               },
-                              child: const Text("Save Draft"),
+                              style: ElevatedButton.styleFrom(
+                                shape: const StadiumBorder(),
+                                primary: Theme.of(context).colorScheme.primary,
+                              ),
+                              label: const Text("Cancel",
+                                  style: TextStyle(
+                                      fontSize: 15, color: Colors.white)),
                             ),
                             Padding(padding: EdgeInsets.only(right: 10)),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary:
-                                      Theme.of(context).colorScheme.primary,
-                                  textStyle: TextStyle(fontSize: 15)),
+                            ElevatedButton.icon(
+                              icon: const Icon(
+                                Icons.send_rounded,
+                                size: 18,
+                                color: Colors.white,
+                              ),
                               onPressed: () {
                                 //DatabaseHelper.instance.deleteDatabase("/data/user/0/com.example.msg/databases/msgDatabase.db");
                                 // Validates form
@@ -241,7 +282,13 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                       .toString());
                                 }
                               },
-                              child: const Text("Finalize"),
+                              style: ElevatedButton.styleFrom(
+                                shape: const StadiumBorder(),
+                                primary: Theme.of(context).colorScheme.primary,
+                              ),
+                              label: const Text("Finalize",
+                                  style: TextStyle(
+                                      fontSize: 15, color: Colors.white)),
                             ),
                             Padding(padding: EdgeInsets.only(left: 10)),
                             ElevatedButton(
@@ -255,22 +302,25 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                     ),
                   ),
                   Flexible(
-                    child: Column(
-                      children: <Widget>[
-                        AddObjectsSection(
-                          objectType: ObjectType.buildingPart,
-                          buildingAssessment: buildingAssessment,
-                          onPressed: () => {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => BuildingPartForm(
-                                  buildingAssessment: buildingAssessment,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 60.0),
+                      child: Column(
+                        children: <Widget>[
+                          AddObjectsSection(
+                            objectType: ObjectType.buildingPart,
+                            buildingAssessment: buildingAssessment,
+                            onPressed: () => {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => BuildingPartForm(
+                                    buildingAssessment: buildingAssessment,
+                                  ),
                                 ),
-                              ),
-                            )
-                          },
-                        ),
-                      ],
+                              )
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

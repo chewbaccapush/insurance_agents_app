@@ -121,9 +121,11 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                     },
                     icon: const Icon(Icons.arrow_back),
                   ),
-                  const Text(
+                  Text(
                     "Add Building Part",
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Theme.of(context).colorScheme.onPrimary),
                   ),
                 ],
               ),
@@ -136,7 +138,6 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                 children: <Widget>[
                   Flexible(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
                         CustomTextFormField(
                           type: TextInputType.text,
@@ -166,6 +167,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CustomDropdown(
+                                height: 60,
                                 value: buildingPart.fireProtection,
                                 items: fireProtectionList,
                                 onChanged: (newValue) {
@@ -175,6 +177,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                 },
                                 width: 170),
                             CustomDropdown(
+                                height: 60,
                                 value: buildingPart.constructionClass,
                                 items: constructionClassList,
                                 onChanged: (newValue) {
@@ -184,6 +187,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                 },
                                 width: 170),
                             CustomDropdown(
+                                height: 60,
                                 value: buildingPart.riskClass,
                                 items: riskClassList,
                                 onChanged: (newValue) {
@@ -195,6 +199,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                           ],
                         ),
                         CustomTextFormField(
+                          suffix: const Icon(Icons.euro, color: Colors.grey),
                           type: const TextInputType.numberWithOptions(
                               decimal: true),
                           labelText: "Unit Price",
@@ -210,16 +215,25 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            CustomDropdown(
-                                value: buildingPart.insuredType,
-                                items: insuredTypeList,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    buildingPart.insuredType = newValue;
-                                  });
-                                },
-                                width: 110),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15.0),
+                              child: CustomDropdown(
+                                  height: 60,
+                                  value: buildingPart.insuredType,
+                                  items: insuredTypeList,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      buildingPart.insuredType = newValue;
+                                    });
+                                  },
+                                  width: 110),
+                            ),
                             CustomTextFormField(
+                              suffix: Icon(Icons.percent_rounded,
+                                  color: (buildingPart.insuredType ==
+                                          InsuredType.timeValue)
+                                      ? Colors.grey
+                                      : Colors.grey[700]),
                               enabeled: buildingPart.insuredType ==
                                       InsuredType.timeValue
                                   ? true
@@ -247,36 +261,70 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                             ),
                           ],
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Color.fromARGB(148, 135, 18, 57),
-                              textStyle: TextStyle(fontSize: 15)),
-                          onPressed: () async => {
-                            if (_formKey.currentState!.validate())
-                              {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('Saving..')),
-                                ),
-                                await saveBuildingPart().then((value) => widget
-                                    .buildingAssessment
-                                    .id = value.fk_buildingAssesmentId),
-                                if (!widget.buildingAssessment.buildingParts
-                                    .contains(buildingPart))
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ElevatedButton.icon(
+                              icon: const Icon(
+                                Icons.check_rounded,
+                                size: 18,
+                                color: Colors.white,
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                shape: const StadiumBorder(),
+                                primary: Theme.of(context).colorScheme.primary,
+                              ),
+                              onPressed: () async => {
+                                if (_formKey.currentState!.validate())
                                   {
-                                    widget.buildingAssessment.buildingParts
-                                        .add(buildingPart)
-                                  },
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        BuildingAssessmentForm(
-                                            buildingAssessment:
-                                                widget.buildingAssessment),
-                                  ),
-                                )
-                              }
-                          },
-                          child: const Text("Save"),
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Saving..')),
+                                    ),
+                                    await saveBuildingPart().then((value) =>
+                                        widget.buildingAssessment.id =
+                                            value.fk_buildingAssesmentId),
+                                    if (!widget.buildingAssessment.buildingParts
+                                        .contains(buildingPart))
+                                      {
+                                        widget.buildingAssessment.buildingParts
+                                            .add(buildingPart)
+                                      },
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            BuildingAssessmentForm(
+                                                buildingAssessment:
+                                                    widget.buildingAssessment),
+                                      ),
+                                    )
+                                  }
+                              },
+                              label: const Text("OK",
+                                  style: TextStyle(
+                                      fontSize: 15, color: Colors.white)),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: ElevatedButton.icon(
+                                icon: const Icon(
+                                  Icons.cancel_rounded,
+                                  size: 18,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shape: const StadiumBorder(),
+                                  primary:
+                                      Theme.of(context).colorScheme.primary,
+                                ),
+                                label: const Text("Cancel",
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.white)),
+                              ),
+                            ),
+                          ],
                         )
                         //Cubature
                         //Value

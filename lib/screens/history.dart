@@ -120,13 +120,10 @@ class _HistoryPageState extends State<HistoryPage> {
 
   void filterBuildingAssessments() {
     for (var assessment in buildingAssessments) {
-      print(assessment.sent);
       if (assessment.sent == true) {
         sentAssessments.add(assessment);
       } else if (assessment.sent == false) {
         unsentAssessments.add(assessment);
-
-        print("hey");
       }
     }
 
@@ -197,49 +194,68 @@ class _HistoryPageState extends State<HistoryPage> {
                         ),
                       ],
                     ),
-                    Row(
-                      children: [
-                        OutlinedButton.icon(
-                          style: OutlinedButton.styleFrom(
-                              side:
-                                  const BorderSide(color: Colors.transparent)),
-                          onPressed: () => {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const BuildingAssessmentForm(),
-                              ),
-                            ),
-                          },
-                          label: Text(
-                            'Add Building Assessment',
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.onPrimary),
-                          ),
-                          icon: Icon(
-                            Icons.add,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15.0),
-                          child: ElevatedButton.icon(
-                              icon: const Icon(
-                                Icons.send_and_archive_outlined,
-                                size: 22,
-                                color: Colors.white,
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                shape: const StadiumBorder(),
-                                primary: Theme.of(context).colorScheme.primary,
-                              ),
-                              onPressed: () => resendAll(),
-                              label: const Text("Send All",
-                                  style: TextStyle(
-                                      fontSize: 15, color: Colors.white))),
-                        )
-                      ],
-                    )
+                    AnimationConfiguration.staggeredList(
+                        position: 1,
+                        duration: const Duration(milliseconds: 500),
+                        delay: const Duration(milliseconds: 25),
+                        child: FadeInAnimation(
+                            child: SlideAnimation(
+                                verticalOffset: 35.0,
+                                curve: Curves.easeOutCubic,
+                                duration: const Duration(milliseconds: 500),
+                                child: ScaleAnimation(
+                                    scale: .9,
+                                    child: Row(
+                                      children: [
+                                        OutlinedButton.icon(
+                                          style: OutlinedButton.styleFrom(
+                                              side: const BorderSide(
+                                                  color: Colors.transparent)),
+                                          onPressed: () => {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const BuildingAssessmentForm(),
+                                              ),
+                                            ),
+                                          },
+                                          label: Text(
+                                            'Add Building Assessment',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimary),
+                                          ),
+                                          icon: Icon(
+                                            Icons.add,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 15.0),
+                                          child: ElevatedButton.icon(
+                                              icon: const Icon(
+                                                Icons.send_and_archive_outlined,
+                                                size: 22,
+                                                color: Colors.white,
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                shape: const StadiumBorder(),
+                                                primary: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                              ),
+                                              onPressed: () => resendAll(),
+                                              label: const Text("Send All",
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: Colors.white))),
+                                        )
+                                      ],
+                                    )))))
                   ],
                 ),
                 if (searchResults.isNotEmpty ||
@@ -259,47 +275,66 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Widget searchBar(width) {
-    return Row(
-      children: [
-        Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(40),
-              color: Theme.of(context).colorScheme.primaryContainer,
-            ),
-            margin: const EdgeInsets.only(bottom: 20),
-            width: width,
-            height: 50,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Icon(Icons.search)),
-                  SizedBox(
-                      width: width - 85,
-                      child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: TextField(
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: Theme.of(context).colorScheme.onPrimary),
-                            cursorColor:
-                                Theme.of(context).colorScheme.onPrimary,
-                            controller: textController,
-                            decoration: const InputDecoration(
-                                hintText: 'Search', border: InputBorder.none),
-                            onChanged: onSearchTextChanged,
-                          ))),
-                  IconButton(
-                    icon: const Icon(Icons.cancel),
-                    onPressed: () {
-                      textController.clear();
-                      onSearchTextChanged('');
-                    },
-                  )
-                ])),
-      ],
-    );
+    return AnimationConfiguration.staggeredList(
+        position: 1,
+        duration: const Duration(milliseconds: 500),
+        delay: const Duration(milliseconds: 25),
+        child: FadeInAnimation(
+            child: SlideAnimation(
+                verticalOffset: 35.0,
+                curve: Curves.easeOutCubic,
+                duration: const Duration(milliseconds: 500),
+                child: ScaleAnimation(
+                    scale: .9,
+                    child: Row(
+                      children: [
+                        Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(40),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
+                            ),
+                            margin: const EdgeInsets.only(bottom: 20),
+                            width: width,
+                            height: 50,
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Padding(
+                                      padding: EdgeInsets.only(left: 10),
+                                      child: Icon(Icons.search)),
+                                  SizedBox(
+                                      width: width - 85,
+                                      child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
+                                          child: TextField(
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimary),
+                                            cursorColor: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary,
+                                            controller: textController,
+                                            decoration: const InputDecoration(
+                                                hintText: 'Search',
+                                                border: InputBorder.none),
+                                            onChanged: onSearchTextChanged,
+                                          ))),
+                                  IconButton(
+                                    icon: const Icon(Icons.cancel),
+                                    onPressed: () {
+                                      textController.clear();
+                                      onSearchTextChanged('');
+                                    },
+                                  )
+                                ])),
+                      ],
+                    )))));
   }
 
   Widget buildView(List<BuildingAssessment> assessments) {

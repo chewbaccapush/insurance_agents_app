@@ -104,6 +104,11 @@ class _MeasurementFormState extends State<MeasurementForm> {
                               Validators.defaultValidator(value!),
                         ),
                         CustomTextFormField(
+                          suffix: const Padding(
+                            padding: EdgeInsets.only(top: 15.0),
+                            child: Text("metres",
+                                style: TextStyle(color: Colors.grey)),
+                          ),
                           type: const TextInputType.numberWithOptions(
                               decimal: false),
                           labelText: "Length",
@@ -116,6 +121,11 @@ class _MeasurementFormState extends State<MeasurementForm> {
                               Validators.measurementValidator(value!),
                         ),
                         CustomTextFormField(
+                          suffix: const Padding(
+                            padding: EdgeInsets.only(top: 15.0),
+                            child: Text("metres",
+                                style: TextStyle(color: Colors.grey)),
+                          ),
                           type: const TextInputType.numberWithOptions(
                               decimal: true),
                           labelText: "Height",
@@ -128,6 +138,11 @@ class _MeasurementFormState extends State<MeasurementForm> {
                               Validators.measurementValidator(value!),
                         ),
                         CustomTextFormField(
+                          suffix: const Padding(
+                            padding: EdgeInsets.only(top: 15.0),
+                            child: Text("metres",
+                                style: TextStyle(color: Colors.grey)),
+                          ),
                           type: const TextInputType.numberWithOptions(
                               decimal: true),
                           labelText: "Width",
@@ -140,6 +155,11 @@ class _MeasurementFormState extends State<MeasurementForm> {
                               Validators.measurementValidator(value!),
                         ),
                         CustomTextFormField(
+                          suffix: const Padding(
+                            padding: EdgeInsets.only(top: 15.0),
+                            child: Text("metres",
+                                style: TextStyle(color: Colors.grey)),
+                          ),
                           type: const TextInputType.numberWithOptions(
                               decimal: true),
                           labelText: "Radius",
@@ -151,44 +171,78 @@ class _MeasurementFormState extends State<MeasurementForm> {
                           validator: (value) =>
                               Validators.measurementValidator(value!),
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Color.fromARGB(148, 135, 18, 57),
-                              textStyle: TextStyle(fontSize: 15)),
-                          onPressed: () async => {
-                            if (_formKey.currentState!.validate())
-                              {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Saving..'),
-                                  ),
-                                ),
-                                await saveMeasurement().then((value) {
-                                  widget.buildingPart.id =
-                                      value.fk_buildingPartId;
-                                  widget.buildingAssessment.id = widget
-                                      .buildingPart.fk_buildingAssesmentId;
-                                  measurement.measurementId =
-                                      value.measurementId;
-                                }),
-                                if (!widget.buildingPart.measurements
-                                    .contains(measurement))
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton.icon(
+                              icon: const Icon(
+                                Icons.check_rounded,
+                                size: 18,
+                                color: Colors.white,
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                shape: const StadiumBorder(),
+                                primary: Theme.of(context).colorScheme.primary,
+                              ),
+                              onPressed: () async => {
+                                if (_formKey.currentState!.validate())
                                   {
-                                    widget.buildingPart.measurements
-                                        .add(measurement)
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Saving..'),
+                                      ),
+                                    ),
+                                    await saveMeasurement().then((value) {
+                                      widget.buildingPart.id =
+                                          value.fk_buildingPartId;
+                                      widget.buildingAssessment.id = widget
+                                          .buildingPart.fk_buildingAssesmentId;
+                                      measurement.measurementId =
+                                          value.measurementId;
+                                    }),
+                                    if (!widget.buildingPart.measurements
+                                        .contains(measurement))
+                                      {
+                                        widget.buildingPart.measurements
+                                            .add(measurement)
+                                      },
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => BuildingPartForm(
+                                            buildingAssessment:
+                                                widget.buildingAssessment,
+                                            buildingPart: widget.buildingPart),
+                                      ),
+                                    ),
                                   },
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => BuildingPartForm(
-                                        buildingAssessment:
-                                            widget.buildingAssessment,
-                                        buildingPart: widget.buildingPart),
-                                  ),
-                                ),
                               },
-                          },
-                          child: const Text("Save"),
-                        ),
+                              label: const Text("OK",
+                                  style: TextStyle(
+                                      fontSize: 15, color: Colors.white)),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: ElevatedButton.icon(
+                                icon: const Icon(
+                                  Icons.cancel_rounded,
+                                  size: 18,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shape: const StadiumBorder(),
+                                  primary:
+                                      Theme.of(context).colorScheme.primary,
+                                ),
+                                label: const Text("Cancel",
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.white)),
+                              ),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),

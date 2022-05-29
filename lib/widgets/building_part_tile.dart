@@ -211,7 +211,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
         ),
         Padding(
             padding:
-                const EdgeInsets.only(bottom: 15, left: 5, right: 30, top: 0),
+                const EdgeInsets.only(bottom: 15, left: 5, right: 15, top: 0),
             child: Theme(
                 data: ThemeData()
                     .copyWith(dividerColor: Color.fromARGB(0, 246, 0, 0)),

@@ -9,18 +9,20 @@ class CustomTextFormField extends StatelessWidget {
   final FormFieldValidator<String>? validator;
   final double? fontSize;
   final bool? enabeled;
+  final Widget? suffix;
 
-  const CustomTextFormField(
-      {Key? key,
-      required this.type,
-      this.labelText,
-      this.width,
-      this.initialValue,
-      this.onChanged,
-      this.validator,
-      this.fontSize,
-      this.enabeled})
-      : super(key: key);
+  const CustomTextFormField({
+    Key? key,
+    required this.type,
+    this.labelText,
+    this.width,
+    this.initialValue,
+    this.onChanged,
+    this.validator,
+    this.fontSize,
+    this.enabeled,
+    this.suffix,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,9 @@ class CustomTextFormField extends StatelessWidget {
   }
 
   InputDecoration inputDecoration(labelText, width) {
-    return InputDecoration(label: Text(labelText));
+    return InputDecoration(
+      label: Text(labelText),
+      suffixIcon: suffix,
+    );
   }
 }

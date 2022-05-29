@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:msg/screens/history.dart';
 
 class CustomDialog extends StatelessWidget {
   final String text;
@@ -25,7 +26,10 @@ class CustomDialog extends StatelessWidget {
                 children: [
                   RawMaterialButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.of(context).push(PageRouteBuilder(
+                          opaque: false,
+                          pageBuilder: (BuildContext context, _, __) =>
+                              const HistoryPage()));
                     },
                     elevation: 2.0,
                     fillColor: Theme.of(context).colorScheme.primary,
