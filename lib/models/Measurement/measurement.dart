@@ -57,7 +57,9 @@ class Measurement {
       MeasurementFields.length: length,
       MeasurementFields.height: height,
       MeasurementFields.width: width,
-      MeasurementFields.measurementType: EnumToString.convertToString(measurementType),
+      MeasurementFields.measurementType: measurementType != null
+          ? EnumToString.convertToString(measurementType)
+          : null,
       MeasurementFields.radius: radius,
       MeasurementFields.buildingPart: fk_buildingPartId,
       MeasurementFields.cubature: cubature
@@ -76,27 +78,25 @@ class Measurement {
   }
 
   static Measurement fromJson(Map<String, Object?> json) => Measurement(
-        measurementId: int.tryParse([MeasurementFields.id].toString()),
-        description: json[MeasurementFields.description] as String,
-        length: double.tryParse(json[MeasurementFields.length].toString()),
-        height: double.tryParse(json[MeasurementFields.height].toString()),
-        width: double.tryParse(json[MeasurementFields.width].toString()),
-        measurementType: EnumToString.fromString(MeasurementType.values, json[MeasurementFields.measurementType].toString()),
-        radius: double.tryParse(json[MeasurementFields.radius].toString()),
-        cubature: double.tryParse(json[MeasurementFields.cubature].toString())
-      );
+      measurementId: int.tryParse([MeasurementFields.id].toString()),
+      description: json[MeasurementFields.description] as String,
+      length: double.tryParse(json[MeasurementFields.length].toString()),
+      height: double.tryParse(json[MeasurementFields.height].toString()),
+      width: double.tryParse(json[MeasurementFields.width].toString()),
+      measurementType: EnumToString.fromString(MeasurementType.values,
+          json[MeasurementFields.measurementType].toString()),
+      radius: double.tryParse(json[MeasurementFields.radius].toString()),
+      cubature: double.tryParse(json[MeasurementFields.cubature].toString()));
 
-  Measurement copy({
-    int? id,
-    String? description,
-    double? length,
-    double? height,
-    double? width,
-    double? radius,
-    MeasurementType? measurementType,
-    double? cubature
-
-  }) =>
+  Measurement copy(
+          {int? id,
+          String? description,
+          double? length,
+          double? height,
+          double? width,
+          double? radius,
+          MeasurementType? measurementType,
+          double? cubature}) =>
       Measurement(
           measurementId: id ?? measurementId,
           description: description ?? this.description,
@@ -105,8 +105,7 @@ class Measurement {
           width: width ?? this.width,
           radius: radius ?? this.radius,
           measurementType: measurementType ?? this.measurementType,
-          cubature: cubature ?? this.cubature
-        );
+          cubature: cubature ?? this.cubature);
 
   get getDescription => this.description;
 
@@ -130,11 +129,10 @@ class Measurement {
 
   get getMeasurementType => this.measurementType;
 
-  set setMeasurementType(MeasurementType? measurementType) => this.measurementType = measurementType;
+  set setMeasurementType(MeasurementType? measurementType) =>
+      this.measurementType = measurementType;
 
   get getCubature => this.cubature;
 
-  set setCubature( cubature) => this.cubature = cubature;
-
-
+  set setCubature(cubature) => this.cubature = cubature;
 }
