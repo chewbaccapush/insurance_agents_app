@@ -8,6 +8,7 @@ import 'package:msg/widgets/custom_navbar.dart';
 import 'package:msg/widgets/custom_text_form_field.dart';
 
 import '../models/BuildingPart/building_part.dart';
+import '../services/storage_service.dart';
 
 class MeasurementForm extends StatefulWidget {
   final BuildingAssessment buildingAssessment;
@@ -182,7 +183,10 @@ class _MeasurementFormState extends State<MeasurementForm> {
                               ),
                               style: ElevatedButton.styleFrom(
                                 shape: const StadiumBorder(),
-                                primary: Color.fromARGB(148, 112, 14, 46),
+                                primary:
+                                    (StorageService.getAppThemeId() == false)
+                                        ? Color.fromARGB(220, 112, 14, 46)
+                                        : Color.fromARGB(148, 112, 14, 46),
                               ),
                               onPressed: () async => {
                                 if (_formKey.currentState!.validate())
@@ -233,7 +237,10 @@ class _MeasurementFormState extends State<MeasurementForm> {
                                 },
                                 style: ElevatedButton.styleFrom(
                                   shape: const StadiumBorder(),
-                                  primary: Color.fromARGB(148, 112, 14, 46),
+                                  primary:
+                                      (StorageService.getAppThemeId() == false)
+                                          ? Color.fromARGB(220, 112, 14, 46)
+                                          : Color.fromARGB(148, 112, 14, 46),
                                 ),
                                 label: const Text("Cancel",
                                     style: TextStyle(

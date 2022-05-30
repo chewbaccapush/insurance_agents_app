@@ -91,8 +91,11 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                     },
                                     style: ElevatedButton.styleFrom(
                                         shape: CircleBorder(),
-                                        primary: const Color.fromARGB(
-                                            148, 112, 14, 46)),
+                                        primary: (StorageService
+                                                    .getAppThemeId() ==
+                                                false)
+                                            ? Color.fromARGB(220, 112, 14, 46)
+                                            : Color.fromARGB(148, 112, 14, 46)),
                                   ),
                                 ]),
                               ),

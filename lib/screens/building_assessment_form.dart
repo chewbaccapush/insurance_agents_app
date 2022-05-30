@@ -11,6 +11,7 @@ import 'package:msg/widgets/date_form_field.dart';
 
 import '../models/Database/database_helper.dart';
 import '../services/sqs_sender.dart';
+import '../services/storage_service.dart';
 import '../widgets/alert.dart';
 
 class BuildingAssessmentForm extends StatefulWidget {
@@ -205,7 +206,10 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                 ),
                                 style: ElevatedButton.styleFrom(
                                   shape: const StadiumBorder(),
-                                  primary: Color.fromARGB(148, 112, 14, 46),
+                                  primary:
+                                      (StorageService.getAppThemeId() == false)
+                                          ? Color.fromARGB(220, 112, 14, 46)
+                                          : Color.fromARGB(148, 112, 14, 46),
                                 ),
                                 onPressed: () {
                                   // Validates form
@@ -253,7 +257,10 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               },
                               style: ElevatedButton.styleFrom(
                                 shape: const StadiumBorder(),
-                                primary: Color.fromARGB(148, 112, 14, 46),
+                                primary:
+                                    (StorageService.getAppThemeId() == false)
+                                        ? Color.fromARGB(220, 112, 14, 46)
+                                        : Color.fromARGB(148, 112, 14, 46),
                               ),
                               label: const Text("Cancel",
                                   style: TextStyle(
@@ -283,7 +290,10 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               },
                               style: ElevatedButton.styleFrom(
                                 shape: const StadiumBorder(),
-                                primary: Color.fromARGB(148, 112, 14, 46),
+                                primary:
+                                    (StorageService.getAppThemeId() == false)
+                                        ? Color.fromARGB(220, 112, 14, 46)
+                                        : Color.fromARGB(148, 112, 14, 46),
                               ),
                               label: const Text("Finalize",
                                   style: TextStyle(

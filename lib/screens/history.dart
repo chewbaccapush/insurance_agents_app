@@ -245,8 +245,13 @@ class _HistoryPageState extends State<HistoryPage> {
                                               ),
                                               style: ElevatedButton.styleFrom(
                                                 shape: const StadiumBorder(),
-                                                primary: const Color.fromARGB(
-                                                    148, 112, 14, 46),
+                                                primary: (StorageService
+                                                            .getAppThemeId() ==
+                                                        false)
+                                                    ? Color.fromARGB(
+                                                        220, 112, 14, 46)
+                                                    : Color.fromARGB(
+                                                        148, 112, 14, 46),
                                               ),
                                               onPressed: () => resendAll(),
                                               label: const Text("Send All",

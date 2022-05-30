@@ -58,15 +58,15 @@ class ThemeProvider extends ChangeNotifier {
     colorScheme: _customColorSchemeDark,
     textTheme: TextTheme(
       headline1: const TextStyle(
-          fontSize: 26, color: Colors.white, fontWeight: FontWeight.normal),
-      headline2: const TextStyle(
           fontSize: 24, color: Colors.white, fontWeight: FontWeight.normal),
-      headline3: const TextStyle(
+      headline2: const TextStyle(
           fontSize: 22, color: Colors.white, fontWeight: FontWeight.normal),
+      headline3: const TextStyle(
+          fontSize: 20, color: Colors.white, fontWeight: FontWeight.normal),
       bodyText1: const TextStyle(
-          fontSize: 18, color: Colors.white, fontWeight: FontWeight.normal),
+          fontSize: 16, color: Colors.white, fontWeight: FontWeight.normal),
       bodyText2: const TextStyle(
-          fontSize: 16,
+          fontSize: 14,
           color: Color.fromARGB(255, 219, 219, 219),
           fontWeight: FontWeight.normal),
       caption: TextStyle(
