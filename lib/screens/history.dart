@@ -244,9 +244,8 @@ class _HistoryPageState extends State<HistoryPage> {
                                               ),
                                               style: ElevatedButton.styleFrom(
                                                 shape: const StadiumBorder(),
-                                                primary: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
+                                                primary: const Color.fromARGB(
+                                                    148, 112, 14, 46),
                                               ),
                                               onPressed: () => resendAll(),
                                               label: const Text("Send All",
@@ -380,7 +379,7 @@ class _HistoryPageState extends State<HistoryPage> {
                     textColor: Colors.white,
                     trailing: AnimatedRotation(
                         turns: _isExpanded ? .5 : 0,
-                        duration: Duration(milliseconds: 400),
+                        duration: const Duration(milliseconds: 400),
                         child: const Icon(Icons.expand_circle_down_outlined,
                             size: 30)),
                     title: Text(
@@ -388,7 +387,7 @@ class _HistoryPageState extends State<HistoryPage> {
                       overflow: TextOverflow.fade,
                       maxLines: 1,
                       softWrap: false,
-                      style: Theme.of(context).textTheme.headline2,
+                      style: Theme.of(context).textTheme.headline3,
                     ),
                     children: [
                       BuildingPartTile(
@@ -409,7 +408,8 @@ class _HistoryPageState extends State<HistoryPage> {
 
     parts.forEach((element) {
       children.add(Container(
-          margin: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
+          margin:
+              const EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: Theme.of(context).colorScheme.tertiary,
@@ -465,7 +465,7 @@ class _HistoryPageState extends State<HistoryPage> {
                             ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20.0),
-                              color: Theme.of(context).colorScheme.primary,
+                              color: const Color.fromARGB(148, 112, 14, 46),
                             ),
                           ),
                         ),

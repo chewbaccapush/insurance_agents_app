@@ -205,8 +205,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                 ),
                                 style: ElevatedButton.styleFrom(
                                   shape: const StadiumBorder(),
-                                  primary:
-                                      Theme.of(context).colorScheme.primary,
+                                  primary: Color.fromARGB(148, 112, 14, 46),
                                 ),
                                 onPressed: () {
                                   // Validates form
@@ -254,7 +253,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               },
                               style: ElevatedButton.styleFrom(
                                 shape: const StadiumBorder(),
-                                primary: Theme.of(context).colorScheme.primary,
+                                primary: Color.fromARGB(148, 112, 14, 46),
                               ),
                               label: const Text("Cancel",
                                   style: TextStyle(
@@ -284,7 +283,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               },
                               style: ElevatedButton.styleFrom(
                                 shape: const StadiumBorder(),
-                                primary: Theme.of(context).colorScheme.primary,
+                                primary: Color.fromARGB(148, 112, 14, 46),
                               ),
                               label: const Text("Finalize",
                                   style: TextStyle(

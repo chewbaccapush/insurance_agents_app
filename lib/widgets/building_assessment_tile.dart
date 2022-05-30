@@ -1,9 +1,11 @@
 // import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:intl/intl.dart';
 import 'package:msg/screens/building_assessment_form.dart';
+import 'package:msg/services/theme_provider.dart';
 
 import '../models/BuildingAssessment/building_assessment.dart';
 
@@ -32,7 +34,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
       return const Icon(Icons.check_circle_rounded,
           size: 32, color: Colors.green);
     } else {
-      return const Icon(Icons.access_time_filled_rounded,
+      return const Icon(Icons.access_time_outlined,
           size: 32, color: Color.fromARGB(255, 197, 179, 24));
     }
   }
@@ -60,7 +62,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 30, bottom: 0, left: 35, right: 40),
+                                    top: 30, bottom: 0, left: 35, right: 25),
                                 child: Row(children: [
                                   getIcon(),
                                   Padding(
@@ -74,29 +76,23 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                     ),
                                   ),
                                   Spacer(),
-                                  ElevatedButton.icon(
-                                      icon: Icon(Icons.edit,
-                                          size: 22, color: Colors.white),
-                                      style: ElevatedButton.styleFrom(
-                                        shape: StadiumBorder(),
-                                        primary: Theme.of(widget.context)
-                                            .colorScheme
-                                            .secondary,
-                                      ),
-                                      onPressed: () {
-                                        Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                          builder: (context) =>
-                                              BuildingAssessmentForm(
-                                            buildingAssessment: widget.entry,
-                                          ),
-                                        ));
-                                      },
-                                      label: const Text(
-                                        "Edit",
-                                        style: TextStyle(
-                                            fontSize: 15, color: Colors.white),
-                                      )),
+                                  ElevatedButton(
+                                    child: Icon(Icons.edit,
+                                        size: 18, color: Colors.white),
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) =>
+                                            BuildingAssessmentForm(
+                                          buildingAssessment: widget.entry,
+                                        ),
+                                      ));
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        shape: CircleBorder(),
+                                        primary: const Color.fromARGB(
+                                            148, 112, 14, 46)),
+                                  ),
                                 ]),
                               ),
                               IntrinsicHeight(
@@ -330,10 +326,11 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                               turns: _isExpanded ? .5 : 0,
                                               duration:
                                                   Duration(milliseconds: 400),
-                                              child: const Icon(
+                                              child: Icon(
                                                   Icons
                                                       .expand_circle_down_outlined,
-                                                  size: 30)),
+                                                  size: 30,
+                                                  color: Colors.white)),
                                           title: Text(
                                             'Building parts',
                                             style: Theme.of(widget.context)

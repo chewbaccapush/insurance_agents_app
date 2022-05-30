@@ -272,7 +272,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                               ),
                               style: ElevatedButton.styleFrom(
                                 shape: const StadiumBorder(),
-                                primary: Theme.of(context).colorScheme.primary,
+                                primary: Color.fromARGB(148, 112, 14, 46),
                               ),
                               onPressed: () async => {
                                 if (_formKey.currentState!.validate())
@@ -316,8 +316,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                 },
                                 style: ElevatedButton.styleFrom(
                                   shape: const StadiumBorder(),
-                                  primary:
-                                      Theme.of(context).colorScheme.primary,
+                                  primary: Color.fromARGB(148, 112, 14, 46),
                                 ),
                                 label: const Text("Cancel",
                                     style: TextStyle(
