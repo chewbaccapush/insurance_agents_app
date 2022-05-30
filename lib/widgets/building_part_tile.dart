@@ -2,6 +2,7 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 
 import '../models/BuildingPart/building_part.dart';
+import '../services/storage_service.dart';
 
 class BuildingPartTile extends StatefulWidget {
   final BuildContext context;
@@ -273,8 +274,13 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                     trailing: AnimatedRotation(
                         turns: _isExpanded ? .5 : 0,
                         duration: Duration(milliseconds: 400),
-                        child:
-                            Icon(Icons.expand_circle_down_outlined, size: 30)),
+                        child: Icon(
+                          Icons.expand_circle_down_outlined,
+                          size: 30,
+                          color: (StorageService.getAppThemeId() == false)
+                              ? Color.fromARGB(148, 112, 14, 46)
+                              : Theme.of(context).colorScheme.onPrimary,
+                        )),
                     title: Text(
                       'Measurements',
                       style: Theme.of(widget.context).textTheme.headline3,

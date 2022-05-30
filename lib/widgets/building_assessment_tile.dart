@@ -1,13 +1,16 @@
 // import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:intl/intl.dart';
 import 'package:msg/screens/building_assessment_form.dart';
 import 'package:msg/services/navigator_service.dart';
+import 'package:msg/services/theme_provider.dart';
 
 import '../models/BuildingAssessment/building_assessment.dart';
 import '../services/state_service.dart';
+import '../services/storage_service.dart';
 
 class BuildingAssessmentTile extends StatefulWidget {
   final BuildContext context;
@@ -34,7 +37,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
       return const Icon(Icons.check_circle_rounded,
           size: 32, color: Colors.green);
     } else {
-      return const Icon(Icons.access_time_filled_rounded,
+      return const Icon(Icons.access_time_outlined,
           size: 32, color: Color.fromARGB(255, 197, 179, 24));
     }
   }
@@ -62,7 +65,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 30, bottom: 0, left: 35, right: 40),
+                                    top: 30, bottom: 0, left: 35, right: 25),
                                 child: Row(children: [
                                   getIcon(),
                                   Padding(
@@ -75,27 +78,24 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                           .headline1,
                                     ),
                                   ),
-                                  const Spacer(),
-                                  ElevatedButton.icon(
-                                      icon: const Icon(Icons.edit,
-                                          size: 22, color: Colors.white),
-                                      style: ElevatedButton.styleFrom(
-                                        shape: const StadiumBorder(),
-                                        primary: Theme.of(widget.context)
-                                            .colorScheme
-                                            .secondary,
-                                      ),
-                                      onPressed: () => {
-                                            StateService.buildingAssessment =
-                                                widget.entry!,
-                                            NavigatorService.navigateTo(context,
-                                                const BuildingAssessmentForm())
-                                          },
-                                      label: const Text(
-                                        "Edit",
-                                        style: TextStyle(
-                                            fontSize: 15, color: Colors.white),
-                                      )),
+                                  Spacer(),
+                                  ElevatedButton(
+                                    child: const Icon(Icons.edit,
+                                        size: 18, color: Colors.white),
+                                    onPressed: () => {
+                                      StateService.buildingAssessment =
+                                      widget.entry!,
+                                      NavigatorService.navigateTo(context,
+                                          const BuildingAssessmentForm())
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        shape: CircleBorder(),
+                                        primary: (StorageService
+                                                    .getAppThemeId() ==
+                                                false)
+                                            ? Color.fromARGB(220, 112, 14, 46)
+                                            : Color.fromARGB(148, 112, 14, 46)),
+                                  ),
                                 ]),
                               ),
                               IntrinsicHeight(
@@ -110,29 +110,28 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 10, left: 40),
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  'Appointment Date:    ',
-                                                  style:
-                                                      Theme.of(widget.context)
-                                                          .textTheme
-                                                          .bodyText1,
-                                                ),
-                                                Text(
-                                                    DateFormat.yMMMMd().format(
-                                                        widget.entry!
-                                                                .appointmentDate
-                                                            as DateTime),
+                                              padding: const EdgeInsets.only(
+                                                  top: 10, left: 40),
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    'Appointment Date:    ',
                                                     style:
                                                         Theme.of(widget.context)
                                                             .textTheme
-                                                            .bodyText2)
-                                              ],
-                                            ),
-                                          ),
+                                                            .bodyText1,
+                                                  ),
+                                                  Text(
+                                                      DateFormat.yMMMMd()
+                                                          .format(widget.entry!
+                                                                  .appointmentDate
+                                                              as DateTime),
+                                                      style: Theme.of(
+                                                              widget.context)
+                                                          .textTheme
+                                                          .bodyText2)
+                                                ],
+                                              )),
                                           Padding(
                                               padding: const EdgeInsets.only(
                                                   top: 15, left: 40),
@@ -330,10 +329,18 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                               turns: _isExpanded ? .5 : 0,
                                               duration:
                                                   Duration(milliseconds: 400),
-                                              child: const Icon(
+                                              child: Icon(
                                                   Icons
                                                       .expand_circle_down_outlined,
-                                                  size: 30)),
+                                                  size: 30,
+                                                  color: (StorageService
+                                                              .getAppThemeId() ==
+                                                          false)
+                                                      ? Color.fromARGB(
+                                                          148, 112, 14, 46)
+                                                      : Theme.of(context)
+                                                          .colorScheme
+                                                          .onPrimary)),
                                           title: Text(
                                             'Building parts',
                                             style: Theme.of(widget.context)

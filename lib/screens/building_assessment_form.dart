@@ -13,6 +13,8 @@ import '../models/BuildingPart/building_part.dart';
 import '../models/Database/database_helper.dart';
 import '../services/navigator_service.dart';
 import '../services/sqs_sender.dart';
+import '../services/storage_service.dart';
+import '../widgets/alert.dart';
 
 class BuildingAssessmentForm extends StatefulWidget {
   const BuildingAssessmentForm({Key? key}) : super(key: key);
@@ -161,26 +163,29 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             ElevatedButton.icon(
-                              icon: const Icon(
-                                Icons.check_rounded,
-                                size: 18,
-                                color: Colors.white,
-                              ),
-                              label: const Text(
-                                "OK",
-                                style: TextStyle(
-                                    fontSize: 15, color: Colors.white),
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                shape: const StadiumBorder(),
-                                primary: Theme.of(context).colorScheme.primary,
-                              ),
-                              onPressed: () async => {
-                                _formKey.currentState!.save(),
-                                await saveBuildingAssessment(),
-                                NavigatorService.navigateTo(
-                                    context, const HistoryPage()),
-                              },
+                                icon: const Icon(
+                                  Icons.check_rounded,
+                                  size: 18,
+                                  color: Colors.white,
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  shape: const StadiumBorder(),
+                                  primary:
+                                      (StorageService.getAppThemeId() == false)
+                                          ? Color.fromARGB(220, 112, 14, 46)
+                                          : Color.fromARGB(148, 112, 14, 46),
+                                ),
+                                onPressed: () async => {
+                                  _formKey.currentState!.save(),
+                                  await saveBuildingAssessment(),
+                                  NavigatorService.navigateTo(
+                                      context, const HistoryPage()),
+                                },
+                                label: const Text("OK",
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.white,
+                                    ),
+                                ),
                             ),
                             const Padding(padding: EdgeInsets.only(right: 10)),
                             ElevatedButton.icon(
@@ -189,19 +194,20 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                 size: 18,
                                 color: Colors.white,
                               ),
-                              label: const Text(
-                                "Cancel",
-                                style: TextStyle(
-                                    fontSize: 15, color: Colors.white),
-                              ),
                               onPressed: () {
                                 NavigatorService.navigateTo(
                                     context, const HistoryPage());
                               },
                               style: ElevatedButton.styleFrom(
                                 shape: const StadiumBorder(),
-                                primary: Theme.of(context).colorScheme.primary,
+                                primary:
+                                    (StorageService.getAppThemeId() == false)
+                                        ? Color.fromARGB(220, 112, 14, 46)
+                                        : Color.fromARGB(148, 112, 14, 46),
                               ),
+                              label: const Text("Cancel",
+                                  style: TextStyle(
+                                      fontSize: 15, color: Colors.white)),
                             ),
                             const Padding(padding: EdgeInsets.only(right: 10)),
                             ElevatedButton.icon(
@@ -221,7 +227,10 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               },
                               style: ElevatedButton.styleFrom(
                                 shape: const StadiumBorder(),
-                                primary: Theme.of(context).colorScheme.primary,
+                                primary:
+                                    (StorageService.getAppThemeId() == false)
+                                        ? Color.fromARGB(220, 112, 14, 46)
+                                        : Color.fromARGB(148, 112, 14, 46),
                               ),
                               label: const Text("Finalize",
                                   style: TextStyle(

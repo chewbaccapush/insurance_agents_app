@@ -32,7 +32,7 @@ class CustomDialog extends StatelessWidget {
                               const HistoryPage()));
                     },
                     elevation: 2.0,
-                    fillColor: Theme.of(context).colorScheme.primary,
+                    fillColor: const Color.fromARGB(148, 112, 14, 46),
                     child: const Icon(
                       Icons.clear_rounded,
                       size: 25.0,

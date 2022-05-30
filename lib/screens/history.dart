@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:msg/models/Measurement/measurement.dart';
 import 'package:msg/services/navigator_service.dart';
+import 'package:msg/services/storage_service.dart';
 import 'package:msg/widgets/alert.dart';
 import 'package:msg/screens/building_assessment_form.dart';
 import 'package:msg/screens/settings.dart';
@@ -243,9 +244,13 @@ class _HistoryPageState extends State<HistoryPage> {
                                               ),
                                               style: ElevatedButton.styleFrom(
                                                 shape: const StadiumBorder(),
-                                                primary: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
+                                                primary: (StorageService
+                                                            .getAppThemeId() ==
+                                                        false)
+                                                    ? Color.fromARGB(
+                                                        220, 112, 14, 46)
+                                                    : Color.fromARGB(
+                                                        148, 112, 14, 46),
                                               ),
                                               onPressed: () => resendAll(),
                                               label: const Text("Send All",
@@ -379,15 +384,20 @@ class _HistoryPageState extends State<HistoryPage> {
                     textColor: Colors.white,
                     trailing: AnimatedRotation(
                         turns: _isExpanded ? .5 : 0,
-                        duration: Duration(milliseconds: 400),
-                        child: const Icon(Icons.expand_circle_down_outlined,
-                            size: 30)),
+                        duration: const Duration(milliseconds: 400),
+                        child: Icon(
+                          Icons.expand_circle_down_outlined,
+                          size: 30,
+                          color: (StorageService.getAppThemeId() == false)
+                              ? Color.fromARGB(148, 112, 14, 46)
+                              : Theme.of(context).colorScheme.onPrimary,
+                        )),
                     title: Text(
                       element.description.toString(),
                       overflow: TextOverflow.fade,
                       maxLines: 1,
                       softWrap: false,
-                      style: Theme.of(context).textTheme.headline2,
+                      style: Theme.of(context).textTheme.headline3,
                     ),
                     children: [
                       BuildingPartTile(
@@ -408,7 +418,8 @@ class _HistoryPageState extends State<HistoryPage> {
 
     parts.forEach((element) {
       children.add(Container(
-          margin: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
+          margin:
+              const EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: Theme.of(context).colorScheme.tertiary,
@@ -463,9 +474,9 @@ class _HistoryPageState extends State<HistoryPage> {
                               vertical: 5.0,
                             ),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20.0),
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
+                                borderRadius: BorderRadius.circular(20.0),
+                                color: Color.fromARGB(255, 95, 10, 38)
+                                    .withOpacity(0.8)),
                           ),
                         ),
                       ),
@@ -490,9 +501,15 @@ class _HistoryPageState extends State<HistoryPage> {
                                       'All ',
                                       style: TextStyle(
                                           fontWeight: FontWeight.normal,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary),
+                                          color:
+                                              (StorageService.getAppThemeId() ==
+                                                          false &&
+                                                      alignment ==
+                                                          AlignedTo.all)
+                                                  ? Colors.white
+                                                  : Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimary),
                                     ),
                                     Text(
                                       '(' +
@@ -501,9 +518,15 @@ class _HistoryPageState extends State<HistoryPage> {
                                           ")",
                                       style: TextStyle(
                                           fontWeight: FontWeight.normal,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary,
+                                          color:
+                                              (StorageService.getAppThemeId() ==
+                                                          false &&
+                                                      alignment ==
+                                                          AlignedTo.all)
+                                                  ? Colors.white
+                                                  : Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimary,
                                           fontSize: 13.5),
                                     ),
                                   ],
@@ -528,9 +551,15 @@ class _HistoryPageState extends State<HistoryPage> {
                                       'Sent ',
                                       style: TextStyle(
                                           fontWeight: FontWeight.normal,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary),
+                                          color:
+                                              (StorageService.getAppThemeId() ==
+                                                          false &&
+                                                      alignment ==
+                                                          AlignedTo.sent)
+                                                  ? Colors.white
+                                                  : Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimary),
                                     ),
                                     Text(
                                       '(' +
@@ -538,9 +567,15 @@ class _HistoryPageState extends State<HistoryPage> {
                                           ')',
                                       style: TextStyle(
                                           fontWeight: FontWeight.normal,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary,
+                                          color:
+                                              (StorageService.getAppThemeId() ==
+                                                          false &&
+                                                      alignment ==
+                                                          AlignedTo.sent)
+                                                  ? Colors.white
+                                                  : Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimary,
                                           fontSize: 13.5),
                                     ),
                                   ],
@@ -566,9 +601,15 @@ class _HistoryPageState extends State<HistoryPage> {
                                         'Queue ',
                                         style: TextStyle(
                                             fontWeight: FontWeight.normal,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onPrimary),
+                                            color: (StorageService
+                                                            .getAppThemeId() ==
+                                                        false &&
+                                                    alignment ==
+                                                        AlignedTo.queue)
+                                                ? Colors.white
+                                                : Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimary),
                                       ),
                                     ),
                                     Text(
@@ -579,9 +620,15 @@ class _HistoryPageState extends State<HistoryPage> {
                                           ')',
                                       style: TextStyle(
                                           fontWeight: FontWeight.normal,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary,
+                                          color:
+                                              (StorageService.getAppThemeId() ==
+                                                          false &&
+                                                      alignment ==
+                                                          AlignedTo.queue)
+                                                  ? Colors.white
+                                                  : Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimary,
                                           fontSize: 13.5),
                                     ),
                                   ],
