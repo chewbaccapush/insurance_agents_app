@@ -4,6 +4,7 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:msg/models/Measurement/measurement.dart';
+import 'package:msg/services/navigator_service.dart';
 import 'package:msg/widgets/alert.dart';
 import 'package:msg/screens/building_assessment_form.dart';
 import 'package:msg/screens/settings.dart';
@@ -22,6 +23,7 @@ import '../models/BuildingAssessment/building_assessment.dart';
 import '../models/BuildingPart/building_part.dart';
 import '../models/Database/database_helper.dart';
 import '../services/sqs_sender.dart';
+import '../services/state_service.dart';
 
 enum AlignedTo { all, sent, queue }
 
@@ -212,12 +214,9 @@ class _HistoryPageState extends State<HistoryPage> {
                                               side: const BorderSide(
                                                   color: Colors.transparent)),
                                           onPressed: () => {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const BuildingAssessmentForm(),
-                                              ),
-                                            ),
+                                            StateService.resetState(),
+                                            NavigatorService.navigateTo(context,
+                                                const BuildingAssessmentForm())
                                           },
                                           label: Text(
                                             'Add Building Assessment',

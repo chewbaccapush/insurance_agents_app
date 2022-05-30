@@ -66,7 +66,7 @@ class DatabaseHelper {
           ${BuildingPartFields.cubature} $numericNullable,
           ${BuildingPartFields.value} $numericNullable,
           ${BuildingPartFields.sumInsured} $numericNullable,
-          FOREIGN KEY(${BuildingPartFields.buildingAssesment}) REFERENCES $tableBuildingAssesment(${BuildingAssessmentFields.id}) ON DELETE CASCADE
+          FOREIGN KEY(${BuildingPartFields.buildingAssesment}) REFERENCES $tableBuildingAssesment(${BuildingAssessmentFields.id})
           
       )''');
 
@@ -79,37 +79,25 @@ class DatabaseHelper {
           ${MeasurementFields.height} $numericNullable,
           ${MeasurementFields.width} $numericNullable,
           ${MeasurementFields.radius} $numericNullable,
-          FOREIGN KEY(${MeasurementFields.buildingPart}) REFERENCES $tableBuildingPart(${BuildingPartFields.id}) ON DELETE CASCADE
+          FOREIGN KEY(${MeasurementFields.buildingPart}) REFERENCES $tableBuildingPart(${BuildingPartFields.id})
       )''');
   }
 
-  Future<BuildingAssessment> persistAssessment(BuildingAssessment assessment) async {
+  persistAssessment(BuildingAssessment assessment) async {
     final db = await instance.database;
-
-    print("CLOG:");
-    print(assessment.buildingParts.length);
-    final assessmentId = await db.insert(
-      tableBuildingAssesment, 
-      assessment.toJson(), 
-      conflictAlgorithm: ConflictAlgorithm.replace
-    );
-
-    // final response = await createBuildingPartMeasurement(assessmentId, buildingParts);
-
-    return assessment.copy(id: assessmentId);
+    return await db.insert(tableBuildingAssesment, assessment.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
-  
 
-  Future<BuildingPart> persistBuildingPart(BuildingPart buildingPart, BuildingAssessment assessment) async {
+  Future<BuildingPart> persistBuildingPart(
+      BuildingPart buildingPart, BuildingAssessment assessment) async {
     debugPrint("SQL: saving building part");
     final db = await instance.database;
-
-    int assessmentIdInteger;
 
     if (assessment.id == null) {
       assessment.appointmentDate = new DateTime.now();
       assessment.sent = false;
-      buildingPart.fk_buildingAssesmentId = await db.insert(tableBuildingAssesment, assessment.toJson());
+      buildingPart.fk_buildingAssesmentId = await persistAssessment(assessment);
     } else {
       buildingPart.fk_buildingAssesmentId = assessment.id;
     }
@@ -121,33 +109,30 @@ class DatabaseHelper {
 
     //print(buildingPart.toJson());
     final buildingPartId = await db.insert(
-      tableBuildingPart,
-      buildingPart.toJson(), 
-      conflictAlgorithm: ConflictAlgorithm.replace
-    );
+        tableBuildingPart, buildingPart.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
 
     buildingPart.id = buildingPartId;
 
     return buildingPart.copy();
-  } 
+  }
 
-
-  Future<Measurement> persistMeasurement(Measurement measurement, BuildingPart buildingPart, BuildingAssessment assessment) async {
+  Future<Measurement> persistMeasurement(Measurement measurement,
+      BuildingPart buildingPart, BuildingAssessment assessment) async {
     final db = await instance.database;
 
     if (buildingPart.id == null) {
       buildingPart.description = "DRAFT";
-      BuildingPart tempPart = await persistBuildingPart(buildingPart, assessment);
+      BuildingPart tempPart =
+          await persistBuildingPart(buildingPart, assessment);
       measurement.fk_buildingPartId = tempPart.id;
     } else {
       measurement.fk_buildingPartId = buildingPart.id;
     }
 
     final measurementId = await db.insert(
-      tableMeasurement,
-      measurement.toJson(),
-      conflictAlgorithm: ConflictAlgorithm.replace
-    );
+        tableMeasurement, measurement.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
 
     print("PRE SEND:");
     measurement.measurementId = measurementId;
@@ -159,13 +144,15 @@ class DatabaseHelper {
   Future<int> deleteBuildingPart(int id) async {
     final db = await instance.database;
 
-    return await db.delete(tableBuildingPart, where: 'buildingPartId = ?', whereArgs: [id]);
+    return await db.delete(tableBuildingPart,
+        where: 'buildingPartId = ?', whereArgs: [id]);
   }
 
   Future<int> deleteMeasurement(int id) async {
     final db = await instance.database;
 
-    return await db.delete(tableMeasurement, where: 'measurementId = ?', whereArgs: [id]);
+    return await db
+        .delete(tableMeasurement, where: 'measurementId = ?', whereArgs: [id]);
   }
 
   // Future createBuildingPartMeasurement(

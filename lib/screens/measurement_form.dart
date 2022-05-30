@@ -3,22 +3,16 @@ import 'package:msg/models/BuildingAssessment/building_assessment.dart';
 import 'package:msg/models/Database/database_helper.dart';
 import 'package:msg/models/Measurement/measurement.dart';
 import 'package:msg/screens/building_part_form.dart';
+import 'package:msg/services/navigator_service.dart';
 import 'package:msg/validators/validators.dart';
 import 'package:msg/widgets/custom_navbar.dart';
 import 'package:msg/widgets/custom_text_form_field.dart';
 
 import '../models/BuildingPart/building_part.dart';
+import '../services/state_service.dart';
 
 class MeasurementForm extends StatefulWidget {
-  final BuildingAssessment buildingAssessment;
-  final BuildingPart buildingPart;
-  final Measurement? measurement;
-  const MeasurementForm(
-      {Key? key,
-      this.measurement,
-      required this.buildingPart,
-      required this.buildingAssessment})
-      : super(key: key);
+  const MeasurementForm({Key? key}) : super(key: key);
 
   @override
   State<MeasurementForm> createState() => _MeasurementFormState();
@@ -26,18 +20,22 @@ class MeasurementForm extends StatefulWidget {
 
 class _MeasurementFormState extends State<MeasurementForm> {
   final _formKey = GlobalKey<FormState>();
-  Measurement measurement = Measurement();
-  BuildingPart buildingPart = BuildingPart();
+  BuildingAssessment buildingAssessment = StateService.buildingAssessment;
+  BuildingPart buildingPart = StateService.buildingPart;
+  Measurement measurement = StateService.measurement;
 
-  @override
-  void initState() {
-    measurement = widget.measurement ?? Measurement();
-    super.initState();
-  }
+  saveMeasurement() async {
+    await DatabaseHelper.instance
+        .persistMeasurement(measurement, buildingPart, buildingAssessment)
+        .then((value) => {
+              measurement.measurementId = value.measurementId,
+              buildingPart.id = value.fk_buildingPartId,
+              buildingAssessment.id = buildingPart.fk_buildingAssesmentId
+            });
 
-  Future<Measurement> saveMeasurement() async {
-    return await DatabaseHelper.instance.persistMeasurement(
-        measurement, widget.buildingPart, widget.buildingAssessment);
+    if (!buildingPart.measurements.contains(measurement)) {
+      buildingPart.measurements.add(measurement);
+    }
   }
 
   @override
@@ -52,29 +50,11 @@ class _MeasurementFormState extends State<MeasurementForm> {
               leading: Row(
                 children: [
                   IconButton(
-                    onPressed: () => {
-                      if (!widget.buildingPart.measurements
-                          .contains(measurement))
-                        {
-                          if (measurement.description == null)
-                            {
-                              measurement.description = "DRAFT",
-                            },
-                          saveMeasurement().then((value) {
-                            measurement.measurementId = value.measurementId;
-                            widget.buildingPart.id = value.fk_buildingPartId;
-                            widget.buildingAssessment.id =
-                                widget.buildingPart.fk_buildingAssesmentId;
-                          }),
-                          buildingPart.measurements.add(measurement),
-                        },
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: ((context) => BuildingPartForm(
-                              buildingAssessment: widget.buildingAssessment,
-                              buildingPart: widget.buildingPart)),
-                        ),
-                      )
+                    onPressed: () async => {
+                      measurement.description ??= "DRAFT",
+                      await saveMeasurement(),
+                      NavigatorService.navigateTo(
+                          context, const BuildingPartForm())
                     },
                     icon: const Icon(Icons.arrow_back),
                   ),
@@ -157,7 +137,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
                         CustomTextFormField(
                           suffix: const Padding(
                             padding: EdgeInsets.only(top: 15.0),
-                            child: Text("metres",
+                            child: Text("meters",
                                 style: TextStyle(color: Colors.grey)),
                           ),
                           type: const TextInputType.numberWithOptions(
@@ -187,33 +167,9 @@ class _MeasurementFormState extends State<MeasurementForm> {
                               onPressed: () async => {
                                 if (_formKey.currentState!.validate())
                                   {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('Saving..'),
-                                      ),
-                                    ),
-                                    await saveMeasurement().then((value) {
-                                      widget.buildingPart.id =
-                                          value.fk_buildingPartId;
-                                      widget.buildingAssessment.id = widget
-                                          .buildingPart.fk_buildingAssesmentId;
-                                      measurement.measurementId =
-                                          value.measurementId;
-                                    }),
-                                    if (!widget.buildingPart.measurements
-                                        .contains(measurement))
-                                      {
-                                        widget.buildingPart.measurements
-                                            .add(measurement)
-                                      },
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => BuildingPartForm(
-                                            buildingAssessment:
-                                                widget.buildingAssessment,
-                                            buildingPart: widget.buildingPart),
-                                      ),
-                                    ),
+                                    await saveMeasurement(),
+                                    NavigatorService.navigateTo(
+                                        context, const BuildingPartForm())
                                   },
                               },
                               label: const Text("OK",
@@ -229,7 +185,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                                   color: Colors.white,
                                 ),
                                 onPressed: () {
-                                  Navigator.of(context).pop();
+                                  NavigatorService.navigateTo(
+                                      context, const BuildingPartForm());
                                 },
                                 style: ElevatedButton.styleFrom(
                                   shape: const StadiumBorder(),

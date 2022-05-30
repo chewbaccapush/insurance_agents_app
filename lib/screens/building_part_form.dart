@@ -7,22 +7,19 @@ import 'package:msg/models/BuildingPart/insured_type.dart';
 import 'package:msg/models/BuildingPart/risk_class.dart';
 import 'package:msg/models/Database/database_helper.dart';
 import 'package:msg/screens/building_assessment_form.dart';
-import 'package:msg/screens/history.dart';
 import 'package:msg/screens/measurement_form.dart';
-import 'package:msg/screens/settings.dart';
+import 'package:msg/services/navigator_service.dart';
 import 'package:msg/validators/validators.dart';
 import 'package:msg/widgets/add_objects_section.dart';
 import 'package:msg/widgets/custom_dropdown.dart';
 import 'package:msg/widgets/custom_text_form_field.dart';
 
+import '../models/Measurement/measurement.dart';
+import '../services/state_service.dart';
 import '../widgets/custom_navbar.dart';
 
 class BuildingPartForm extends StatefulWidget {
-  final BuildingAssessment buildingAssessment;
-  final BuildingPart? buildingPart;
-  const BuildingPartForm(
-      {Key? key, required this.buildingAssessment, this.buildingPart})
-      : super(key: key);
+  const BuildingPartForm({Key? key}) : super(key: key);
 
   @override
   State<BuildingPartForm> createState() => _BuildingPartFormState();
@@ -30,24 +27,20 @@ class BuildingPartForm extends StatefulWidget {
 
 class _BuildingPartFormState extends State<BuildingPartForm> {
   final _formKey = GlobalKey<FormState>();
-  BuildingPart buildingPart = BuildingPart();
+  BuildingAssessment buildingAssessment = StateService.buildingAssessment;
+  BuildingPart buildingPart = StateService.buildingPart;
   bool dirtyFlag = false;
-  @override
-  void initState() {
-    buildingPart = widget.buildingPart ??
-        BuildingPart(
-          fireProtection: FireProtection.bma,
-          constructionClass: ConstructionClass.mixedConstruction,
-          riskClass: RiskClass.one,
-          insuredType: InsuredType.newValue,
-        );
-    super.initState();
-  }
 
-  Future<BuildingPart> saveBuildingPart() async {
-    // BuildingAssessment tempAssessment = await DatabaseHelper.instance.persistAssessmentFromPart(widget.buildingAssessment);
-    return await DatabaseHelper.instance
-        .persistBuildingPart(buildingPart, widget.buildingAssessment);
+  saveBuildingPart() async {
+    await DatabaseHelper.instance
+        .persistBuildingPart(buildingPart, buildingAssessment)
+        .then((value) => {
+              buildingPart.id = value.id,
+              buildingAssessment.id = value.fk_buildingAssesmentId
+            });
+    if (!buildingAssessment.buildingParts.contains(buildingPart)) {
+      buildingAssessment.buildingParts.add(buildingPart);
+    }
   }
 
   @override
@@ -97,27 +90,14 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                 children: [
                   IconButton(
                     onPressed: () async => {
-                      if (!widget.buildingAssessment.buildingParts
+                      if (!buildingAssessment.buildingParts
                           .contains(buildingPart))
                         {
-                          if (buildingPart.description == null)
-                            {
-                              buildingPart.description = "DRAFT",
-                            },
-                          await saveBuildingPart().then((value) {
-                            buildingPart.id = value.id;
-                            widget.buildingAssessment.id =
-                                value.fk_buildingAssesmentId;
-                          }),
-                          widget.buildingAssessment.buildingParts
-                              .add(buildingPart),
+                          buildingPart.description ??= "DRAFT",
+                          await saveBuildingPart()
                         },
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: ((context) => BuildingAssessmentForm(
-                              buildingAssessment: widget.buildingAssessment)),
-                        ),
-                      )
+                      NavigatorService.navigateTo(
+                          context, const BuildingAssessmentForm())
                     },
                     icon: const Icon(Icons.arrow_back),
                   ),
@@ -167,6 +147,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CustomDropdown(
+                                hint: const Text("Fire Protection"),
                                 height: 60,
                                 value: buildingPart.fireProtection,
                                 items: fireProtectionList,
@@ -177,6 +158,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                 },
                                 width: 170),
                             CustomDropdown(
+                                hint: const Text("Construction Class"),
                                 height: 60,
                                 value: buildingPart.constructionClass,
                                 items: constructionClassList,
@@ -187,6 +169,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                 },
                                 width: 170),
                             CustomDropdown(
+                                hint: const Text("Risk Class"),
                                 height: 60,
                                 value: buildingPart.riskClass,
                                 items: riskClassList,
@@ -218,6 +201,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                             Padding(
                               padding: const EdgeInsets.only(top: 15.0),
                               child: CustomDropdown(
+                                  hint: const Text("Insured Type"),
                                   height: 60,
                                   value: buildingPart.insuredType,
                                   items: insuredTypeList,
@@ -226,7 +210,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                       buildingPart.insuredType = newValue;
                                     });
                                   },
-                                  width: 110),
+                                  width: 120),
                             ),
                             CustomTextFormField(
                               suffix: Icon(Icons.percent_rounded,
@@ -274,34 +258,19 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                 shape: const StadiumBorder(),
                                 primary: Theme.of(context).colorScheme.primary,
                               ),
+                              label: const Text(
+                                "OK",
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.white),
+                              ),
                               onPressed: () async => {
                                 if (_formKey.currentState!.validate())
                                   {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text('Saving..')),
-                                    ),
-                                    await saveBuildingPart().then((value) =>
-                                        widget.buildingAssessment.id =
-                                            value.fk_buildingAssesmentId),
-                                    if (!widget.buildingAssessment.buildingParts
-                                        .contains(buildingPart))
-                                      {
-                                        widget.buildingAssessment.buildingParts
-                                            .add(buildingPart)
-                                      },
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            BuildingAssessmentForm(
-                                                buildingAssessment:
-                                                    widget.buildingAssessment),
-                                      ),
-                                    )
+                                    await saveBuildingPart(),
+                                    NavigatorService.navigateTo(
+                                        context, const BuildingAssessmentForm())
                                   }
                               },
-                              label: const Text("OK",
-                                  style: TextStyle(
-                                      fontSize: 15, color: Colors.white)),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 10.0),
@@ -312,7 +281,8 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                   color: Colors.white,
                                 ),
                                 onPressed: () {
-                                  Navigator.of(context).pop();
+                                  NavigatorService.navigateTo(
+                                      context, const BuildingAssessmentForm());
                                 },
                                 style: ElevatedButton.styleFrom(
                                   shape: const StadiumBorder(),
@@ -337,17 +307,10 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                       children: <Widget>[
                         AddObjectsSection(
                           objectType: ObjectType.measurement,
-                          buildingPart: buildingPart,
-                          buildingAssessment: widget.buildingAssessment,
                           onPressed: () => {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => MeasurementForm(
-                                    buildingAssessment:
-                                        widget.buildingAssessment,
-                                    buildingPart: buildingPart),
-                              ),
-                            ),
+                            StateService.measurement = Measurement(),
+                            NavigatorService.navigateTo(
+                                context, const MeasurementForm())
                           },
                         ),
                       ],

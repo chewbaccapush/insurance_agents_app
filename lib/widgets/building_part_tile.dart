@@ -40,18 +40,56 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                     ],
                   )),
               Padding(
+                padding: const EdgeInsets.only(
+                    top: 5, bottom: 5, left: 20, right: 20),
+                child: Row(
+                  children: [
+                    widget.entry!.fireProtection != null
+                        ? Row(
+                            children: [
+                              Text(
+                                'Fire Protection:    ',
+                                style: Theme.of(widget.context)
+                                    .textTheme
+                                    .bodyText1,
+                              ),
+                              Text(
+                                EnumToString.convertToString(
+                                    widget.entry!.fireProtection),
+                                style: Theme.of(widget.context)
+                                    .textTheme
+                                    .bodyText2,
+                              )
+                            ],
+                          )
+                        : Container()
+                  ],
+                ),
+              ),
+              Padding(
                   padding: const EdgeInsets.only(
                       top: 5, bottom: 5, left: 20, right: 20),
                   child: Row(
                     children: [
-                      Text(
-                        'Fire Protection:    ',
-                        style: Theme.of(widget.context).textTheme.bodyText1,
-                      ),
-                      Text(
-                          EnumToString.convertToString(
-                              widget.entry!.fireProtection),
-                          style: Theme.of(widget.context).textTheme.bodyText2)
+                      widget.entry!.constructionClass != null
+                          ? Row(
+                              children: [
+                                Text(
+                                  'Construction Class:    ',
+                                  style: Theme.of(widget.context)
+                                      .textTheme
+                                      .bodyText1,
+                                ),
+                                Text(
+                                  EnumToString.convertToString(
+                                      widget.entry!.constructionClass),
+                                  style: Theme.of(widget.context)
+                                      .textTheme
+                                      .bodyText2,
+                                )
+                              ],
+                            )
+                          : Container()
                     ],
                   )),
               Padding(
@@ -59,28 +97,25 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                       top: 5, bottom: 5, left: 20, right: 20),
                   child: Row(
                     children: [
-                      Text(
-                        'Construction Class:    ',
-                        style: Theme.of(widget.context).textTheme.bodyText1,
-                      ),
-                      Text(
-                          EnumToString.convertToString(
-                              widget.entry!.constructionClass),
-                          style: Theme.of(widget.context).textTheme.bodyText2)
-                    ],
-                  )),
-              Padding(
-                  padding: const EdgeInsets.only(
-                      top: 5, bottom: 5, left: 20, right: 20),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Risk Class:    ',
-                        style: Theme.of(widget.context).textTheme.bodyText1,
-                      ),
-                      Text(
-                          EnumToString.convertToString(widget.entry!.riskClass),
-                          style: Theme.of(widget.context).textTheme.bodyText2)
+                      widget.entry!.riskClass != null
+                          ? Row(
+                              children: [
+                                Text(
+                                  'Risk Class:    ',
+                                  style: Theme.of(widget.context)
+                                      .textTheme
+                                      .bodyText1,
+                                ),
+                                Text(
+                                  EnumToString.convertToString(
+                                      widget.entry!.riskClass),
+                                  style: Theme.of(widget.context)
+                                      .textTheme
+                                      .bodyText2,
+                                )
+                              ],
+                            )
+                          : Container()
                     ],
                   )),
               Padding(
@@ -101,14 +136,25 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                       top: 5, bottom: 5, left: 20, right: 20),
                   child: Row(
                     children: [
-                      Text(
-                        'Insured Type:    ',
-                        style: Theme.of(widget.context).textTheme.bodyText1,
-                      ),
-                      Text(
-                          EnumToString.convertToString(
-                              widget.entry!.insuredType),
-                          style: Theme.of(widget.context).textTheme.bodyText2)
+                      widget.entry!.insuredType != null
+                          ? Row(
+                              children: [
+                                Text(
+                                  'Insured Type:    ',
+                                  style: Theme.of(widget.context)
+                                      .textTheme
+                                      .bodyText1,
+                                ),
+                                Text(
+                                  EnumToString.convertToString(
+                                      widget.entry!.insuredType),
+                                  style: Theme.of(widget.context)
+                                      .textTheme
+                                      .bodyText2,
+                                )
+                              ],
+                            )
+                          : Container()
                     ],
                   )),
               Padding(

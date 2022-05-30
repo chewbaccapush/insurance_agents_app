@@ -2,21 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:msg/models/BuildingAssessment/building_assessment.dart';
 import 'package:msg/screens/building_part_form.dart';
 import 'package:msg/screens/history.dart';
+import 'package:msg/services/state_service.dart';
 import 'package:msg/validators/validators.dart';
 import 'package:msg/widgets/add_objects_section.dart';
-import 'package:msg/widgets/custom_dialog.dart';
 import 'package:msg/widgets/custom_navbar.dart';
 import 'package:msg/widgets/custom_text_form_field.dart';
 import 'package:msg/widgets/date_form_field.dart';
 
+import '../models/BuildingPart/building_part.dart';
 import '../models/Database/database_helper.dart';
+import '../services/navigator_service.dart';
 import '../services/sqs_sender.dart';
-import '../widgets/alert.dart';
 
 class BuildingAssessmentForm extends StatefulWidget {
-  final BuildingAssessment? buildingAssessment;
-  const BuildingAssessmentForm({Key? key, this.buildingAssessment})
-      : super(key: key);
+  const BuildingAssessmentForm({Key? key}) : super(key: key);
 
   @override
   State<BuildingAssessmentForm> createState() => _BuildingAssessmentFormState();
@@ -24,57 +23,26 @@ class BuildingAssessmentForm extends StatefulWidget {
 
 class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
   final _formKey = GlobalKey<FormState>();
-  BuildingAssessment buildingAssessment = BuildingAssessment();
-
-  @override
-  void initState() {
-    buildingAssessment = widget.buildingAssessment ?? BuildingAssessment();
-    super.initState();
-  }
-
   final SQSSender sqsSender = SQSSender();
+  BuildingAssessment buildingAssessment = StateService.buildingAssessment;
+
+  // Save to database
+  Future<void> saveBuildingAssessment() async {
+    buildingAssessment.sent = false;
+    await DatabaseHelper.instance.persistAssessment(buildingAssessment);
+  }
 
   void sendMessage(String message) async {
     try {
       await sqsSender
           .sendToSQS(message)
           .then((value) => buildingAssessment.sent = true);
-      //showDialogPopup("Info", "Assessment successfully sent.");
-      Navigator.of(context).push(PageRouteBuilder(
-          opaque: false,
-          pageBuilder: (BuildContext context, _, __) => const CustomDialog(
-              text: 'Building assessment successfully sent')));
       buildingAssessment.sent = true;
     } catch (e) {
-      //showDialogPopup("Error", "Assessment not sent.");
-      Navigator.of(context).push(PageRouteBuilder(
-          opaque: false,
-          pageBuilder: (BuildContext context, _, __) =>
-              const CustomDialog(text: 'Building assessment not sent')));
       buildingAssessment.sent = false;
     } finally {
-      // Saves to database
-      localSave();
+      saveBuildingAssessment();
     }
-  }
-
-  // TODO: move to
-  void showDialogPopup(String title, String content) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Alert(title: title, content: content);
-        });
-  }
-
-  // // Locally save order to users device
-  Future<void> localSave() async {
-    debugPrint("SQL: saving...");
-    print("SQL:");
-    print(buildingAssessment);
-    buildingAssessment.sent = false;
-    BuildingAssessment assessment =
-        await DatabaseHelper.instance.persistAssessment(buildingAssessment);
   }
 
   @override
@@ -89,13 +57,8 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
               leading: Row(
                 children: [
                   IconButton(
-                    onPressed: () => {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: ((context) => const HistoryPage()),
-                        ),
-                      )
-                    },
+                    onPressed: () => NavigatorService.navigateTo(
+                        context, const HistoryPage()),
                     icon: const Icon(Icons.arrow_back),
                   ),
                   Text(
@@ -198,69 +161,49 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             ElevatedButton.icon(
-                                icon: const Icon(
-                                  Icons.check_rounded,
-                                  size: 18,
-                                  color: Colors.white,
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  shape: const StadiumBorder(),
-                                  primary:
-                                      Theme.of(context).colorScheme.primary,
-                                ),
-                                onPressed: () {
-                                  // Validates form
-                                  if (_formKey.currentState!.validate()) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text('Saving..')),
-                                    );
-                                    _formKey.currentState!.save();
-                                    localSave()
-                                        .then((val) {
-                                          print("sending.......");
-                                          Navigator.of(context).push(
-                                              PageRouteBuilder(
-                                                  opaque: false,
-                                                  pageBuilder: (BuildContext
-                                                              context,
-                                                          _,
-                                                          __) =>
-                                                      const CustomDialog(
-                                                          text:
-                                                              'Draft saved')));
-                                        })
-                                        .onError((error, stackTrace) => null)
-                                        .then((value) =>
-                                            ScaffoldMessenger.of(context)
-                                                .hideCurrentSnackBar());
-                                  }
-                                },
-                                label: const Text("OK",
-                                    style: TextStyle(
-                                        fontSize: 15, color: Colors.white))),
-                            Padding(padding: EdgeInsets.only(right: 10)),
+                              icon: const Icon(
+                                Icons.check_rounded,
+                                size: 18,
+                                color: Colors.white,
+                              ),
+                              label: const Text(
+                                "OK",
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.white),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                shape: const StadiumBorder(),
+                                primary: Theme.of(context).colorScheme.primary,
+                              ),
+                              onPressed: () async => {
+                                _formKey.currentState!.save(),
+                                await saveBuildingAssessment(),
+                                NavigatorService.navigateTo(
+                                    context, const HistoryPage()),
+                              },
+                            ),
+                            const Padding(padding: EdgeInsets.only(right: 10)),
                             ElevatedButton.icon(
                               icon: const Icon(
                                 Icons.cancel_rounded,
                                 size: 18,
                                 color: Colors.white,
                               ),
+                              label: const Text(
+                                "Cancel",
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.white),
+                              ),
                               onPressed: () {
-                                Navigator.of(context).push(PageRouteBuilder(
-                                    opaque: false,
-                                    pageBuilder:
-                                        (BuildContext context, _, __) =>
-                                            const HistoryPage()));
+                                NavigatorService.navigateTo(
+                                    context, const HistoryPage());
                               },
                               style: ElevatedButton.styleFrom(
                                 shape: const StadiumBorder(),
                                 primary: Theme.of(context).colorScheme.primary,
                               ),
-                              label: const Text("Cancel",
-                                  style: TextStyle(
-                                      fontSize: 15, color: Colors.white)),
                             ),
-                            Padding(padding: EdgeInsets.only(right: 10)),
+                            const Padding(padding: EdgeInsets.only(right: 10)),
                             ElevatedButton.icon(
                               icon: const Icon(
                                 Icons.send_rounded,
@@ -268,15 +211,9 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                 color: Colors.white,
                               ),
                               onPressed: () {
-                                //DatabaseHelper.instance.deleteDatabase("/data/user/0/com.example.msg/databases/msgDatabase.db");
                                 // Validates form
                                 if (_formKey.currentState!.validate()) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('Sending..')),
-                                  );
                                   _formKey.currentState!.save();
-
-                                  // Starts sending message process
                                   sendMessage(buildingAssessment
                                       .toMessage()
                                       .toString());
@@ -290,7 +227,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                   style: TextStyle(
                                       fontSize: 15, color: Colors.white)),
                             ),
-                            Padding(padding: EdgeInsets.only(left: 10)),
+                            const Padding(padding: EdgeInsets.only(left: 10)),
                             ElevatedButton(
                                 onPressed: () => DatabaseHelper.instance
                                     .deleteDatabase(
@@ -308,15 +245,10 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                         children: <Widget>[
                           AddObjectsSection(
                             objectType: ObjectType.buildingPart,
-                            buildingAssessment: buildingAssessment,
-                            onPressed: () => {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => BuildingPartForm(
-                                    buildingAssessment: buildingAssessment,
-                                  ),
-                                ),
-                              )
+                            onPressed: () async => {
+                              StateService.buildingPart = BuildingPart(),
+                              NavigatorService.navigateTo(
+                                  context, const BuildingPartForm()),
                             },
                           ),
                         ],

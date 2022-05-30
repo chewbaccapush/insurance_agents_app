@@ -4,21 +4,16 @@ import 'package:msg/models/BuildingPart/building_part.dart';
 import 'package:msg/models/Database/database_helper.dart';
 import 'package:msg/screens/measurement_form.dart';
 import 'package:msg/screens/building_part_form.dart';
+import 'package:msg/services/navigator_service.dart';
+import 'package:msg/services/state_service.dart';
 
 enum ObjectType { buildingPart, measurement }
 
 class AddObjectsSection extends StatefulWidget {
   final dynamic onPressed;
-  final BuildingAssessment buildingAssessment;
-  final BuildingPart? buildingPart;
   final ObjectType objectType;
 
-  const AddObjectsSection(
-      {Key? key,
-      this.onPressed,
-      required this.buildingAssessment,
-      this.buildingPart,
-      required this.objectType})
+  const AddObjectsSection({Key? key, this.onPressed, required this.objectType})
       : super(key: key);
 
   @override
@@ -26,57 +21,45 @@ class AddObjectsSection extends StatefulWidget {
 }
 
 class _AddObjectsSectionState extends State<AddObjectsSection> {
+  BuildingAssessment buildingAssessment = StateService.buildingAssessment;
+  BuildingPart buildingPart = StateService.buildingPart;
   List<ListTile> objects = [];
 
   @override
   void initState() {
     objects = widget.objectType == ObjectType.buildingPart
-        ? widget.buildingAssessment.buildingParts
-            .map((e) => ListTile(
-                  title: Text(e.description!),
-                  trailing: IconButton(
-                    onPressed: () => {
-                      print("PART:"),
-                      print(e.toJson()),
-                      DatabaseHelper.instance.deleteBuildingPart(e.id!)
-                    },
-                    icon: const Icon(Icons.delete),
-                  ),
-                  onTap: () => {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => BuildingPartForm(
-                          buildingPart: e,
-                          buildingAssessment: widget.buildingAssessment,
-                        ),
-                      ),
-                    )
-                  },
-                ))
+        ? buildingAssessment.buildingParts
+            .map(
+              (e) => ListTile(
+                title: Text(e.description!),
+                trailing: IconButton(
+                  onPressed: () =>
+                      {DatabaseHelper.instance.deleteBuildingPart(e.id!)},
+                  icon: const Icon(Icons.delete),
+                ),
+                onTap: () => {
+                  StateService.buildingPart = e,
+                  NavigatorService.navigateTo(context, const BuildingPartForm())
+                },
+              ),
+            )
             .toList()
-        : widget.buildingPart!.measurements
-            .map((e) => ListTile(
-                  title: Text(e.description!),
-                  trailing: IconButton(
-                    onPressed: () => {
-                      // TODO: make working
-                      DatabaseHelper.instance
-                          .deleteMeasurement(e.measurementId!)
-                    },
-                    icon: const Icon(Icons.delete),
-                  ),
-                  onTap: () => {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => MeasurementForm(
-                          measurement: e,
-                          buildingPart: widget.buildingPart!,
-                          buildingAssessment: widget.buildingAssessment,
-                        ),
-                      ),
-                    )
+        : buildingPart.measurements
+            .map(
+              (e) => ListTile(
+                title: Text(e.description!),
+                trailing: IconButton(
+                  onPressed: () => {
+                    DatabaseHelper.instance.deleteMeasurement(e.measurementId!)
                   },
-                ))
+                  icon: const Icon(Icons.delete),
+                ),
+                onTap: () => {
+                  StateService.measurement = e,
+                  NavigatorService.navigateTo(context, const MeasurementForm())
+                },
+              ),
+            )
             .toList();
     super.initState();
   }

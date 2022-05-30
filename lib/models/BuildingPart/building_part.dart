@@ -1,7 +1,4 @@
 // ignore_for_file: unnecessary_this
-
-import 'dart:ffi';
-import 'dart:math';
 import 'package:enum_to_string/enum_to_string.dart';
 
 import 'package:msg/models/BuildingPart/construction_class.dart';
@@ -82,13 +79,18 @@ class BuildingPart {
       BuildingPartFields.id: id,
       BuildingPartFields.description: description,
       BuildingPartFields.buildingYear: buildingYear,
-      BuildingPartFields.fireProtection:
-          EnumToString.convertToString(fireProtection),
-      BuildingPartFields.constructionClass:
-          EnumToString.convertToString(constructionClass),
-      BuildingPartFields.riskClass: EnumToString.convertToString(riskClass),
+      BuildingPartFields.fireProtection: fireProtection != null
+          ? EnumToString.convertToString(fireProtection)
+          : null,
+      BuildingPartFields.constructionClass: constructionClass != null
+          ? EnumToString.convertToString(constructionClass)
+          : null,
+      BuildingPartFields.riskClass:
+          riskClass != null ? EnumToString.convertToString(riskClass) : null,
       BuildingPartFields.unitPrice: unitPrice,
-      BuildingPartFields.insuredType: EnumToString.convertToString(insuredType),
+      BuildingPartFields.insuredType: insuredType != null
+          ? EnumToString.convertToString(insuredType)
+          : null,
       BuildingPartFields.devaluationPercentage: devaluationPercentage,
       BuildingPartFields.cubature: cubature,
       BuildingPartFields.sumInsured: sumInsured,
@@ -99,19 +101,24 @@ class BuildingPart {
 
   Map<String, dynamic> toMessage() {
     List measurementsJson = [];
-    measurements.forEach((measrement) {
-      measurementsJson.add(measrement.toMessage());
+    measurements.forEach((measurement) {
+      measurementsJson.add(measurement.toMessage());
     });
     return {
       BuildingPartFields.description: description,
       BuildingPartFields.buildingYear: buildingYear,
-      BuildingPartFields.fireProtection:
-          EnumToString.convertToString(fireProtection),
-      BuildingPartFields.constructionClass:
-          EnumToString.convertToString(constructionClass),
-      BuildingPartFields.riskClass: EnumToString.convertToString(riskClass),
+      BuildingPartFields.fireProtection: fireProtection != null
+          ? EnumToString.convertToString(fireProtection)
+          : null,
+      BuildingPartFields.constructionClass: constructionClass != null
+          ? EnumToString.convertToString(constructionClass)
+          : null,
+      BuildingPartFields.riskClass:
+          riskClass != null ? EnumToString.convertToString(riskClass) : null,
       BuildingPartFields.unitPrice: unitPrice,
-      BuildingPartFields.insuredType: EnumToString.convertToString(insuredType),
+      BuildingPartFields.insuredType: insuredType != null
+          ? EnumToString.convertToString(insuredType)
+          : null,
       BuildingPartFields.devaluationPercentage: devaluationPercentage,
       BuildingPartFields.cubature: cubature,
       BuildingPartFields.sumInsured: sumInsured,
@@ -124,20 +131,31 @@ class BuildingPart {
     return BuildingPart(
       id: int.tryParse(json[BuildingPartFields.id].toString()),
       description: json[BuildingPartFields.description] as String?,
-      buildingYear: int.tryParse(json[BuildingPartFields.buildingYear].toString()),
-      fireProtection: EnumToString.fromString(FireProtection.values, json[BuildingPartFields.fireProtection]) as FireProtection?,
-      constructionClass: EnumToString.fromString(ConstructionClass.values,
-          json[BuildingPartFields.constructionClass]) as ConstructionClass?,
-      riskClass: EnumToString.fromString(RiskClass.values, json[BuildingPartFields.riskClass]) as RiskClass?,
+      buildingYear:
+          int.tryParse(json[BuildingPartFields.buildingYear].toString()),
+      fireProtection: json[BuildingPartFields.fireProtection] != null
+          ? EnumToString.fromString(
+              FireProtection.values, json[BuildingPartFields.fireProtection])
+          : null,
+      constructionClass: json[BuildingPartFields.constructionClass] != null
+          ? EnumToString.fromString(ConstructionClass.values,
+              json[BuildingPartFields.constructionClass])
+          : null,
+      riskClass: json[BuildingPartFields.riskClass] != null
+          ? EnumToString.fromString(
+              RiskClass.values, json[BuildingPartFields.riskClass])
+          : null,
       unitPrice: double.tryParse(json[BuildingPartFields.unitPrice].toString()),
-      insuredType: EnumToString.fromString(
+      insuredType: json[BuildingPartFields.insuredType] != null
+          ? EnumToString.fromString(
               InsuredType.values, json[BuildingPartFields.insuredType])
-          as InsuredType?,
+          : null,
       cubature: double.tryParse(json[BuildingPartFields.cubature].toString()),
       devaluationPercentage: double.tryParse(
           json[BuildingPartFields.devaluationPercentage].toString()),
       value: double.tryParse(json[BuildingPartFields.value].toString()),
-      sumInsured: double.tryParse(json[BuildingPartFields.sumInsured].toString()),
+      sumInsured:
+          double.tryParse(json[BuildingPartFields.sumInsured].toString()),
     );
   }
 
@@ -157,21 +175,21 @@ class BuildingPart {
     int? fk_buildingAssesmentId,
   }) =>
       BuildingPart(
-        id: id ?? this.id,
-        description: description ?? this.description,
-        buildingYear: buildingYear ?? this.buildingYear,
-        fireProtection: fireProtection ?? this.fireProtection,
-        constructionClass: constructionClass ?? this.constructionClass,
-        riskClass: riskClass ?? this.riskClass,
-        unitPrice: unitPrice ?? this.unitPrice,
-        insuredType: insuredType ?? this.insuredType,
-        devaluationPercentage:
-            devaluationPercentage ?? this.devaluationPercentage,
-        cubature: cubature ?? this.cubature,
-        value: value ?? this.value,
-        sumInsured: sumInsured ?? this.sumInsured,
-        fk_buildingAssesmentId: fk_buildingAssesmentId ?? this.fk_buildingAssesmentId
-      );
+          id: id ?? this.id,
+          description: description ?? this.description,
+          buildingYear: buildingYear ?? this.buildingYear,
+          fireProtection: fireProtection ?? this.fireProtection,
+          constructionClass: constructionClass ?? this.constructionClass,
+          riskClass: riskClass ?? this.riskClass,
+          unitPrice: unitPrice ?? this.unitPrice,
+          insuredType: insuredType ?? this.insuredType,
+          devaluationPercentage:
+              devaluationPercentage ?? this.devaluationPercentage,
+          cubature: cubature ?? this.cubature,
+          value: value ?? this.value,
+          sumInsured: sumInsured ?? this.sumInsured,
+          fk_buildingAssesmentId:
+              fk_buildingAssesmentId ?? this.fk_buildingAssesmentId);
 
   calculateAll(Measurement measurement) {
     calculateCubature(measurement);

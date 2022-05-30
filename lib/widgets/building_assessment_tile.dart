@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:intl/intl.dart';
 import 'package:msg/screens/building_assessment_form.dart';
+import 'package:msg/services/navigator_service.dart';
 
 import '../models/BuildingAssessment/building_assessment.dart';
+import '../services/state_service.dart';
 
 class BuildingAssessmentTile extends StatefulWidget {
   final BuildContext context;
@@ -73,25 +75,22 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                           .headline1,
                                     ),
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
                                   ElevatedButton.icon(
-                                      icon: Icon(Icons.edit,
+                                      icon: const Icon(Icons.edit,
                                           size: 22, color: Colors.white),
                                       style: ElevatedButton.styleFrom(
-                                        shape: StadiumBorder(),
+                                        shape: const StadiumBorder(),
                                         primary: Theme.of(widget.context)
                                             .colorScheme
                                             .secondary,
                                       ),
-                                      onPressed: () {
-                                        Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                          builder: (context) =>
-                                              BuildingAssessmentForm(
-                                            buildingAssessment: widget.entry,
-                                          ),
-                                        ));
-                                      },
+                                      onPressed: () => {
+                                            StateService.buildingAssessment =
+                                                widget.entry!,
+                                            NavigatorService.navigateTo(context,
+                                                const BuildingAssessmentForm())
+                                          },
                                       label: const Text(
                                         "Edit",
                                         style: TextStyle(
@@ -111,28 +110,29 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10, left: 40),
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    'Appointment Date:    ',
+                                            padding: const EdgeInsets.only(
+                                                top: 10, left: 40),
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  'Appointment Date:    ',
+                                                  style:
+                                                      Theme.of(widget.context)
+                                                          .textTheme
+                                                          .bodyText1,
+                                                ),
+                                                Text(
+                                                    DateFormat.yMMMMd().format(
+                                                        widget.entry!
+                                                                .appointmentDate
+                                                            as DateTime),
                                                     style:
                                                         Theme.of(widget.context)
                                                             .textTheme
-                                                            .bodyText1,
-                                                  ),
-                                                  Text(
-                                                      DateFormat.yMMMMd()
-                                                          .format(widget.entry!
-                                                                  .appointmentDate
-                                                              as DateTime),
-                                                      style: Theme.of(
-                                                              widget.context)
-                                                          .textTheme
-                                                          .bodyText2)
-                                                ],
-                                              )),
+                                                            .bodyText2)
+                                              ],
+                                            ),
+                                          ),
                                           Padding(
                                               padding: const EdgeInsets.only(
                                                   top: 15, left: 40),
