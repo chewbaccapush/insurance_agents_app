@@ -8,6 +8,7 @@ import 'package:msg/screens/building_assessment_form.dart';
 import 'package:msg/services/theme_provider.dart';
 
 import '../models/BuildingAssessment/building_assessment.dart';
+import '../services/storage_service.dart';
 
 class BuildingAssessmentTile extends StatefulWidget {
   final BuildContext context;
@@ -330,7 +331,14 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                   Icons
                                                       .expand_circle_down_outlined,
                                                   size: 30,
-                                                  color: Colors.white)),
+                                                  color: (StorageService
+                                                              .getAppThemeId() ==
+                                                          false)
+                                                      ? Color.fromARGB(
+                                                          148, 112, 14, 46)
+                                                      : Theme.of(context)
+                                                          .colorScheme
+                                                          .onPrimary)),
                                           title: Text(
                                             'Building parts',
                                             style: Theme.of(widget.context)

@@ -14,7 +14,7 @@ ColorScheme _customColorSchemeLight = ColorScheme(
   onSurface: Colors.black,
   onBackground: Colors.black,
   onError: Colors.black,
-  brightness: Brightness.light,
+  brightness: Brightness.dark,
 );
 
 ColorScheme _customColorSchemeDark = ColorScheme(
@@ -30,7 +30,7 @@ ColorScheme _customColorSchemeDark = ColorScheme(
   onSurface: Colors.white,
   onBackground: Colors.white,
   onError: Colors.white,
-  brightness: Brightness.light,
+  brightness: Brightness.dark,
 );
 
 class ThemeProvider extends ChangeNotifier {
@@ -80,8 +80,12 @@ class ThemeProvider extends ChangeNotifier {
 
   ThemeData get getTheme => _selectedTheme;
 
-  void swapTheme() {
-    _selectedTheme = _selectedTheme == dark ? light : dark;
+  void setTheme(bool theme) {
+    if (theme == true) {
+      _selectedTheme = dark;
+    } else if (theme == false) {
+      _selectedTheme = light;
+    }
 
     if (_selectedTheme == dark) {
       StorageService.setAppThemeId(true);
