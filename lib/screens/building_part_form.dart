@@ -219,7 +219,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                           InsuredType.timeValue)
                                       ? Colors.grey
                                       : Colors.grey[700]),
-                              enabeled: buildingPart.insuredType ==
+                              enabled: buildingPart.insuredType ==
                                       InsuredType.timeValue
                                   ? true
                                   : false,
