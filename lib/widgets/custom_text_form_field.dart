@@ -8,7 +8,7 @@ class CustomTextFormField extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final FormFieldValidator<String>? validator;
   final double? fontSize;
-  final bool? enabeled;
+  final bool? enabled;
   final Widget? suffix;
 
   const CustomTextFormField({
@@ -20,7 +20,7 @@ class CustomTextFormField extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.fontSize,
-    this.enabeled,
+    this.enabled,
     this.suffix,
   }) : super(key: key);
 
@@ -32,7 +32,7 @@ class CustomTextFormField extends StatelessWidget {
         SizedBox(
           width: width,
           child: TextFormField(
-            enabled: enabeled,
+            enabled: enabled,
             cursorColor: Theme.of(context).colorScheme.onPrimary,
             style: TextStyle(
                 fontSize: fontSize,

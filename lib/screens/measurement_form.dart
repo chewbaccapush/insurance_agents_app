@@ -1,12 +1,16 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:msg/models/BuildingAssessment/building_assessment.dart';
 import 'package:msg/models/Database/database_helper.dart';
 import 'package:msg/models/Measurement/measurement.dart';
+import 'package:msg/models/Measurement/measurement_type.dart';
 import 'package:msg/screens/building_part_form.dart';
 import 'package:msg/services/navigator_service.dart';
 import 'package:msg/validators/validators.dart';
 import 'package:msg/widgets/custom_navbar.dart';
 import 'package:msg/widgets/custom_text_form_field.dart';
+import 'package:msg/widgets/measurement_type_switcher.dart';
 
 import '../models/BuildingPart/building_part.dart';
 import '../services/state_service.dart';
@@ -33,10 +37,35 @@ class _MeasurementFormState extends State<MeasurementForm> {
               buildingPart.id = value.fk_buildingPartId,
               buildingAssessment.id = buildingPart.fk_buildingAssesmentId
             });
+  @override
+  void initState() {
+    measurement.measurementType = measurement.measurementType ?? MeasurementType.rectangular;
+    super.initState();
+  }
 
     if (!buildingPart.measurements.contains(measurement)) {
       buildingPart.measurements.add(measurement);
     }
+  }
+
+  String getCubature() {
+    print(measurement.toJson());
+    if (measurement.measurementType == MeasurementType.rectangular) {
+      if (measurement.height != null &&
+       measurement.width != null &&
+       measurement.length != null) {
+        measurement.cubature = measurement.height! * measurement.width! * measurement.length!;
+      } else {
+        measurement.cubature = 0.0;
+      }
+    } else {
+      if (measurement.height != null && measurement.radius != null) {
+        measurement.cubature = 3.14 * pow(measurement.radius!, 2) * measurement.height!;
+      } else {
+        measurement.cubature = 0.0;
+      }
+    }
+    return measurement.cubature!.round().toString();
   }
 
   @override
@@ -84,7 +113,37 @@ class _MeasurementFormState extends State<MeasurementForm> {
                           validator: (value) =>
                               Validators.defaultValidator(value!),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Text("Measurement Type")
+                            ),
+                            Container(
+                              width: 270,
+                              child: MeasurementTypeSwitcher(
+                                measurement: measurement,
+                                onTapCircular: () =>
+                                  setState(() {
+                                    print(measurement.toJson());
+                                    measurement.measurementType = MeasurementType.circular;
+                                }),
+                                onTapRectangular: () =>
+                                  setState(() {
+                                    print(measurement.toJson());
+                                    measurement.measurementType = MeasurementType.rectangular;
+                                }),
+                            )),
+                            Spacer(),
+                            Text("Cubature: " + getCubature() + "m\u00B3"),
+                            ],
+                          ),
+                        ),
                         CustomTextFormField(
+                          enabled: measurement.measurementType == MeasurementType.rectangular ? true : false,
                           suffix: const Padding(
                             padding: EdgeInsets.only(top: 15.0),
                             child: Text("metres",
@@ -96,32 +155,16 @@ class _MeasurementFormState extends State<MeasurementForm> {
                           initialValue: measurement.length.toString(),
                           onChanged: (newValue) => {
                             setState(() =>
-                                {measurement.length = double.parse(newValue)})
+                                {measurement.length = double.tryParse(newValue)})
                           },
                           validator: (value) =>
                               Validators.measurementValidator(value!),
                         ),
                         CustomTextFormField(
+                          enabled: measurement.measurementType == MeasurementType.rectangular ? true : false,
                           suffix: const Padding(
                             padding: EdgeInsets.only(top: 15.0),
-                            child: Text("metres",
-                                style: TextStyle(color: Colors.grey)),
-                          ),
-                          type: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          labelText: "Height",
-                          initialValue: measurement.height.toString(),
-                          onChanged: (newValue) => {
-                            setState(() =>
-                                {measurement.height = double.parse(newValue)})
-                          },
-                          validator: (value) =>
-                              Validators.measurementValidator(value!),
-                        ),
-                        CustomTextFormField(
-                          suffix: const Padding(
-                            padding: EdgeInsets.only(top: 15.0),
-                            child: Text("metres",
+                            child: Text("meters",
                                 style: TextStyle(color: Colors.grey)),
                           ),
                           type: const TextInputType.numberWithOptions(
@@ -130,7 +173,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
                           initialValue: measurement.width.toString(),
                           onChanged: (newValue) => {
                             setState(() =>
-                                {measurement.width = double.parse(newValue)})
+                                {measurement.width = double.tryParse(newValue)})
                           },
                           validator: (value) =>
                               Validators.measurementValidator(value!),
@@ -143,11 +186,29 @@ class _MeasurementFormState extends State<MeasurementForm> {
                           ),
                           type: const TextInputType.numberWithOptions(
                               decimal: true),
+                          labelText: "Height",
+                          initialValue: measurement.height.toString(),
+                          onChanged: (newValue) => {
+                            setState(() =>
+                                {measurement.height = double.tryParse(newValue)})
+                          },
+                          validator: (value) =>
+                              Validators.measurementValidator(value!),
+                        ),
+                        CustomTextFormField(
+                          enabled: measurement.measurementType == MeasurementType.circular ? true : false,
+                          suffix: const Padding(
+                            padding: EdgeInsets.only(top: 15.0),
+                            child: Text("meters",
+                                style: TextStyle(color: Colors.grey)),
+                          ),
+                          type: const TextInputType.numberWithOptions(
+                              decimal: true),
                           labelText: "Radius",
                           initialValue: measurement.radius.toString(),
                           onChanged: (newValue) => {
                             setState(() =>
-                                {measurement.radius = double.parse(newValue)})
+                                {measurement.radius = double.tryParse(newValue)})
                           },
                           validator: (value) =>
                               Validators.measurementValidator(value!),

@@ -1,5 +1,8 @@
 import 'dart:ffi';
 
+import 'package:enum_to_string/enum_to_string.dart';
+import 'package:msg/models/Measurement/measurement_type.dart';
+
 const String tableMeasurement = 'measurement';
 
 class MeasurementFields {
@@ -9,7 +12,9 @@ class MeasurementFields {
     length,
     height,
     width,
-    width
+    width,
+    measurementType,
+    cubature
   ];
 
   static const String id = 'measurementId';
@@ -17,8 +22,10 @@ class MeasurementFields {
   static const String length = 'length';
   static const String height = 'height';
   static const String width = 'width';
+  static const String measurementType = 'measurement_type';
   static const String radius = 'radius';
   static const String buildingPart = 'fk_buildingPartId';
+  static const String cubature = 'cubature';
 }
 
 class Measurement {
@@ -29,6 +36,8 @@ class Measurement {
   double? width;
   double? radius;
   int? fk_buildingPartId;
+  MeasurementType? measurementType;
+  double? cubature = 0.0;
 
   Measurement(
       {this.measurementId,
@@ -37,7 +46,9 @@ class Measurement {
       this.height,
       this.width,
       this.radius,
-      this.fk_buildingPartId});
+      this.fk_buildingPartId,
+      this.measurementType,
+      this.cubature});
 
   Map<String, dynamic> toJson() {
     return {
@@ -46,8 +57,10 @@ class Measurement {
       MeasurementFields.length: length,
       MeasurementFields.height: height,
       MeasurementFields.width: width,
+      MeasurementFields.measurementType: EnumToString.convertToString(measurementType),
       MeasurementFields.radius: radius,
-      MeasurementFields.buildingPart: fk_buildingPartId
+      MeasurementFields.buildingPart: fk_buildingPartId,
+      MeasurementFields.cubature: cubature
     };
   }
 
@@ -58,6 +71,7 @@ class Measurement {
       MeasurementFields.height: height,
       MeasurementFields.width: width,
       MeasurementFields.radius: radius,
+      MeasurementFields.cubature: cubature
     };
   }
 
@@ -67,7 +81,9 @@ class Measurement {
         length: double.tryParse(json[MeasurementFields.length].toString()),
         height: double.tryParse(json[MeasurementFields.height].toString()),
         width: double.tryParse(json[MeasurementFields.width].toString()),
+        measurementType: EnumToString.fromString(MeasurementType.values, json[MeasurementFields.measurementType].toString()),
         radius: double.tryParse(json[MeasurementFields.radius].toString()),
+        cubature: double.tryParse(json[MeasurementFields.cubature].toString())
       );
 
   Measurement copy({
@@ -77,6 +93,9 @@ class Measurement {
     double? height,
     double? width,
     double? radius,
+    MeasurementType? measurementType,
+    double? cubature
+
   }) =>
       Measurement(
           measurementId: id ?? measurementId,
@@ -84,7 +103,10 @@ class Measurement {
           length: length ?? this.length,
           height: height ?? this.height,
           width: width ?? this.width,
-          radius: radius ?? this.radius);
+          radius: radius ?? this.radius,
+          measurementType: measurementType ?? this.measurementType,
+          cubature: cubature ?? this.cubature
+        );
 
   get getDescription => this.description;
 
@@ -105,4 +127,14 @@ class Measurement {
   get getRadius => this.radius;
 
   set setRadius(radius) => this.radius = radius;
+
+  get getMeasurementType => this.measurementType;
+
+  set setMeasurementType(MeasurementType? measurementType) => this.measurementType = measurementType;
+
+  get getCubature => this.cubature;
+
+  set setCubature( cubature) => this.cubature = cubature;
+
+
 }
