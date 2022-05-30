@@ -78,7 +78,9 @@ class DatabaseHelper {
           ${MeasurementFields.length} $numericNullable,
           ${MeasurementFields.height} $numericNullable,
           ${MeasurementFields.width} $numericNullable,
+          ${MeasurementFields.measurementType} $numericNullable,
           ${MeasurementFields.radius} $numericNullable,
+          ${MeasurementFields.cubature} $numericNullable,
           FOREIGN KEY(${MeasurementFields.buildingPart}) REFERENCES $tableBuildingPart(${BuildingPartFields.id})
       )''');
   }
@@ -123,16 +125,17 @@ class DatabaseHelper {
 
     if (buildingPart.id == null) {
       buildingPart.description = "DRAFT";
-      BuildingPart tempPart =
-          await persistBuildingPart(buildingPart, assessment);
+      BuildingPart tempPart = await persistBuildingPart(buildingPart, assessment);
       measurement.fk_buildingPartId = tempPart.id;
     } else {
       measurement.fk_buildingPartId = buildingPart.id;
     }
 
     final measurementId = await db.insert(
-        tableMeasurement, measurement.toJson(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
+      tableMeasurement,
+      measurement.toJson(),
+      conflictAlgorithm: ConflictAlgorithm.replace
+    );
 
     print("PRE SEND:");
     measurement.measurementId = measurementId;
@@ -144,44 +147,14 @@ class DatabaseHelper {
   Future<int> deleteBuildingPart(int id) async {
     final db = await instance.database;
 
-    return await db.delete(tableBuildingPart,
-        where: 'buildingPartId = ?', whereArgs: [id]);
+    return await db.delete(tableBuildingPart, where: 'buildingPartId = ?', whereArgs: [id]);
   }
 
   Future<int> deleteMeasurement(int id) async {
     final db = await instance.database;
 
-    return await db
-        .delete(tableMeasurement, where: 'measurementId = ?', whereArgs: [id]);
+    return await db.delete(tableMeasurement, where: 'measurementId = ?', whereArgs: [id]);
   }
-
-  // Future createBuildingPartMeasurement(
-  //     int assessmentId, List<BuildingPart> buildingParts) async {
-  //     final db = await instance.database;
-
-  //     if (buildingParts.isEmpty) {
-  //     throw Exception("No Building Parts inserted.");
-  //   }
-
-  //   // !!! NEED TO ALSO CALCULATE CUBATURE, SUM INSURED AND VALUE !!!
-  //   for (int i = 0; i < buildingParts.length; i++) {
-  //     buildingParts[i].fk_buildingAssesmentId = assessmentId;
-  //     buildingParts[i].cubature = 0.0;
-  //     buildingParts[i].value = 0.0;
-  //     buildingParts[i].sumInsured = 0.0;
-
-  //     final buildingPartId =
-  //         await db.insert(tableBuildingPart, buildingParts[i].toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
-
-  //     for (int j = 0; j < buildingParts[i].measurements.length; j++) {
-  //       buildingParts[i].measurements[j].fk_buildingPartId = buildingPartId;
-  //       await db.insert(
-  //           tableMeasurement, buildingParts[i].measurements[j].toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
-  //     }
-  //   }
-
-  //   return "Successfully inserted Building Assessment.";
-  // }
 
   Future<BuildingAssessment> readAssessment(int id) async {
     final db = await instance.database;

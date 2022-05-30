@@ -1,0 +1,1 @@
+enum MeasurementType { rectangular, circular }

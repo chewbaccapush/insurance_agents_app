@@ -61,7 +61,7 @@ class BuildingAssessment {
       BuildingAssessmentFields.numOfAppartments: numOfAppartments,
       BuildingAssessmentFields.voluntaryDeduction: voluntaryDeduction,
       BuildingAssessmentFields.assessmentFee: assessmentFee,
-      BuildingAssessmentFields.sent: sent
+      BuildingAssessmentFields.sent: sent == true ? 1 : 0
     };
   }
 
