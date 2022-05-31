@@ -15,6 +15,7 @@ import 'package:msg/widgets/measurement_type_switcher.dart';
 import '../models/BuildingPart/building_part.dart';
 import '../services/state_service.dart';
 import '../services/storage_service.dart';
+import '../widgets/custom_popup.dart';
 
 class MeasurementForm extends StatefulWidget {
   const MeasurementForm({Key? key}) : super(key: key);
@@ -28,6 +29,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
   BuildingAssessment buildingAssessment = StateService.buildingAssessment;
   BuildingPart buildingPart = StateService.buildingPart;
   Measurement measurement = StateService.measurement;
+  Measurement uneditedMeasurement = Measurement();
+  bool dirtyFlag = false;
 
   saveMeasurement() async {
     await DatabaseHelper.instance
@@ -45,6 +48,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
 
   @override
   void initState() {
+    uneditedMeasurement = measurement.copy();
     measurement.measurementType =
         measurement.measurementType ?? MeasurementType.rectangular;
     super.initState();
@@ -84,8 +88,57 @@ class _MeasurementFormState extends State<MeasurementForm> {
                 children: [
                   IconButton(
                     onPressed: () async => {
-                      measurement.description ??= "DRAFT",
-                      await saveMeasurement(),
+                      if (dirtyFlag)
+                        {
+                          await showDialog(
+                            context: context,
+                            builder: (BuildContext context) => CustomDialog(
+                              title: const Text("Save Changes?"),
+                              actions: [
+                                ElevatedButton(
+                                  child: const Text("No"),
+                                  style: ElevatedButton.styleFrom(
+                                    shape: const StadiumBorder(),
+                                    primary: (StorageService.getAppThemeId() ==
+                                            false)
+                                        ? const Color.fromARGB(220, 112, 14, 46)
+                                        : const Color.fromARGB(
+                                            148, 112, 14, 46),
+                                  ),
+                                  onPressed: () => {
+                                    if (buildingPart.measurements
+                                        .contains(measurement))
+                                      {
+                                        buildingPart.measurements
+                                            .remove(measurement),
+                                        buildingPart.measurements
+                                            .add(uneditedMeasurement),
+                                      },
+                                    NavigatorService.navigateTo(
+                                        context, const BuildingPartForm())
+                                  },
+                                ),
+                                ElevatedButton(
+                                  child: const Text("Yes"),
+                                  style: ElevatedButton.styleFrom(
+                                    shape: const StadiumBorder(),
+                                    primary: (StorageService.getAppThemeId() ==
+                                            false)
+                                        ? const Color.fromARGB(220, 112, 14, 46)
+                                        : const Color.fromARGB(
+                                            148, 112, 14, 46),
+                                  ),
+                                  onPressed: () async => {
+                                    measurement.description ??= "DRAFT",
+                                    await saveMeasurement(),
+                                    NavigatorService.navigateTo(
+                                        context, const BuildingPartForm())
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        },
                       NavigatorService.navigateTo(
                           context, const BuildingPartForm())
                     },
@@ -111,7 +164,10 @@ class _MeasurementFormState extends State<MeasurementForm> {
                           labelText: "Description",
                           initialValue: measurement.description,
                           onChanged: (newValue) => {
-                            setState(() => {measurement.description = newValue})
+                            setState(() => {
+                                  dirtyFlag = true,
+                                  measurement.description = newValue,
+                                })
                           },
                           validator: (value) =>
                               Validators.defaultValidator(value!),
@@ -121,8 +177,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Padding(
-                                  padding: const EdgeInsets.only(right: 10),
+                              const Padding(
+                                  padding: EdgeInsets.only(right: 10),
                                   child: Text("Measurement Type")),
                               Container(
                                   width: 270,
@@ -160,6 +216,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
                           initialValue: measurement.length.toString(),
                           onChanged: (newValue) => {
                             setState(() => {
+                                  dirtyFlag = true,
                                   measurement.length = double.tryParse(newValue)
                                 })
                           },
@@ -181,8 +238,10 @@ class _MeasurementFormState extends State<MeasurementForm> {
                           labelText: "Width",
                           initialValue: measurement.width.toString(),
                           onChanged: (newValue) => {
-                            setState(() =>
-                                {measurement.width = double.tryParse(newValue)})
+                            setState(() => {
+                                  dirtyFlag = true,
+                                  measurement.width = double.tryParse(newValue),
+                                })
                           },
                           validator: (value) =>
                               Validators.measurementValidator(value!),
@@ -199,6 +258,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
                           initialValue: measurement.height.toString(),
                           onChanged: (newValue) => {
                             setState(() => {
+                                  dirtyFlag = true,
                                   measurement.height = double.tryParse(newValue)
                                 })
                           },
@@ -221,6 +281,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
                           initialValue: measurement.radius.toString(),
                           onChanged: (newValue) => {
                             setState(() => {
+                                  dirtyFlag = true,
                                   measurement.radius = double.tryParse(newValue)
                                 })
                           },

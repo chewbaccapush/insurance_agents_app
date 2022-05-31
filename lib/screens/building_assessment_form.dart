@@ -14,6 +14,7 @@ import '../models/Database/database_helper.dart';
 import '../services/navigator_service.dart';
 import '../services/sqs_sender.dart';
 import '../services/storage_service.dart';
+import '../widgets/custom_popup.dart';
 
 class BuildingAssessmentForm extends StatefulWidget {
   const BuildingAssessmentForm({Key? key}) : super(key: key);
@@ -26,6 +27,14 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
   final _formKey = GlobalKey<FormState>();
   final SQSSender sqsSender = SQSSender();
   BuildingAssessment buildingAssessment = StateService.buildingAssessment;
+  BuildingAssessment uneditedBuildingAssessment = BuildingAssessment();
+  bool dirtyFlag = false;
+
+  @override
+  void initState() {
+    uneditedBuildingAssessment = buildingAssessment.copy();
+    super.initState();
+  }
 
   // Save to database
   Future<void> saveBuildingAssessment() async {
@@ -58,8 +67,51 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
               leading: Row(
                 children: [
                   IconButton(
-                    onPressed: () => NavigatorService.navigateTo(
-                        context, const HistoryPage()),
+                    onPressed: () async => {
+                      if (dirtyFlag)
+                        {
+                          await showDialog(
+                            context: context,
+                            builder: (BuildContext context) => CustomDialog(
+                              title: const Text("Save Changes?"),
+                              actions: [
+                                ElevatedButton(
+                                  child: const Text("No"),
+                                  style: ElevatedButton.styleFrom(
+                                    shape: const StadiumBorder(),
+                                    primary: (StorageService.getAppThemeId() ==
+                                            false)
+                                        ? const Color.fromARGB(220, 112, 14, 46)
+                                        : const Color.fromARGB(
+                                            148, 112, 14, 46),
+                                  ),
+                                  onPressed: () => {
+                                    NavigatorService.navigateTo(
+                                        context, const HistoryPage())
+                                  },
+                                ),
+                                ElevatedButton(
+                                  child: const Text("Yes"),
+                                  style: ElevatedButton.styleFrom(
+                                    shape: const StadiumBorder(),
+                                    primary: (StorageService.getAppThemeId() ==
+                                            false)
+                                        ? const Color.fromARGB(220, 112, 14, 46)
+                                        : const Color.fromARGB(
+                                            148, 112, 14, 46),
+                                  ),
+                                  onPressed: () async => {
+                                    await saveBuildingAssessment(),
+                                    NavigatorService.navigateTo(
+                                        context, const HistoryPage())
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        },
+                      NavigatorService.navigateTo(context, const HistoryPage())
+                    },
                     icon: const Icon(Icons.arrow_back),
                   ),
                   Text(
@@ -93,8 +145,10 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                           labelText: "Description",
                           initialValue: buildingAssessment.description,
                           onChanged: (newValue) => {
-                            setState(() =>
-                                {buildingAssessment.description = newValue})
+                            setState(() => {
+                                  dirtyFlag = true,
+                                  buildingAssessment.description = newValue,
+                                })
                           },
                           validator: (value) =>
                               Validators.defaultValidator(value!),
@@ -104,8 +158,10 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                           labelText: "Assessment Cause",
                           initialValue: buildingAssessment.assessmentCause,
                           onChanged: (newValue) => {
-                            setState(() =>
-                                {buildingAssessment.assessmentCause = newValue})
+                            setState(() => {
+                                  dirtyFlag = true,
+                                  buildingAssessment.assessmentCause = newValue,
+                                })
                           },
                           validator: (value) =>
                               Validators.defaultValidator(value!),
@@ -122,6 +178,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                   .toString(),
                               onChanged: (newValue) => {
                                 setState(() => {
+                                      dirtyFlag = true,
                                       buildingAssessment.numOfAppartments =
                                           int.parse(newValue)
                                     })
@@ -140,6 +197,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                   .toString(),
                               onChanged: (newValue) => {
                                 setState(() => {
+                                      dirtyFlag = true,
                                       buildingAssessment.voluntaryDeduction =
                                           double.parse(newValue)
                                     })
@@ -158,6 +216,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                   buildingAssessment.assessmentFee.toString(),
                               onChanged: (newValue) => {
                                 setState(() => {
+                                      dirtyFlag = true,
                                       buildingAssessment.assessmentFee =
                                           double.parse(newValue)
                                     })

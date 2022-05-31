@@ -13,6 +13,7 @@ import 'package:msg/services/navigator_service.dart';
 import 'package:msg/validators/validators.dart';
 import 'package:msg/widgets/add_objects_section.dart';
 import 'package:msg/widgets/custom_dropdown.dart';
+import 'package:msg/widgets/custom_popup.dart';
 import 'package:msg/widgets/custom_text_form_field.dart';
 
 import '../models/Measurement/measurement.dart';
@@ -31,7 +32,14 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
   final _formKey = GlobalKey<FormState>();
   BuildingAssessment buildingAssessment = StateService.buildingAssessment;
   BuildingPart buildingPart = StateService.buildingPart;
+  BuildingPart uneditedBuildingPart = BuildingPart();
   bool dirtyFlag = false;
+
+  @override
+  void initState() {
+    uneditedBuildingPart = buildingPart.copy();
+    super.initState();
+  }
 
   int? getCubature() {
     buildingPart.cubature = 0;
@@ -130,11 +138,54 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                 children: [
                   IconButton(
                     onPressed: () async => {
-                      if (!buildingAssessment.buildingParts
-                          .contains(buildingPart))
+                      if (dirtyFlag)
                         {
-                          buildingPart.description ??= "DRAFT",
-                          await saveBuildingPart()
+                          await showDialog(
+                            context: context,
+                            builder: (BuildContext context) => CustomDialog(
+                              title: const Text("Save Changes?"),
+                              actions: [
+                                ElevatedButton(
+                                  child: const Text("No"),
+                                  style: ElevatedButton.styleFrom(
+                                    shape: const StadiumBorder(),
+                                    primary: (StorageService.getAppThemeId() ==
+                                            false)
+                                        ? Color.fromARGB(220, 112, 14, 46)
+                                        : Color.fromARGB(148, 112, 14, 46),
+                                  ),
+                                  onPressed: () => {
+                                    if (buildingAssessment.buildingParts
+                                        .contains(buildingPart))
+                                      {
+                                        buildingAssessment.buildingParts
+                                            .remove(buildingPart),
+                                        buildingAssessment.buildingParts
+                                            .add(uneditedBuildingPart),
+                                      },
+                                    NavigatorService.navigateTo(
+                                        context, const BuildingAssessmentForm())
+                                  },
+                                ),
+                                ElevatedButton(
+                                  child: const Text("Yes"),
+                                  style: ElevatedButton.styleFrom(
+                                    shape: const StadiumBorder(),
+                                    primary: (StorageService.getAppThemeId() ==
+                                            false)
+                                        ? Color.fromARGB(220, 112, 14, 46)
+                                        : Color.fromARGB(148, 112, 14, 46),
+                                  ),
+                                  onPressed: () async => {
+                                    buildingPart.description ??= "DRAFT",
+                                    await saveBuildingPart(),
+                                    NavigatorService.navigateTo(
+                                        context, const BuildingAssessmentForm())
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
                         },
                       NavigatorService.navigateTo(
                           context, const BuildingAssessmentForm())
@@ -165,6 +216,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                           initialValue: buildingPart.description,
                           onChanged: (newValue) => {
                             setState(() {
+                              dirtyFlag = true;
                               buildingPart.description = newValue;
                             })
                           },
@@ -178,6 +230,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                           initialValue: buildingPart.buildingYear.toString(),
                           onChanged: (newValue) => {
                             setState(() {
+                              dirtyFlag = true;
                               buildingPart.buildingYear = int.parse(newValue);
                             })
                           },
@@ -193,6 +246,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                 items: fireProtectionList,
                                 onChanged: (newValue) {
                                   setState(() {
+                                    dirtyFlag = true;
                                     buildingPart.fireProtection = newValue;
                                   });
                                 },
@@ -204,6 +258,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                 items: constructionClassList,
                                 onChanged: (newValue) {
                                   setState(() {
+                                    dirtyFlag = true;
                                     buildingPart.constructionClass = newValue;
                                   });
                                 },
@@ -215,6 +270,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                 items: riskClassList,
                                 onChanged: (newValue) {
                                   setState(() {
+                                    dirtyFlag = true;
                                     buildingPart.riskClass = newValue;
                                   });
                                 },
@@ -229,6 +285,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                           initialValue: buildingPart.unitPrice.toString(),
                           onChanged: (newValue) => {
                             setState(() {
+                              dirtyFlag = true;
                               buildingPart.unitPrice =
                                   double.tryParse(newValue);
                             })
@@ -248,6 +305,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                   items: insuredTypeList,
                                   onChanged: (newValue) {
                                     setState(() {
+                                      dirtyFlag = true;
                                       buildingPart.insuredType = newValue;
                                     });
                                   },
@@ -271,6 +329,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                   buildingPart.devaluationPercentage.toString(),
                               onChanged: (newValue) => {
                                 setState(() {
+                                  dirtyFlag = true;
                                   buildingPart.devaluationPercentage =
                                       double.tryParse(newValue);
                                 })
