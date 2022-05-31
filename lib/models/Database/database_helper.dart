@@ -125,17 +125,16 @@ class DatabaseHelper {
 
     if (buildingPart.id == null) {
       buildingPart.description = "DRAFT";
-      BuildingPart tempPart = await persistBuildingPart(buildingPart, assessment);
+      BuildingPart tempPart =
+          await persistBuildingPart(buildingPart, assessment);
       measurement.fk_buildingPartId = tempPart.id;
     } else {
       measurement.fk_buildingPartId = buildingPart.id;
     }
 
     final measurementId = await db.insert(
-      tableMeasurement,
-      measurement.toJson(),
-      conflictAlgorithm: ConflictAlgorithm.replace
-    );
+        tableMeasurement, measurement.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
 
     print("PRE SEND:");
     measurement.measurementId = measurementId;
@@ -147,13 +146,15 @@ class DatabaseHelper {
   Future<int> deleteBuildingPart(int id) async {
     final db = await instance.database;
 
-    return await db.delete(tableBuildingPart, where: 'buildingPartId = ?', whereArgs: [id]);
+    return await db.delete(tableBuildingPart,
+        where: 'buildingPartId = ?', whereArgs: [id]);
   }
 
   Future<int> deleteMeasurement(int id) async {
     final db = await instance.database;
 
-    return await db.delete(tableMeasurement, where: 'measurementId = ?', whereArgs: [id]);
+    return await db
+        .delete(tableMeasurement, where: 'measurementId = ?', whereArgs: [id]);
   }
 
   Future<BuildingAssessment> readAssessment(int id) async {

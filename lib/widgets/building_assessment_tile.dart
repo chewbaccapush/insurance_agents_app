@@ -84,7 +84,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                         size: 18, color: Colors.white),
                                     onPressed: () => {
                                       StateService.buildingAssessment =
-                                      widget.entry!,
+                                          widget.entry!,
                                       NavigatorService.navigateTo(context,
                                           const BuildingAssessmentForm())
                                     },
@@ -132,79 +132,94 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                           .bodyText2)
                                                 ],
                                               )),
-                                          Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 15, left: 40),
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    'Number of Apartments:    ',
-                                                    style:
-                                                        Theme.of(widget.context)
+                                          widget.entry!.numOfAppartments
+                                                      .toString() !=
+                                                  "null"
+                                              ? Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 15, left: 40),
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        'Number of Apartments:    ',
+                                                        style: Theme.of(
+                                                                widget.context)
                                                             .textTheme
                                                             .bodyText1,
-                                                  ),
-                                                  Text(
-                                                      widget.entry!
+                                                      ),
+                                                      Text(
+                                                          widget.entry!
+                                                                      .numOfAppartments
+                                                                      .toString() ==
+                                                                  "null"
+                                                              ? ""
+                                                              : widget.entry!
                                                                   .numOfAppartments
-                                                                  .toString() ==
-                                                              "null"
-                                                          ? ""
-                                                          : widget.entry!
-                                                              .numOfAppartments
-                                                              .toString(),
-                                                      style: Theme.of(
-                                                              widget.context)
-                                                          .textTheme
-                                                          .bodyText2)
-                                                ],
-                                              )),
-                                          Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 15, left: 40),
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    'Voluntary Deduction:    ',
-                                                    style:
-                                                        Theme.of(widget.context)
+                                                                  .toString(),
+                                                          style: Theme.of(widget
+                                                                  .context)
+                                                              .textTheme
+                                                              .bodyText2)
+                                                    ],
+                                                  ))
+                                              : Container(),
+                                          widget.entry!.voluntaryDeduction
+                                                      .toString() !=
+                                                  "null"
+                                              ? Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 15, left: 40),
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        'Voluntary Deduction:    ',
+                                                        style: Theme.of(
+                                                                widget.context)
                                                             .textTheme
                                                             .bodyText1,
-                                                  ),
-                                                  Text(
-                                                      widget.entry!
-                                                              .voluntaryDeduction
-                                                              .toString() +
-                                                          " %",
-                                                      style: Theme.of(
-                                                              widget.context)
-                                                          .textTheme
-                                                          .bodyText2)
-                                                ],
-                                              )),
-                                          Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 15, left: 40),
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    'Assessment Fee:    ',
-                                                    style:
-                                                        Theme.of(widget.context)
+                                                      ),
+                                                      Text(
+                                                          widget.entry!
+                                                                  .voluntaryDeduction
+                                                                  .toString() +
+                                                              " %",
+                                                          style: Theme.of(widget
+                                                                  .context)
+                                                              .textTheme
+                                                              .bodyText2)
+                                                    ],
+                                                  ))
+                                              : Container(),
+                                          widget.entry!.assessmentFee
+                                                      .toString() !=
+                                                  "null"
+                                              ? Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 15, left: 40),
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        'Assessment Fee:    ',
+                                                        style: Theme.of(
+                                                                widget.context)
                                                             .textTheme
                                                             .bodyText1,
-                                                  ),
-                                                  Text(
-                                                      widget.entry!
-                                                              .assessmentFee
-                                                              .toString() +
-                                                          " €",
-                                                      style: Theme.of(
-                                                              widget.context)
-                                                          .textTheme
-                                                          .bodyText2)
-                                                ],
-                                              )),
+                                                      ),
+                                                      Text(
+                                                          widget.entry!
+                                                                  .assessmentFee
+                                                                  .toString() +
+                                                              " €",
+                                                          style: Theme.of(widget
+                                                                  .context)
+                                                              .textTheme
+                                                              .bodyText2)
+                                                    ],
+                                                  ))
+                                              : Container(),
                                         ],
                                       ),
                                     ),
@@ -220,42 +235,48 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                             children: [
-                                              Column(
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 15.0),
-                                                    child: Row(
+                                              widget.entry!.description
+                                                          .toString() !=
+                                                      "null"
+                                                  ? Column(
                                                       children: [
-                                                        Text(
-                                                          'Description:    ',
-                                                          style: Theme.of(widget
-                                                                  .context)
-                                                              .textTheme
-                                                              .bodyText1,
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  bottom: 15.0),
+                                                          child: Row(
+                                                            children: [
+                                                              Text(
+                                                                'Description:    ',
+                                                                style: Theme.of(
+                                                                        widget
+                                                                            .context)
+                                                                    .textTheme
+                                                                    .bodyText1,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            Flexible(
+                                                              child: Text(
+                                                                  widget.entry!
+                                                                      .description
+                                                                      .toString(),
+                                                                  //'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.',
+                                                                  style: Theme.of(
+                                                                          widget
+                                                                              .context)
+                                                                      .textTheme
+                                                                      .bodyText2),
+                                                            ),
+                                                          ],
                                                         ),
                                                       ],
-                                                    ),
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Flexible(
-                                                        child: Text(
-                                                            widget.entry!
-                                                                .description
-                                                                .toString(),
-                                                            //'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.',
-                                                            style: Theme.of(
-                                                                    widget
-                                                                        .context)
-                                                                .textTheme
-                                                                .bodyText2),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
+                                                    )
+                                                  : Container(),
                                             ])),
                                   ),
                                   Expanded(
@@ -269,40 +290,47 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                          Column(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    bottom: 15.0),
-                                                child: Row(
+                                          widget.entry!.assessmentCause
+                                                      .toString() !=
+                                                  "null"
+                                              ? Column(
                                                   children: [
-                                                    Text(
-                                                      'Assessment Cause:    ',
-                                                      style: Theme.of(
-                                                              widget.context)
-                                                          .textTheme
-                                                          .bodyText1,
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              bottom: 15.0),
+                                                      child: Row(
+                                                        children: [
+                                                          Text(
+                                                            'Assessment Cause:    ',
+                                                            style: Theme.of(
+                                                                    widget
+                                                                        .context)
+                                                                .textTheme
+                                                                .bodyText1,
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
+                                                    Row(
+                                                      children: [
+                                                        Flexible(
+                                                          child: Text(
+                                                              widget.entry!
+                                                                  .assessmentCause
+                                                                  .toString(),
+                                                              //'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.',
+                                                              style: Theme.of(
+                                                                      widget
+                                                                          .context)
+                                                                  .textTheme
+                                                                  .bodyText2),
+                                                        ),
+                                                      ],
+                                                    )
                                                   ],
-                                                ),
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Flexible(
-                                                    child: Text(
-                                                        widget.entry!
-                                                            .assessmentCause
-                                                            .toString(),
-                                                        //'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.',
-                                                        style: Theme.of(
-                                                                widget.context)
-                                                            .textTheme
-                                                            .bodyText2),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          ),
+                                                )
+                                              : Container(),
                                         ],
                                       ),
                                     ),
