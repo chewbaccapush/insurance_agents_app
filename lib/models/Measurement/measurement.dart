@@ -68,12 +68,12 @@ class Measurement {
 
   Map<String, dynamic> toMessage() {
     return {
-      MeasurementFields.description: description,
-      MeasurementFields.length: length,
-      MeasurementFields.height: height,
-      MeasurementFields.width: width,
-      MeasurementFields.radius: radius,
-      MeasurementFields.cubature: cubature
+      MeasurementFields.description: '"${description}"',
+      MeasurementFields.length: '"${length}"',
+      MeasurementFields.height: '"${height}"',
+      MeasurementFields.width: '"${width}"',
+      MeasurementFields.radius: '"${radius}"',
+      MeasurementFields.cubature: '"${cubature}"'
     };
   }
 

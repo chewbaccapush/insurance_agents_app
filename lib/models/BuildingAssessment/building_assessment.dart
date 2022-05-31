@@ -73,11 +73,11 @@ class BuildingAssessment {
     return {
       BuildingAssessmentFields.appointmentDate:
           '"${appointmentDate!.toIso8601String().substring(0, 10)}"',
-      BuildingAssessmentFields.description: description,
-      BuildingAssessmentFields.assessmentCause: assessmentCause,
-      BuildingAssessmentFields.numOfAppartments: numOfAppartments,
-      BuildingAssessmentFields.voluntaryDeduction: voluntaryDeduction,
-      BuildingAssessmentFields.assessmentFee: assessmentFee,
+      BuildingAssessmentFields.description: '"${description}"',
+      BuildingAssessmentFields.assessmentCause: '"${assessmentCause}"',
+      BuildingAssessmentFields.numOfAppartments: '"${numOfAppartments}"',
+      BuildingAssessmentFields.voluntaryDeduction: '"${voluntaryDeduction}"',
+      BuildingAssessmentFields.assessmentFee: '"${assessmentFee}"',
       BuildingAssessmentFields.buildingParts: buildingPartsJson
     };
   }

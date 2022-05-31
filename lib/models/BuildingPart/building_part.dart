@@ -105,24 +105,26 @@ class BuildingPart {
       measurementsJson.add(measurement.toMessage());
     });
     return {
-      BuildingPartFields.description: description,
-      BuildingPartFields.buildingYear: buildingYear,
+      BuildingPartFields.description: '"${description}"',
+      BuildingPartFields.buildingYear: '"${buildingYear}"',
       BuildingPartFields.fireProtection: fireProtection != null
-          ? EnumToString.convertToString(fireProtection)
-          : null,
+          ? '"${EnumToString.convertToString(fireProtection)}"'
+          : "null",
       BuildingPartFields.constructionClass: constructionClass != null
-          ? EnumToString.convertToString(constructionClass)
-          : null,
+          ? '"${EnumToString.convertToString(constructionClass)}"'
+          : "null",
       BuildingPartFields.riskClass:
-          riskClass != null ? EnumToString.convertToString(riskClass) : null,
+          riskClass != null 
+          ? '"${EnumToString.convertToString(riskClass)}"'
+          : "null",
       BuildingPartFields.unitPrice: unitPrice,
       BuildingPartFields.insuredType: insuredType != null
-          ? EnumToString.convertToString(insuredType)
-          : null,
-      BuildingPartFields.devaluationPercentage: devaluationPercentage,
-      BuildingPartFields.cubature: cubature,
-      BuildingPartFields.sumInsured: sumInsured,
-      BuildingPartFields.value: value,
+          ? '"${EnumToString.convertToString(insuredType)}"'
+          : "null",
+      BuildingPartFields.devaluationPercentage: '"${devaluationPercentage}"',
+      BuildingPartFields.cubature: '"${cubature}"',
+      BuildingPartFields.sumInsured: '"${sumInsured}"',
+      BuildingPartFields.value: '"${value}"',
       BuildingPartFields.measurements: measurementsJson,
     };
   }

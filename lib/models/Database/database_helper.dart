@@ -104,11 +104,6 @@ class DatabaseHelper {
       buildingPart.fk_buildingAssesmentId = assessment.id;
     }
 
-    // TODO - calculate (not here)
-    buildingPart.cubature = 0;
-    buildingPart.value = 0;
-    buildingPart.sumInsured = 0;
-
     //print(buildingPart.toJson());
     final buildingPartId = await db.insert(
         tableBuildingPart, buildingPart.toJson(),
