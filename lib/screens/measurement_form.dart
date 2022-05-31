@@ -48,7 +48,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
     }
   }
 
-  String getCubature() {
+  int getCubature() {
     print(measurement.toJson());
     if (measurement.measurementType == MeasurementType.rectangular) {
       if (measurement.height != null &&
@@ -65,7 +65,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
         measurement.cubature = 0.0;
       }
     }
-    return measurement.cubature!.round().toString();
+    return measurement.cubature!.round();
   }
 
   @override
@@ -138,7 +138,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
                                 }),
                             )),
                             Spacer(),
-                            Text("Cubature: " + getCubature() + "m\u00B3"),
+                            Text("Cubature: ${getCubature()}m\u00B3"),
                             ],
                           ),
                         ),

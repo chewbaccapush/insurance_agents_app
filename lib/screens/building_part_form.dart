@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:msg/models/BuildingAssessment/building_assessment.dart';
 import 'package:msg/models/BuildingPart/building_part.dart';
 import 'package:msg/models/BuildingPart/fire_protection.dart';
@@ -31,6 +32,43 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
   BuildingAssessment buildingAssessment = StateService.buildingAssessment;
   BuildingPart buildingPart = StateService.buildingPart;
   bool dirtyFlag = false;
+
+  int? getCubature() {
+    buildingPart.cubature = 0;
+    for (Measurement measurement in buildingPart.measurements) {
+      if (buildingPart.cubature != null) {
+        buildingPart.cubature = buildingPart.cubature! + measurement.cubature!;
+      }
+    }
+    return buildingPart.cubature!.round();
+  }
+
+  int? getValue() {
+    buildingPart.value = 0;
+    if (double.tryParse(buildingPart.unitPrice.toString()) != null) {
+      buildingPart.value = buildingPart.cubature! * buildingPart.unitPrice!;
+    }
+    return buildingPart.value?.round();
+  }
+
+  int? getSumInsured() {
+    buildingPart.sumInsured = 0;
+    switch (buildingPart.insuredType) {
+      case null:
+        break;
+      case InsuredType.newValue:
+        buildingPart.sumInsured = buildingPart.value;
+        break;
+      case InsuredType.timeValue:
+        if (buildingPart.devaluationPercentage != null) {
+          buildingPart.sumInsured = (buildingPart.devaluationPercentage! / 100) * buildingPart.value!;
+        } else {
+          buildingPart.sumInsured = 0;
+        }
+        break;
+    }
+    return buildingPart.sumInsured?.round();
+  }
 
   saveBuildingPart() async {
     await DatabaseHelper.instance
@@ -246,6 +284,18 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                             ),
                           ],
                         ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10.0),
+                          child: 
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Cubature: ${getCubature()} m\u00B3'),
+                                Text('Value: ${getValue()} \u20A3'),
+                                Text('Sum insured: ${getSumInsured()} \u20A3'),
+                              ],
+                            ),
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -301,7 +351,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                               ),
                             ),
                           ],
-                        )
+                        ),
                         //Cubature
                         //Value
                         //Sum Insured
