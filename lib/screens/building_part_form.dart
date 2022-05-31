@@ -61,7 +61,8 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
         break;
       case InsuredType.timeValue:
         if (buildingPart.devaluationPercentage != null) {
-          buildingPart.sumInsured = (buildingPart.devaluationPercentage! / 100) * buildingPart.value!;
+          buildingPart.sumInsured =
+              (buildingPart.devaluationPercentage! / 100) * buildingPart.value!;
         } else {
           buildingPart.sumInsured = 0;
         }
@@ -228,7 +229,8 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                           initialValue: buildingPart.unitPrice.toString(),
                           onChanged: (newValue) => {
                             setState(() {
-                              buildingPart.unitPrice = double.parse(newValue);
+                              buildingPart.unitPrice =
+                                  double.tryParse(newValue);
                             })
                           },
                           validator: (value) =>
@@ -270,7 +272,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                               onChanged: (newValue) => {
                                 setState(() {
                                   buildingPart.devaluationPercentage =
-                                      double.parse(newValue);
+                                      double.tryParse(newValue);
                                 })
                               },
                               validator: (value) {
@@ -286,15 +288,14 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 10.0),
-                          child: 
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Cubature: ${getCubature()} m\u00B3'),
-                                Text('Value: ${getValue()} \u20A3'),
-                                Text('Sum insured: ${getSumInsured()} \u20A3'),
-                              ],
-                            ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Cubature: ${getCubature()} m\u00B3'),
+                              Text('Value: ${getValue()} \u20A3'),
+                              Text('Sum insured: ${getSumInsured()} \u20A3'),
+                            ],
+                          ),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,

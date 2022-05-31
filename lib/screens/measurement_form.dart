@@ -37,30 +37,33 @@ class _MeasurementFormState extends State<MeasurementForm> {
               buildingPart.id = value.fk_buildingPartId,
               buildingAssessment.id = buildingPart.fk_buildingAssesmentId
             });
-  @override
-  void initState() {
-    measurement.measurementType = measurement.measurementType ?? MeasurementType.rectangular;
-    super.initState();
-  }
 
     if (!buildingPart.measurements.contains(measurement)) {
       buildingPart.measurements.add(measurement);
     }
   }
 
+  @override
+  void initState() {
+    measurement.measurementType =
+        measurement.measurementType ?? MeasurementType.rectangular;
+    super.initState();
+  }
+
   int getCubature() {
-    print(measurement.toJson());
     if (measurement.measurementType == MeasurementType.rectangular) {
       if (measurement.height != null &&
-       measurement.width != null &&
-       measurement.length != null) {
-        measurement.cubature = measurement.height! * measurement.width! * measurement.length!;
+          measurement.width != null &&
+          measurement.length != null) {
+        measurement.cubature =
+            measurement.height! * measurement.width! * measurement.length!;
       } else {
         measurement.cubature = 0.0;
       }
     } else {
       if (measurement.height != null && measurement.radius != null) {
-        measurement.cubature = 3.14 * pow(measurement.radius!, 2) * measurement.height!;
+        measurement.cubature =
+            3.14 * pow(measurement.radius!, 2) * measurement.height!;
       } else {
         measurement.cubature = 0.0;
       }
@@ -118,32 +121,34 @@ class _MeasurementFormState extends State<MeasurementForm> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: Text("Measurement Type")
-                            ),
-                            Container(
-                              width: 270,
-                              child: MeasurementTypeSwitcher(
-                                measurement: measurement,
-                                onTapCircular: () =>
-                                  setState(() {
-                                    print(measurement.toJson());
-                                    measurement.measurementType = MeasurementType.circular;
-                                }),
-                                onTapRectangular: () =>
-                                  setState(() {
-                                    print(measurement.toJson());
-                                    measurement.measurementType = MeasurementType.rectangular;
-                                }),
-                            )),
-                            Spacer(),
-                            Text("Cubature: ${getCubature()}m\u00B3"),
+                              Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Text("Measurement Type")),
+                              Container(
+                                  width: 270,
+                                  child: MeasurementTypeSwitcher(
+                                    measurement: measurement,
+                                    onTapCircular: () => setState(() {
+                                      print(measurement.toJson());
+                                      measurement.measurementType =
+                                          MeasurementType.circular;
+                                    }),
+                                    onTapRectangular: () => setState(() {
+                                      print(measurement.toJson());
+                                      measurement.measurementType =
+                                          MeasurementType.rectangular;
+                                    }),
+                                  )),
+                              Spacer(),
+                              Text("Cubature: ${getCubature()}m\u00B3"),
                             ],
                           ),
                         ),
                         CustomTextFormField(
-                          enabled: measurement.measurementType == MeasurementType.rectangular ? true : false,
+                          enabled: measurement.measurementType ==
+                                  MeasurementType.rectangular
+                              ? true
+                              : false,
                           suffix: const Padding(
                             padding: EdgeInsets.only(top: 15.0),
                             child: Text("metres",
@@ -154,14 +159,18 @@ class _MeasurementFormState extends State<MeasurementForm> {
                           labelText: "Length",
                           initialValue: measurement.length.toString(),
                           onChanged: (newValue) => {
-                            setState(() =>
-                                {measurement.length = double.tryParse(newValue)})
+                            setState(() => {
+                                  measurement.length = double.tryParse(newValue)
+                                })
                           },
                           validator: (value) =>
                               Validators.measurementValidator(value!),
                         ),
                         CustomTextFormField(
-                          enabled: measurement.measurementType == MeasurementType.rectangular ? true : false,
+                          enabled: measurement.measurementType ==
+                                  MeasurementType.rectangular
+                              ? true
+                              : false,
                           suffix: const Padding(
                             padding: EdgeInsets.only(top: 15.0),
                             child: Text("meters",
@@ -189,14 +198,18 @@ class _MeasurementFormState extends State<MeasurementForm> {
                           labelText: "Height",
                           initialValue: measurement.height.toString(),
                           onChanged: (newValue) => {
-                            setState(() =>
-                                {measurement.height = double.tryParse(newValue)})
+                            setState(() => {
+                                  measurement.height = double.tryParse(newValue)
+                                })
                           },
                           validator: (value) =>
                               Validators.measurementValidator(value!),
                         ),
                         CustomTextFormField(
-                          enabled: measurement.measurementType == MeasurementType.circular ? true : false,
+                          enabled: measurement.measurementType ==
+                                  MeasurementType.circular
+                              ? true
+                              : false,
                           suffix: const Padding(
                             padding: EdgeInsets.only(top: 15.0),
                             child: Text("meters",
@@ -207,8 +220,9 @@ class _MeasurementFormState extends State<MeasurementForm> {
                           labelText: "Radius",
                           initialValue: measurement.radius.toString(),
                           onChanged: (newValue) => {
-                            setState(() =>
-                                {measurement.radius = double.tryParse(newValue)})
+                            setState(() => {
+                                  measurement.radius = double.tryParse(newValue)
+                                })
                           },
                           validator: (value) =>
                               Validators.measurementValidator(value!),

@@ -14,7 +14,6 @@ import '../models/Database/database_helper.dart';
 import '../services/navigator_service.dart';
 import '../services/sqs_sender.dart';
 import '../services/storage_service.dart';
-import '../widgets/alert.dart';
 
 class BuildingAssessmentForm extends StatefulWidget {
   const BuildingAssessmentForm({Key? key}) : super(key: key);
@@ -80,7 +79,6 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                 children: <Widget>[
                   Flexible(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
                         CustomDateFormField(
                           initialValue: buildingAssessment.appointmentDate,
@@ -112,80 +110,92 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                           validator: (value) =>
                               Validators.defaultValidator(value!),
                         ),
-                        CustomTextFormField(
-                          type: const TextInputType.numberWithOptions(
-                              decimal: false),
-                          labelText: "Number of Apartments",
-                          initialValue:
-                              buildingAssessment.numOfAppartments.toString(),
-                          onChanged: (newValue) => {
-                            setState(() => {
-                                  buildingAssessment.numOfAppartments =
-                                      int.parse(newValue)
-                                })
-                          },
-                          validator: (value) =>
-                              Validators.numberOfApartmentsValidator(value!),
-                        ),
-                        CustomTextFormField(
-                          type: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          labelText: "Voluntary Deduction",
-                          initialValue:
-                              buildingAssessment.voluntaryDeduction.toString(),
-                          onChanged: (newValue) => {
-                            setState(() => {
-                                  buildingAssessment.voluntaryDeduction =
-                                      double.parse(newValue)
-                                })
-                          },
-                          validator: (value) =>
-                              Validators.floatValidator(value!),
-                        ),
-                        CustomTextFormField(
-                          suffix: const Icon(Icons.euro_rounded,
-                              color: Colors.grey),
-                          type: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          labelText: "Assessment Fee",
-                          initialValue:
-                              buildingAssessment.assessmentFee.toString(),
-                          onChanged: (newValue) => {
-                            setState(() => {
-                                  buildingAssessment.assessmentFee =
-                                      double.parse(newValue)
-                                })
-                          },
-                          validator: (value) =>
-                              Validators.floatValidator(value!),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomTextFormField(
+                              width: 175,
+                              type: const TextInputType.numberWithOptions(
+                                  decimal: false),
+                              labelText: "Number of Apartments",
+                              initialValue: buildingAssessment.numOfAppartments
+                                  .toString(),
+                              onChanged: (newValue) => {
+                                setState(() => {
+                                      buildingAssessment.numOfAppartments =
+                                          int.parse(newValue)
+                                    })
+                              },
+                              validator: (value) =>
+                                  Validators.numberOfApartmentsValidator(
+                                      value!),
+                            ),
+                            CustomTextFormField(
+                              width: 175,
+                              type: const TextInputType.numberWithOptions(
+                                  decimal: true),
+                              labelText: "Voluntary Deduction",
+                              initialValue: buildingAssessment
+                                  .voluntaryDeduction
+                                  .toString(),
+                              onChanged: (newValue) => {
+                                setState(() => {
+                                      buildingAssessment.voluntaryDeduction =
+                                          double.parse(newValue)
+                                    })
+                              },
+                              validator: (value) =>
+                                  Validators.floatValidator(value!),
+                            ),
+                            CustomTextFormField(
+                              width: 175,
+                              suffix: const Icon(Icons.euro_rounded,
+                                  color: Colors.grey),
+                              type: const TextInputType.numberWithOptions(
+                                  decimal: true),
+                              labelText: "Assessment Fee",
+                              initialValue:
+                                  buildingAssessment.assessmentFee.toString(),
+                              onChanged: (newValue) => {
+                                setState(() => {
+                                      buildingAssessment.assessmentFee =
+                                          double.parse(newValue)
+                                    })
+                              },
+                              validator: (value) =>
+                                  Validators.floatValidator(value!),
+                            ),
+                          ],
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             ElevatedButton.icon(
-                                icon: const Icon(
-                                  Icons.check_rounded,
-                                  size: 18,
+                              icon: const Icon(
+                                Icons.check_rounded,
+                                size: 18,
+                                color: Colors.white,
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                shape: const StadiumBorder(),
+                                primary:
+                                    (StorageService.getAppThemeId() == false)
+                                        ? Color.fromARGB(220, 112, 14, 46)
+                                        : Color.fromARGB(148, 112, 14, 46),
+                              ),
+                              onPressed: () async => {
+                                _formKey.currentState!.save(),
+                                await saveBuildingAssessment(),
+                                NavigatorService.navigateTo(
+                                    context, const HistoryPage()),
+                              },
+                              label: const Text(
+                                "OK",
+                                style: TextStyle(
+                                  fontSize: 15,
                                   color: Colors.white,
                                 ),
-                                style: ElevatedButton.styleFrom(
-                                  shape: const StadiumBorder(),
-                                  primary:
-                                      (StorageService.getAppThemeId() == false)
-                                          ? Color.fromARGB(220, 112, 14, 46)
-                                          : Color.fromARGB(148, 112, 14, 46),
-                                ),
-                                onPressed: () async => {
-                                  _formKey.currentState!.save(),
-                                  await saveBuildingAssessment(),
-                                  NavigatorService.navigateTo(
-                                      context, const HistoryPage()),
-                                },
-                                label: const Text("OK",
-                                    style: TextStyle(
-                                        fontSize: 15, color: Colors.white,
-                                    ),
-                                ),
+                              ),
                             ),
                             const Padding(padding: EdgeInsets.only(right: 10)),
                             ElevatedButton.icon(
