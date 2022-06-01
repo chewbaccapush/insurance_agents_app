@@ -1,25 +1,34 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-
-import 'package:msg/screens/building_assessment_form.dart';
-import 'package:msg/screens/building_part_form.dart';
 import 'package:msg/screens/history.dart';
-import 'package:msg/screens/settings.dart';
+import 'package:page_transition/page_transition.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  Widget build(BuildContext context) {
+    return AnimatedSplashScreen(
+      splash: Column(
+        children: [
+          Image.asset(
+            "assets/images/msg-logo.png",
+            width: 500,
+          ),
+        ],
+      ),
+      nextScreen: const HistoryPage(),
+      splashIconSize: 250,
+      duration: 2000,
+      animationDuration: const Duration(milliseconds: 1500),
+      splashTransition: SplashTransition.slideTransition,
+      pageTransitionType: PageTransitionType.rightToLeft,
+    );
+  }
 }
 
-class _HomePageState extends State<HomePage> {
-  // int _selectedIndex = 0;
-
-  // static const List<Widget> _widgetOptions = <Widget>[
-  //   BuildingAssessmentForm(),
-  //   HistoryPage(),
-  //   SettingsPage(),
-  // ];
+class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,36 +37,7 @@ class _HomePageState extends State<HomePage> {
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
-          child: const HistoryPage()),
+          child: const SplashScreen()),
     );
-    /*
-    bottomNavigationBar:
-    BottomNavigationBar(
-      items: buildNavigationBarItems(),
-      currentIndex: _selectedIndex,
-      onTap: (index) => setState(() {
-        _selectedIndex = index;
-      }),
-    );
-    */
   }
 }
-/*
-  List<BottomNavigationBarItem> buildNavigationBarItems() {
-    return const [
-      BottomNavigationBarItem(
-        icon: Icon(Icons.send_rounded),
-        label: 'Pošlji nalog',
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.history),
-        label: 'Zgodovina',
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.settings),
-        label: 'Nastavitve',
-      )
-    ];
-  }
-}
-*/
