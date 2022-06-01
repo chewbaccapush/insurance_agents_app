@@ -7,6 +7,8 @@ import 'package:msg/screens/building_part_form.dart';
 import 'package:msg/services/navigator_service.dart';
 import 'package:msg/services/state_service.dart';
 
+import '../services/storage_service.dart';
+
 enum ObjectType { buildingPart, measurement }
 
 class AddObjectsSection extends StatefulWidget {
@@ -25,16 +27,28 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
   BuildingPart buildingPart = StateService.buildingPart;
   List<ListTile> objects = [];
 
+  Icon getIcon(BuildingPart e) {
+    return e.validated == true ?
+     Icon(Icons.done, color: Colors.green) :
+     Icon(Icons.access_time_outlined, color: Color.fromARGB(255, 197, 179, 24));
+  }
   @override
   void initState() {
     objects = widget.objectType == ObjectType.buildingPart
         ? buildingAssessment.buildingParts
             .map(
               (e) => ListTile(
-                title: Text(e.description!),
+                leading: getIcon(e),
+                title: Transform.translate(
+                  offset: Offset(-20, 0),
+                  child: Text(e.description!),
+                ),
                 trailing: IconButton(
-                  onPressed: () =>
-                      {DatabaseHelper.instance.deleteBuildingPart(e.id!)},
+                  onPressed: () async => {
+                    await DatabaseHelper.instance.deleteBuildingPart(e.id!)
+                    .then((value) => buildingAssessment.buildingParts.remove(e)),
+                  },
+                      
                   icon: const Icon(Icons.delete),
                 ),
                 onTap: () => {

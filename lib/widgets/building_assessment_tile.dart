@@ -31,12 +31,17 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
 
   // Creates icon for sent/unsent
   Icon getIcon() {
-    if (widget.entry!.sent == true) {
-      return const Icon(Icons.check_circle_rounded,
-          size: 32, color: Colors.green);
-    } else {
+    if (widget.entry!.finalized == false) {
       return const Icon(Icons.access_time_outlined,
           size: 32, color: Color.fromARGB(255, 197, 179, 24));
+    } else {
+      if (widget.entry!.sent == true) {
+      return const Icon(Icons.sync,
+          size: 32, color: Colors.green);
+    } else {
+      return const Icon(Icons.sync,
+          size: 32, color: Colors.red);
+    }
     }
   }
 
@@ -78,6 +83,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                     ),
                                   ),
                                   Spacer(),
+                                  widget.entry!.finalized == false ?
                                   ElevatedButton(
                                     child: const Icon(Icons.edit,
                                         size: 18, color: Colors.white),
@@ -94,7 +100,8 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                 false)
                                             ? Color.fromARGB(220, 112, 14, 46)
                                             : Color.fromARGB(148, 112, 14, 46)),
-                                  ),
+                                  ):
+                                  Container(),
                                 ]),
                               ),
                               IntrinsicHeight(

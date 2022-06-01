@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:ffi';
 
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:msg/models/Measurement/measurement.dart';
+import 'package:msg/services/connectivity_cheker.dart';
 import 'package:msg/services/navigator_service.dart';
 import 'package:msg/services/storage_service.dart';
 import 'package:msg/widgets/alert.dart';
@@ -43,27 +45,37 @@ class _HistoryPageState extends State<HistoryPage> {
   List<BuildingAssessment> sentAssessments = [];
   List<BuildingAssessment> unsentAssessments = [];
   TextEditingController textController = TextEditingController();
-  final Connectivity _connectivity = Connectivity();
   final SQSSender sqsSender = SQSSender();
   int numberOfUnsent = 0;
   AlignedTo alignment = AlignedTo.all;
   int countSentAssessments = 0;
   int allAssessments = 0;
   bool _isExpanded = false;
+  bool hasConnection = false;
+  late StreamSubscription subscription;
 
   @override
   void initState() {
     _localGet();
+    ConnectivityCheker().initialize();
+    subscription = ConnectivityCheker().connectionChange.listen(connectionChanged);
     super.initState();
+  }
+
+  void connectionChanged(dynamic hasInternetConnection) {
+    setState(() {
+      hasConnection = hasInternetConnection;
+    });
   }
 
   @override
   void dispose() {
+    subscription.cancel();
     textController.dispose();
     super.dispose();
   }
 
-  void resendAll() async {
+  void synchronize() async {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Sending..')),
     );
@@ -240,7 +252,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                               const EdgeInsets.only(left: 15.0),
                                           child: ElevatedButton.icon(
                                               icon: const Icon(
-                                                Icons.send_and_archive_outlined,
+                                                Icons.sync ,
                                                 size: 22,
                                                 color: Colors.white,
                                               ),
@@ -254,7 +266,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                                     : Color.fromARGB(
                                                         148, 112, 14, 46),
                                               ),
-                                              onPressed: () => resendAll(),
+                                              onPressed: hasConnection ? () => synchronize() : null,
                                               label: Text(
                                                   AppLocalizations.of(context)!
                                                       .assessments_sendButton,

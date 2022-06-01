@@ -3,6 +3,7 @@ import 'package:msg/models/BuildingAssessment/building_assessment.dart';
 import 'package:msg/screens/building_part_form.dart';
 import 'package:msg/screens/history.dart';
 import 'package:msg/services/state_service.dart';
+import 'package:msg/validators/validate_all.dart';
 import 'package:msg/validators/validators.dart';
 import 'package:msg/widgets/add_objects_section.dart';
 import 'package:msg/widgets/custom_navbar.dart';
@@ -12,10 +13,12 @@ import 'package:msg/widgets/date_form_field.dart';
 import '../models/BuildingPart/building_part.dart';
 import '../models/Database/database_helper.dart';
 import '../services/navigator_service.dart';
-import '../services/sqs_sender.dart';
 import '../services/storage_service.dart';
 import '../widgets/custom_popup.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../widgets/alert.dart';
+import '../widgets/custom_popup.dart';
+import '../widgets/custom_dialog.dart' as customDialog;
 
 class BuildingAssessmentForm extends StatefulWidget {
   const BuildingAssessmentForm({Key? key}) : super(key: key);
@@ -26,7 +29,6 @@ class BuildingAssessmentForm extends StatefulWidget {
 
 class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
   final _formKey = GlobalKey<FormState>();
-  final SQSSender sqsSender = SQSSender();
   BuildingAssessment buildingAssessment = StateService.buildingAssessment;
   BuildingAssessment uneditedBuildingAssessment = BuildingAssessment();
   bool dirtyFlag = false;
@@ -40,19 +42,53 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
   // Save to database
   Future<void> saveBuildingAssessment() async {
     buildingAssessment.sent = false;
+    buildingAssessment.appointmentDate = new DateTime.now();
     await DatabaseHelper.instance.persistAssessment(buildingAssessment);
   }
 
-  void sendMessage(String message) async {
-    try {
-      await sqsSender
-          .sendToSQS(message)
-          .then((value) => buildingAssessment.sent = true);
-      buildingAssessment.sent = true;
-    } catch (e) {
-      buildingAssessment.sent = false;
-    } finally {
-      saveBuildingAssessment();
+  showFinalizeDialog(bool result) {
+    if (result) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => CustomDialog(
+        title: const Text("Are you sure you want to finalize this assessment? Further changes will not be possible."),
+        actions: [
+          ElevatedButton(
+            child: const Text("No"),
+            style: ElevatedButton.styleFrom(
+              shape: const StadiumBorder(),
+              primary: (StorageService.getAppThemeId() ==
+                      false)
+                  ? const Color.fromARGB(220, 112, 14, 46)
+                  : const Color.fromARGB(
+                      148, 112, 14, 46),
+            ),
+            onPressed: () => {
+              Navigator.pop(context, true)
+            },
+          ),
+          ElevatedButton(
+            child: const Text("Yes"),
+            style: ElevatedButton.styleFrom(
+              shape: const StadiumBorder(),
+              primary: (StorageService.getAppThemeId() ==
+                      false)
+                  ? const Color.fromARGB(220, 112, 14, 46)
+                  : const Color.fromARGB(
+                      148, 112, 14, 46),
+            ),
+            onPressed: () async => {
+              buildingAssessment.finalized = true,
+              await saveBuildingAssessment(),
+              NavigatorService.navigateTo(
+                  context, const HistoryPage())
+            },
+          ),
+        ],
+      ),
+    );
+    } else {
+      return showDialog(context: context, builder: (BuildContext context) => customDialog.CustomDialog(text: "Please complete all building part forms."));
     }
   }
 
@@ -299,13 +335,20 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                 size: 18,
                                 color: Colors.white,
                               ),
-                              onPressed: () {
+                              onPressed: () async {
                                 // Validates form
                                 if (_formKey.currentState!.validate()) {
-                                  _formKey.currentState!.save();
-                                  sendMessage(buildingAssessment
-                                      .toMessage()
-                                      .toString());
+                                  if (!buildingAssessment.buildingParts.isEmpty) {
+                                    List<BuildingPart> unvalidParts = await ValidateAll().check(buildingAssessment);
+                                    if (unvalidParts.isEmpty) {
+                                      showFinalizeDialog(true);
+                                      _formKey.currentState!.save(); 
+                                    } else {
+                                      showFinalizeDialog(false);
+                                    }
+                                  } else {
+                                    showFinalizeDialog(true);
+                                  }
                                 }
                               },
                               style: ElevatedButton.styleFrom(
@@ -322,11 +365,6 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                       fontSize: 15, color: Colors.white)),
                             ),
                             const Padding(padding: EdgeInsets.only(left: 10)),
-                            ElevatedButton(
-                                onPressed: () => DatabaseHelper.instance
-                                    .deleteDatabase(
-                                        "/data/user/0/com.example.msg/databases/msgDatabase.db"),
-                                child: const Text("Pobrisi bazo"))
                           ],
                         )
                       ],
