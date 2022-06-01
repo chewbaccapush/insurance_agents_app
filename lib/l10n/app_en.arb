@@ -36,7 +36,7 @@
     "measurement_rectangular": "Rectangular",
 
     "assessments_addButton": "Add Building Assessment",
-    "assessments_sendButton": "Send All",
+    "assessments_sendButton": "Synchronize",
     "assessments_all": "All",
     "assessments_sent": "Sent",
     "assessments_queue": "Queue",
