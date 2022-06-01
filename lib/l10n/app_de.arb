@@ -1,0 +1,51 @@
+{
+        "buildingAssessmentForm_edit": "Gebäudebewertung bearbeiten",
+        "buildingAssessment_appointmentDate": "Termin",
+        "buildingAssessment_assessmentCause": "Bewertungsgrund",
+        "buildingAssessment_numberOFApartaments": "Anzahl der Wohnungen",
+        "buildingAssessment_voulentaryDeduction": "Freiwilliger Abzug",
+        "buildingAssessment_assessmentFee": "Bearbeitungsgebühr",
+        "buildingAssessment_okButton": "OK",
+        "buildingAssessment_cancelButton": "Absagen",
+        "buildingAssessment_finalizeButton": "Abschließen",
+        "buildingAssessment_addButton": "Gebäudeteil hinzufügen",
+
+        "buildingPartForm_add": "Gebäudeteil hinzufügen",
+        "buildingPartForm_buildingYear": "Baujahr",
+        "buildingPart_fireProtection": "Brandschutz",
+        "buildingPart_constructionClass": "Bauklasse",
+        "buildingPart_riskClass": "Risikoklasse",
+        "buildingPart_unitPrice": "Stückpreis",
+        "buildingPart_insuredType": "Versicherter Type",
+        "buildingPart_devaluationPercentage": "Abwertungsprozentsatz",
+        "buildinPart_addButton": "Messung hinzufügen",
+
+        "cubature": "Kubatur",
+        "value": "Wert",
+        "sumInsured": "Versicherungssumme",
+        "description": "Bezeichnung",
+
+        "measurementForm_add": "Messung hinzufügen",
+        "measurement_length": "Länge",
+        "measurement_width": "Breite",
+        "measurement_height": "Höhe",
+        "measurement_radius": "Radius",
+        "measurement_type": "Messtyp",
+        "measurement_circular": "Kreisförmig",
+        "measurement_rectangular": "Rechteckig",
+
+        "assessments_addButton": "Gebäudebewertung hinzufügent",
+        "assessments_sendButton": "Sende alle",
+        "assessments_all": "Alle",
+        "assessments_sent": "Gesendet",
+        "assessments_queue": "Warten",
+        "assessments_draft": "Entwurf",
+        "assessments_buildingParts": "Bauteile",
+        "assessments_measurements": "Messungen",
+        "assessments_search": "Suche",
+
+        "settings_heading": "Einstellungen",
+        "settings_darkMode": "Dunkler Modus",
+        "settings_language": "Sprache"
+    
+}

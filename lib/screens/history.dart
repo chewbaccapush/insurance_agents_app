@@ -25,6 +25,7 @@ import '../models/BuildingPart/building_part.dart';
 import '../models/Database/database_helper.dart';
 import '../services/sqs_sender.dart';
 import '../services/state_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum AlignedTo { all, sent, queue }
 
@@ -220,7 +221,8 @@ class _HistoryPageState extends State<HistoryPage> {
                                                 const BuildingAssessmentForm())
                                           },
                                           label: Text(
-                                            'Add Building Assessment',
+                                            AppLocalizations.of(context)!
+                                                .assessments_addButton,
                                             style: TextStyle(
                                                 color: Theme.of(context)
                                                     .colorScheme
@@ -253,7 +255,9 @@ class _HistoryPageState extends State<HistoryPage> {
                                                         148, 112, 14, 46),
                                               ),
                                               onPressed: () => resendAll(),
-                                              label: const Text("Send All",
+                                              label: Text(
+                                                  AppLocalizations.of(context)!
+                                                      .assessments_sendButton,
                                                   style: TextStyle(
                                                       fontSize: 15,
                                                       color: Colors.white))),
@@ -324,8 +328,10 @@ class _HistoryPageState extends State<HistoryPage> {
                                                 .colorScheme
                                                 .onPrimary,
                                             controller: textController,
-                                            decoration: const InputDecoration(
-                                                hintText: 'Search',
+                                            decoration: InputDecoration(
+                                                hintText: AppLocalizations.of(
+                                                        context)!
+                                                    .assessments_search,
                                                 border: InputBorder.none),
                                             onChanged: onSearchTextChanged,
                                           ))),
@@ -392,14 +398,17 @@ class _HistoryPageState extends State<HistoryPage> {
                               ? Color.fromARGB(148, 112, 14, 46)
                               : Theme.of(context).colorScheme.onPrimary,
                         )),
-                    title: Text(
-                      element.description.toString() == "DRAFT"
-                          ? "Draft"
-                          : element.description.toString(),
-                      overflow: TextOverflow.fade,
-                      maxLines: 1,
-                      softWrap: false,
-                      style: Theme.of(context).textTheme.headline3,
+                    title: Padding(
+                      padding: const EdgeInsets.only(left: 3),
+                      child: Text(
+                        element.description.toString() == "DRAFT"
+                            ? AppLocalizations.of(context)!.assessments_draft
+                            : element.description.toString(),
+                        overflow: TextOverflow.fade,
+                        maxLines: 1,
+                        softWrap: false,
+                        style: Theme.of(context).textTheme.headline3,
+                      ),
                     ),
                     children: [
                       BuildingPartTile(
@@ -500,7 +509,8 @@ class _HistoryPageState extends State<HistoryPage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      'All ',
+                                      AppLocalizations.of(context)!
+                                          .assessments_all,
                                       style: TextStyle(
                                           fontWeight: FontWeight.normal,
                                           color:
@@ -550,7 +560,8 @@ class _HistoryPageState extends State<HistoryPage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      'Sent ',
+                                      AppLocalizations.of(context)!
+                                          .assessments_sent,
                                       style: TextStyle(
                                           fontWeight: FontWeight.normal,
                                           color:
@@ -600,7 +611,8 @@ class _HistoryPageState extends State<HistoryPage> {
                                     Padding(
                                       padding: EdgeInsets.only(left: 18),
                                       child: Text(
-                                        'Queue ',
+                                        AppLocalizations.of(context)!
+                                            .assessments_queue,
                                         style: TextStyle(
                                             fontWeight: FontWeight.normal,
                                             color: (StorageService

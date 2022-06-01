@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:msg/models/Measurement/measurement.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MeasurementTile extends StatelessWidget {
   final Measurement entry;
@@ -43,16 +44,22 @@ class MeasurementTile extends StatelessWidget {
                                         bottom: 10, left: 20, right: 20),
                                     child: Row(
                                       children: [
-                                        Text(
-                                          'Length:    ',
-                                          style: Theme.of(widgetContext)
-                                              .textTheme
-                                              .bodyText1,
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 10.0),
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                    .measurement_length +
+                                                ":",
+                                            style: Theme.of(widgetContext)
+                                                .textTheme
+                                                .bodyText1,
+                                          ),
                                         ),
                                         Text(
                                           entry.length.toString() == "null"
                                               ? ""
-                                              : entry.length.toString(),
+                                              : entry.length.toString() + " m",
                                           style: Theme.of(widgetContext)
                                               .textTheme
                                               .bodyText2,
@@ -67,16 +74,23 @@ class MeasurementTile extends StatelessWidget {
                                         bottom: 10, left: 20, right: 20),
                                     child: Row(
                                       children: [
-                                        Text(
-                                          'Height:    ',
-                                          style: Theme.of(widgetContext)
-                                              .textTheme
-                                              .bodyText1,
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 10.0),
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                    .measurement_height +
+                                                ":",
+                                            style: Theme.of(widgetContext)
+                                                .textTheme
+                                                .bodyText1,
+                                          ),
                                         ),
                                         Text(
                                             entry.height.toString() == "null"
                                                 ? ""
-                                                : entry.height.toString(),
+                                                : entry.height.toString() +
+                                                    " m",
                                             style: Theme.of(widgetContext)
                                                 .textTheme
                                                 .bodyText2)
@@ -90,16 +104,22 @@ class MeasurementTile extends StatelessWidget {
                                         bottom: 10, left: 20, right: 20),
                                     child: Row(
                                       children: [
-                                        Text(
-                                          'Width:    ',
-                                          style: Theme.of(widgetContext)
-                                              .textTheme
-                                              .bodyText1,
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 10.0),
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                    .measurement_width +
+                                                ":",
+                                            style: Theme.of(widgetContext)
+                                                .textTheme
+                                                .bodyText1,
+                                          ),
                                         ),
                                         Text(
                                             entry.width.toString() == "null"
                                                 ? ""
-                                                : entry.width.toString(),
+                                                : entry.width.toString() + " m",
                                             style: Theme.of(widgetContext)
                                                 .textTheme
                                                 .bodyText2)
@@ -113,16 +133,22 @@ class MeasurementTile extends StatelessWidget {
                                         left: 20, right: 20),
                                     child: Row(
                                       children: [
-                                        Text(
-                                          'Radius:    ',
-                                          style: Theme.of(widgetContext)
-                                              .textTheme
-                                              .bodyText1,
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 10.0),
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                    .measurement_radius +
+                                                ":",
+                                            style: Theme.of(widgetContext)
+                                                .textTheme
+                                                .bodyText1,
+                                          ),
                                         ),
                                         Text(
                                           entry.radius.toString() == "null"
                                               ? ""
-                                              : entry.radius.toString(),
+                                              : entry.radius.toString() + " m",
                                           style: Theme.of(widgetContext)
                                               .textTheme
                                               .bodyText2,
@@ -151,7 +177,8 @@ class MeasurementTile extends StatelessWidget {
                             Row(
                               children: [
                                 Text(
-                                  'Description:    ',
+                                  AppLocalizations.of(context)!.description +
+                                      ":",
                                   style: Theme.of(widgetContext)
                                       .textTheme
                                       .bodyText1,
@@ -165,7 +192,8 @@ class MeasurementTile extends StatelessWidget {
                                   Flexible(
                                     child: Text(
                                         entry.description.toString() == "DRAFT"
-                                            ? "Draft"
+                                            ? AppLocalizations.of(context)!
+                                                .assessments_draft
                                             : entry.description.toString(),
 
                                         // 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.',

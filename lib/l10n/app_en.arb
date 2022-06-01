@@ -1,0 +1,52 @@
+{
+   
+    "buildingAssessmentForm_edit": "Edit Building Assessment",
+    "buildingAssessment_appointmentDate": "Appointment Date",
+    "buildingAssessment_assessmentCause": "Assessment Cause",
+    "buildingAssessment_numberOFApartaments": "Number Of Apartments",
+    "buildingAssessment_voulentaryDeduction": "Voluntary Deduction",
+    "buildingAssessment_assessmentFee": "Assessment Fee",
+    "buildingAssessment_okButton": "OK",
+    "buildingAssessment_cancelButton": "Cancel",
+    "buildingAssessment_finalizeButton": "Finalize",
+    "buildingAssessment_addButton": "Add Building Part",
+
+    "buildingPartForm_add": "Add Building Part",
+    "buildingPartForm_buildingYear": "Building Year",
+    "buildingPart_fireProtection": "Fire Protection",
+    "buildingPart_constructionClass": "Construction Class",
+    "buildingPart_riskClass": "Risk Class",
+    "buildingPart_unitPrice": "Unit Price",
+    "buildingPart_insuredType": "Insured Type",
+    "buildingPart_devaluationPercentage": "Devaluation Percentage",
+    "buildinPart_addButton": "Add Measurement",
+
+    "cubature": "Cubature",
+    "value": "Value",
+    "sumInsured": "Sum Insured",
+    "description": "Description",
+
+    "measurementForm_add": "Add Measurement",
+    "measurement_length": "Length",
+    "measurement_width": "Width",
+    "measurement_height": "Height",
+    "measurement_radius": "Radius",
+    "measurement_type": "Measurement Type",
+    "measurement_circular": "Circular",
+    "measurement_rectangular": "Rectangular",
+
+    "assessments_addButton": "Add Building Assessment",
+    "assessments_sendButton": "Send All",
+    "assessments_all": "All",
+    "assessments_sent": "Sent",
+    "assessments_queue": "Queue",
+    "assessments_draft": "Draft",
+    "assessments_buildingParts": "Building Parts",
+    "assessments_measurements": "Measurements",
+    "assessments_search": "Search",
+
+    "settings_heading": "Settings",
+    "settings_darkMode": "Dark Mode",
+    "settings_language": "Language"
+    
+}

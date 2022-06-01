@@ -1,8 +1,11 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageService {
   static const String _appThemeKey = 'theme';
+  static const String _appLanguageKey = 'languageCode';
+  static const String _appCountryKey = 'countryCode';
 
   static SharedPreferences? _prefs;
 
@@ -19,6 +22,17 @@ class StorageService {
     }
 
     return _prefs!.getBool(_appThemeKey);
+  }
+
+  static Locale? getLocale() {
+    if (!_checkInitialized()) {
+      return null;
+    }
+
+    String languageCode = _prefs!.getString(_appLanguageKey) ?? 'en';
+    String countryCode = _prefs!.getString(_appCountryKey) ?? 'EN';
+
+    return Locale(languageCode, countryCode);
   }
 
   static Future<bool?> getAppTheme() async {
@@ -41,6 +55,15 @@ class StorageService {
     }
 
     _prefs!.setBool(_appThemeKey, isDarkMode);
+  }
+
+  static void setLocale(String languageKey, String countryKey) {
+    if (!_checkInitialized()) {
+      return;
+    }
+
+    _prefs!.setString(_appLanguageKey, languageKey);
+    _prefs!.setString(_appCountryKey, countryKey);
   }
 
   static bool _checkInitialized() {

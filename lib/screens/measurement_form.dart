@@ -16,6 +16,7 @@ import '../models/BuildingPart/building_part.dart';
 import '../services/state_service.dart';
 import '../services/storage_service.dart';
 import '../widgets/custom_popup.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MeasurementForm extends StatefulWidget {
   const MeasurementForm({Key? key}) : super(key: key);
@@ -144,8 +145,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                     },
                     icon: const Icon(Icons.arrow_back),
                   ),
-                  const Text(
-                    "Add Measurement",
+                  Text(
+                    AppLocalizations.of(context)!.measurementForm_add,
                     style: TextStyle(fontSize: 20),
                   ),
                 ],
@@ -162,7 +163,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
                       children: <Widget>[
                         CustomTextFormField(
                           type: TextInputType.text,
-                          labelText: "Description",
+                          labelText: AppLocalizations.of(context)!.description,
                           initialValue: measurement.description,
                           onChanged: (newValue) => {
                             setState(() => {
@@ -178,9 +179,10 @@ class _MeasurementFormState extends State<MeasurementForm> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              const Padding(
+                              Padding(
                                   padding: EdgeInsets.only(right: 10),
-                                  child: Text("Measurement Type")),
+                                  child: Text(AppLocalizations.of(context)!
+                                      .measurement_type)),
                               Container(
                                   width: 270,
                                   child: MeasurementTypeSwitcher(
@@ -197,7 +199,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                                     }),
                                   )),
                               Spacer(),
-                              Text("Cubature: ${getCubature()}m\u00B3"),
+                              Text(AppLocalizations.of(context)!.cubature +
+                                  ": ${getCubature()}m\u00B3"),
                             ],
                           ),
                         ),
@@ -213,7 +216,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                           ),
                           type: const TextInputType.numberWithOptions(
                               decimal: false),
-                          labelText: "Length",
+                          labelText:
+                              AppLocalizations.of(context)!.measurement_length,
                           initialValue: measurement.length.toString(),
                           onChanged: (newValue) => {
                             setState(() => {
@@ -236,7 +240,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                           ),
                           type: const TextInputType.numberWithOptions(
                               decimal: true),
-                          labelText: "Width",
+                          labelText:
+                              AppLocalizations.of(context)!.measurement_width,
                           initialValue: measurement.width.toString(),
                           onChanged: (newValue) => {
                             setState(() => {
@@ -255,7 +260,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                           ),
                           type: const TextInputType.numberWithOptions(
                               decimal: true),
-                          labelText: "Height",
+                          labelText:
+                              AppLocalizations.of(context)!.measurement_height,
                           initialValue: measurement.height.toString(),
                           onChanged: (newValue) => {
                             setState(() => {
@@ -278,7 +284,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                           ),
                           type: const TextInputType.numberWithOptions(
                               decimal: true),
-                          labelText: "Radius",
+                          labelText:
+                              AppLocalizations.of(context)!.measurement_radius,
                           initialValue: measurement.radius.toString(),
                           onChanged: (newValue) => {
                             setState(() => {
@@ -313,7 +320,9 @@ class _MeasurementFormState extends State<MeasurementForm> {
                                         context, const BuildingPartForm())
                                   },
                               },
-                              label: const Text("OK",
+                              label: Text(
+                                  AppLocalizations.of(context)!
+                                      .buildingAssessment_okButton,
                                   style: TextStyle(
                                       fontSize: 15, color: Colors.white)),
                             ),
@@ -336,7 +345,9 @@ class _MeasurementFormState extends State<MeasurementForm> {
                                           ? Color.fromARGB(220, 112, 14, 46)
                                           : Color.fromARGB(148, 112, 14, 46),
                                 ),
-                                label: const Text("Cancel",
+                                label: Text(
+                                    AppLocalizations.of(context)!
+                                        .buildingAssessment_cancelButton,
                                     style: TextStyle(
                                         fontSize: 15, color: Colors.white)),
                               ),

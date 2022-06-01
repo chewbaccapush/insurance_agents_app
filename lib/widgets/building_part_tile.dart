@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../models/BuildingPart/building_part.dart';
 import '../services/storage_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BuildingPartTile extends StatefulWidget {
   final BuildContext context;
@@ -66,11 +67,17 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                         right: 20),
                                     child: Row(
                                       children: [
-                                        Text(
-                                          'Building Year:    ',
-                                          style: Theme.of(widget.context)
-                                              .textTheme
-                                              .bodyText1,
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 10.0),
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                    .buildingPartForm_buildingYear +
+                                                ":",
+                                            style: Theme.of(widget.context)
+                                                .textTheme
+                                                .bodyText1,
+                                          ),
                                         ),
                                         Text(
                                             widget.entry!.buildingYear
@@ -89,11 +96,17 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                       children: [
                                         Row(
                                           children: [
-                                            Text(
-                                              'Fire Protection:    ',
-                                              style: Theme.of(widget.context)
-                                                  .textTheme
-                                                  .bodyText1,
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 10.0),
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                        .buildingPart_fireProtection +
+                                                    ":",
+                                                style: Theme.of(widget.context)
+                                                    .textTheme
+                                                    .bodyText1,
+                                              ),
                                             ),
                                             Text(
                                               EnumToString.convertToString(
@@ -116,11 +129,17 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                       children: [
                                         Row(
                                           children: [
-                                            Text(
-                                              'Construction Class:    ',
-                                              style: Theme.of(widget.context)
-                                                  .textTheme
-                                                  .bodyText1,
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 10.0),
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                        .buildingPart_constructionClass +
+                                                    ":",
+                                                style: Theme.of(widget.context)
+                                                    .textTheme
+                                                    .bodyText1,
+                                              ),
                                             ),
                                             Text(
                                               EnumToString.convertToString(
@@ -143,11 +162,17 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                       children: [
                                         Row(
                                           children: [
-                                            Text(
-                                              'Risk Class:    ',
-                                              style: Theme.of(widget.context)
-                                                  .textTheme
-                                                  .bodyText1,
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 10.0),
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                        .buildingPart_riskClass +
+                                                    ":",
+                                                style: Theme.of(widget.context)
+                                                    .textTheme
+                                                    .bodyText1,
+                                              ),
                                             ),
                                             Text(
                                               EnumToString.convertToString(
@@ -167,11 +192,17 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                         top: 5, bottom: 5, left: 20, right: 20),
                                     child: Row(
                                       children: [
-                                        Text(
-                                          'Unit Price:    ',
-                                          style: Theme.of(widget.context)
-                                              .textTheme
-                                              .bodyText1,
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 10.0),
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                    .buildingPart_unitPrice +
+                                                ":",
+                                            style: Theme.of(widget.context)
+                                                .textTheme
+                                                .bodyText1,
+                                          ),
                                         ),
                                         Text(
                                             widget.entry!.unitPrice.toString() +
@@ -190,11 +221,17 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                       children: [
                                         Row(
                                           children: [
-                                            Text(
-                                              'Insured Type:    ',
-                                              style: Theme.of(widget.context)
-                                                  .textTheme
-                                                  .bodyText1,
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 10.0),
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                        .buildingPart_unitPrice +
+                                                    ":",
+                                                style: Theme.of(widget.context)
+                                                    .textTheme
+                                                    .bodyText1,
+                                              ),
                                             ),
                                             Text(
                                               EnumToString.convertToString(
@@ -214,11 +251,17 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                         top: 5, left: 20, right: 20),
                                     child: Row(
                                       children: [
-                                        Text(
-                                          'Devaluation Percentage:    ',
-                                          style: Theme.of(widget.context)
-                                              .textTheme
-                                              .bodyText1,
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 10.0),
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                    .buildingPart_devaluationPercentage +
+                                                ":",
+                                            style: Theme.of(widget.context)
+                                                .textTheme
+                                                .bodyText1,
+                                          ),
                                         ),
                                         Text(
                                             widget.entry!.devaluationPercentage
@@ -257,14 +300,22 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                           right: 20),
                                       child: Row(
                                         children: [
-                                          Text(
-                                            'Cubature:    ',
-                                            style: Theme.of(widget.context)
-                                                .textTheme
-                                                .bodyText1,
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 10.0),
+                                            child: Text(
+                                              AppLocalizations.of(context)!
+                                                      .cubature +
+                                                  ":",
+                                              style: Theme.of(widget.context)
+                                                  .textTheme
+                                                  .bodyText1,
+                                            ),
                                           ),
                                           Text(
-                                              widget.entry!.cubature.toString(),
+                                              widget.entry!.cubature!
+                                                      .toStringAsFixed(0) +
+                                                  " m\u00B3",
                                               style: Theme.of(widget.context)
                                                   .textTheme
                                                   .bodyText2)
@@ -280,13 +331,22 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                           right: 20),
                                       child: Row(
                                         children: [
-                                          Text(
-                                            'Value:    ',
-                                            style: Theme.of(widget.context)
-                                                .textTheme
-                                                .bodyText1,
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 10.0),
+                                            child: Text(
+                                              AppLocalizations.of(context)!
+                                                      .value +
+                                                  ":",
+                                              style: Theme.of(widget.context)
+                                                  .textTheme
+                                                  .bodyText1,
+                                            ),
                                           ),
-                                          Text(widget.entry!.value.toString(),
+                                          Text(
+                                              widget.entry!.value!
+                                                      .toStringAsFixed(0) +
+                                                  " \u20A3",
                                               style: Theme.of(widget.context)
                                                   .textTheme
                                                   .bodyText2)
@@ -302,15 +362,22 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                           right: 20),
                                       child: Row(
                                         children: [
-                                          Text(
-                                            'Sum Insured:    ',
-                                            style: Theme.of(widget.context)
-                                                .textTheme
-                                                .bodyText1,
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 10.0),
+                                            child: Text(
+                                              AppLocalizations.of(context)!
+                                                      .sumInsured +
+                                                  ":",
+                                              style: Theme.of(widget.context)
+                                                  .textTheme
+                                                  .bodyText1,
+                                            ),
                                           ),
                                           Text(
-                                              widget.entry!.sumInsured
-                                                  .toString(),
+                                              widget.entry!.sumInsured!
+                                                      .toStringAsFixed(0) +
+                                                  " \u20A3",
                                               style: Theme.of(widget.context)
                                                   .textTheme
                                                   .bodyText2),
@@ -335,11 +402,17 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                   padding: const EdgeInsets.only(bottom: 10.0),
                                   child: Row(
                                     children: [
-                                      Text(
-                                        'Description:    ',
-                                        style: Theme.of(widget.context)
-                                            .textTheme
-                                            .bodyText1,
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 10.0),
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                                  .description +
+                                              ":",
+                                          style: Theme.of(widget.context)
+                                              .textTheme
+                                              .bodyText1,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -351,7 +424,8 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                           widget.entry!.description
                                                       .toString() ==
                                                   "DRAFT"
-                                              ? "Draft"
+                                              ? AppLocalizations.of(context)!
+                                                  .assessments_draft
                                               : widget.entry!.description
                                                   .toString(),
                                           // 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.',
@@ -397,7 +471,8 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                   : Theme.of(context).colorScheme.onPrimary,
                             )),
                         title: Text(
-                          'Measurements',
+                          AppLocalizations.of(context)!
+                              .assessments_measurements,
                           style: Theme.of(widget.context).textTheme.headline3,
                         ),
                         children: widget.measurements!)))
