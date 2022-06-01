@@ -1,12 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:msg/main.dart';
 import 'package:msg/models/Measurement/measurement.dart';
 
 import '../models/Measurement/measurement_type.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MeasurementTypeSwitcher extends StatefulWidget {
-  Measurement measurement; 
+  Measurement measurement;
   dynamic onTapRectangular;
   dynamic onTapCircular;
   MeasurementTypeSwitcher({
@@ -17,7 +19,8 @@ class MeasurementTypeSwitcher extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<MeasurementTypeSwitcher> createState() => _MeasurementTypeSwitcherState();
+  State<MeasurementTypeSwitcher> createState() =>
+      _MeasurementTypeSwitcherState();
 }
 
 class _MeasurementTypeSwitcherState extends State<MeasurementTypeSwitcher> {
@@ -80,10 +83,14 @@ class _MeasurementTypeSwitcherState extends State<MeasurementTypeSwitcher> {
                                   children: [
                                     Row(
                                       children: [
-                                        Text('Rectangular',
+                                        Text(
+                                          AppLocalizations.of(context)!
+                                              .measurement_rectangular,
                                           style: TextStyle(
-                                          fontWeight: FontWeight.normal,
-                                          color: Theme.of(context).colorScheme.onPrimary),
+                                              fontWeight: FontWeight.normal,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary),
                                         ),
                                       ],
                                     )
@@ -103,10 +110,14 @@ class _MeasurementTypeSwitcherState extends State<MeasurementTypeSwitcher> {
                                   children: [
                                     Row(
                                       children: [
-                                        Text('Circular',
+                                        Text(
+                                          AppLocalizations.of(context)!
+                                              .measurement_circular,
                                           style: TextStyle(
-                                          fontWeight: FontWeight.normal,
-                                          color: Theme.of(context).colorScheme.onPrimary),
+                                              fontWeight: FontWeight.normal,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary),
                                         ),
                                       ],
                                     )
@@ -127,6 +138,7 @@ class _MeasurementTypeSwitcherState extends State<MeasurementTypeSwitcher> {
       ),
     );
   }
+
   Alignment getCorrectContainerAlignment() {
     switch (widget.measurement.measurementType) {
       case MeasurementType.rectangular:
@@ -137,5 +149,4 @@ class _MeasurementTypeSwitcherState extends State<MeasurementTypeSwitcher> {
         return Alignment.centerLeft;
     }
   }
-
 }

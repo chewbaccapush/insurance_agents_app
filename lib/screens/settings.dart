@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:msg/main.dart';
 import 'package:msg/screens/building_assessment_form.dart';
 import 'package:msg/screens/history.dart';
 import 'package:msg/services/storage_service.dart';
@@ -6,6 +7,7 @@ import 'package:msg/services/theme_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../widgets/custom_navbar.dart';
 
@@ -18,9 +20,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   bool? _darkMode = StorageService.getAppThemeId();
-  dynamic _currentLanguage = "English";
-
-  dynamic changeTheme = (value) => {};
+  dynamic _currentLanguage = StorageService.getLocale()!.languageCode;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         icon: const Icon(Icons.arrow_back),
                       ),
                       Text(
-                        "Settings",
+                        AppLocalizations.of(context)!.settings_heading,
                         style: TextStyle(
                             fontSize: 20,
                             color: Theme.of(context).colorScheme.onPrimary),
@@ -67,7 +67,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         child: Icon(Icons.dark_mode, size: 18),
                       ),
                       Text(
-                        'Dark Mode',
+                        AppLocalizations.of(context)!.settings_darkMode,
                         style: TextStyle(fontSize: 16),
                       )
                     ],
@@ -100,7 +100,19 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             InkWell(
                 onTap: () {
-                  print("Swap language");
+                  WidgetsBinding.instance!.addPostFrameCallback((_) {
+                    if (_currentLanguage == "en") {
+                      MyApp.setLocale(context, const Locale("de", "DE"));
+                      setState(() {
+                        _currentLanguage = "de";
+                      });
+                    } else if (_currentLanguage == "de") {
+                      MyApp.setLocale(context, const Locale("en", "EN"));
+                      setState(() {
+                        _currentLanguage = "en";
+                      });
+                    }
+                  });
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -114,14 +126,15 @@ class _SettingsPageState extends State<SettingsPage> {
                             Column(
                               children: [
                                 Row(
-                                  children: const [
+                                  children: [
                                     Padding(
                                       padding: EdgeInsets.only(right: 10.0),
                                       child: Icon(Icons.language_outlined,
                                           size: 18),
                                     ),
                                     Text(
-                                      'Language',
+                                      AppLocalizations.of(context)!
+                                          .settings_language,
                                       style: TextStyle(fontSize: 16),
                                     ),
                                   ],
@@ -130,11 +143,18 @@ class _SettingsPageState extends State<SettingsPage> {
                                   padding: const EdgeInsets.only(top: 5.0),
                                   child: Row(
                                     children: [
-                                      Text(
-                                        _currentLanguage,
-                                        style: TextStyle(
-                                            fontSize: 13,
-                                            color: Colors.grey[400]),
+                                      Padding(
+                                        padding: _currentLanguage == "en"
+                                            ? const EdgeInsets.only(left: 0)
+                                            : const EdgeInsets.only(left: 17.5),
+                                        child: Text(
+                                          _currentLanguage == "en"
+                                              ? "English"
+                                              : "Deutsch",
+                                          style: TextStyle(
+                                              fontSize: 13,
+                                              color: Colors.grey[400]),
+                                        ),
                                       )
                                     ],
                                   ),
@@ -147,69 +167,9 @@ class _SettingsPageState extends State<SettingsPage> {
                     ],
                   ),
                 )),
-
-            /* Row(
-              children: [
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                              primary: Color.fromARGB(148, 112, 14, 46)),
-                          label: Text('Theme',
-                              style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSecondary)),
-                          icon: Icon(
-                            Icons.dark_mode,
-                            color: Theme.of(context).colorScheme.onSecondary,
-                          ),
-                          onPressed: () {
-                            ThemeProvider themeProvider =
-                                Provider.of(context, listen: false);
-                            themeProvider.swapTheme();
-                          },
-                        )
-                      ],
-                    )
-                  ],
-                )
-              ],
-            )*/
           ],
         ),
       ),
-    );
-  }
-
-  Widget buildSettings() {
-    return ListView(children: [
-      buildSwitchTile("Temna tema", Icon(Icons.dark_mode)),
-      buildNavigationTile("Spremeni Jezik", Icon(Icons.language))
-    ]);
-  }
-
-  ListTile buildSwitchTile(title, icon) {
-    return ListTile(
-        leading: icon,
-        title: Text(title),
-        trailing: Switch(
-            value: _darkMode!,
-            onChanged: (value) {
-              setState(() {
-                _darkMode = value;
-              });
-            }));
-  }
-
-  ListTile buildNavigationTile(title, icon) {
-    return ListTile(
-      leading: icon,
-      title: Text(title),
-      trailing: const Icon(Icons.keyboard_arrow_right),
     );
   }
 }

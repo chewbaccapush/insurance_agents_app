@@ -20,6 +20,7 @@ import '../models/Measurement/measurement.dart';
 import '../services/state_service.dart';
 import '../services/storage_service.dart';
 import '../widgets/custom_navbar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BuildingPartForm extends StatefulWidget {
   const BuildingPartForm({Key? key}) : super(key: key);
@@ -193,7 +194,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                     icon: const Icon(Icons.arrow_back),
                   ),
                   Text(
-                    "Add Building Part",
+                    AppLocalizations.of(context)!.buildingAssessment_addButton,
                     style: TextStyle(
                         fontSize: 20,
                         color: Theme.of(context).colorScheme.onPrimary),
@@ -214,7 +215,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                       children: <Widget>[
                         CustomTextFormField(
                           type: TextInputType.text,
-                          labelText: "Description",
+                          labelText: AppLocalizations.of(context)!.description,
                           initialValue: buildingPart.description,
                           onChanged: (newValue) => {
                             setState(() {
@@ -228,7 +229,8 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                         CustomTextFormField(
                           type: const TextInputType.numberWithOptions(
                               decimal: false),
-                          labelText: "Building Year",
+                          labelText: AppLocalizations.of(context)!
+                              .buildingPartForm_buildingYear,
                           initialValue: buildingPart.buildingYear.toString(),
                           onChanged: (newValue) => {
                             setState(() {
@@ -242,7 +244,8 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CustomDropdown(
-                                hint: const Text("Fire Protection"),
+                                hint: Text(AppLocalizations.of(context)!
+                                    .buildingPart_fireProtection),
                                 height: 60,
                                 value: buildingPart.fireProtection,
                                 items: fireProtectionList,
@@ -254,7 +257,8 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                 },
                                 width: 170),
                             CustomDropdown(
-                                hint: const Text("Construction Class"),
+                                hint: Text(AppLocalizations.of(context)!
+                                    .buildingPart_constructionClass),
                                 height: 60,
                                 value: buildingPart.constructionClass,
                                 items: constructionClassList,
@@ -266,7 +270,8 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                 },
                                 width: 170),
                             CustomDropdown(
-                                hint: const Text("Risk Class"),
+                                hint: Text(AppLocalizations.of(context)!
+                                    .buildingPart_riskClass),
                                 height: 60,
                                 value: buildingPart.riskClass,
                                 items: riskClassList,
@@ -281,9 +286,9 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                         ),
                         CustomTextFormField(
                           suffix: const Icon(Icons.euro, color: Colors.grey),
-                          type: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          labelText: "Unit Price",
+                          type: TextInputType.numberWithOptions(decimal: true),
+                          labelText: AppLocalizations.of(context)!
+                              .buildingPart_unitPrice,
                           initialValue: buildingPart.unitPrice.toString(),
                           onChanged: (newValue) => {
                             setState(() {
@@ -301,7 +306,8 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                             Padding(
                               padding: const EdgeInsets.only(top: 15.0),
                               child: CustomDropdown(
-                                  hint: const Text("Insured Type"),
+                                  hint: Text(AppLocalizations.of(context)!
+                                      .buildingPart_insuredType),
                                   height: 60,
                                   value: buildingPart.insuredType,
                                   items: insuredTypeList,
@@ -326,7 +332,8 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                               width: 450,
                               type: const TextInputType.numberWithOptions(
                                   decimal: true),
-                              labelText: "Devaluation percentage",
+                              labelText: AppLocalizations.of(context)!
+                                  .buildingPart_devaluationPercentage,
                               initialValue:
                                   buildingPart.devaluationPercentage.toString(),
                               onChanged: (newValue) => {
@@ -352,9 +359,12 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Cubature: ${getCubature()} m\u00B3'),
-                              Text('Value: ${getValue()} \u20A3'),
-                              Text('Sum insured: ${getSumInsured()} \u20A3'),
+                              Text(AppLocalizations.of(context)!.cubature +
+                                  ': ${getCubature()} m\u00B3'),
+                              Text(AppLocalizations.of(context)!.value +
+                                  ': ${getValue()} \u20A3'),
+                              Text(AppLocalizations.of(context)!.sumInsured +
+                                  ': ${getSumInsured()} \u20A3'),
                             ],
                           ),
                         ),
@@ -374,8 +384,9 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                         ? Color.fromARGB(220, 112, 14, 46)
                                         : Color.fromARGB(148, 112, 14, 46),
                               ),
-                              label: const Text(
-                                "OK",
+                              label: Text(
+                                AppLocalizations.of(context)!
+                                    .buildingAssessment_okButton,
                                 style: TextStyle(
                                     fontSize: 15, color: Colors.white),
                               ),
@@ -407,7 +418,9 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                           ? Color.fromARGB(220, 112, 14, 46)
                                           : Color.fromARGB(148, 112, 14, 46),
                                 ),
-                                label: const Text("Cancel",
+                                label: Text(
+                                    AppLocalizations.of(context)!
+                                        .buildingAssessment_cancelButton,
                                     style: TextStyle(
                                         fontSize: 15, color: Colors.white)),
                               ),

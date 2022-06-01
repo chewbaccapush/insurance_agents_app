@@ -1,16 +1,13 @@
-// import 'dart:html';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:intl/intl.dart';
 import 'package:msg/screens/building_assessment_form.dart';
 import 'package:msg/services/navigator_service.dart';
-import 'package:msg/services/theme_provider.dart';
 
 import '../models/BuildingAssessment/building_assessment.dart';
 import '../services/state_service.dart';
 import '../services/storage_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BuildingAssessmentTile extends StatefulWidget {
   final BuildContext context;
@@ -30,6 +27,7 @@ class BuildingAssessmentTile extends StatefulWidget {
 
 class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
   bool _isExpanded = false;
+  String languageCode = StorageService.getLocale()!.languageCode;
 
   // Creates icon for sent/unsent
   Icon getIcon() {
@@ -71,8 +69,9 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 10),
                                     child: Text(
-                                      DateFormat.MMMMEEEEd().format(widget
-                                          .entry!.appointmentDate as DateTime),
+                                      DateFormat.MMMMEEEEd(languageCode).format(
+                                          widget.entry!.appointmentDate
+                                              as DateTime),
                                       style: Theme.of(widget.context)
                                           .textTheme
                                           .headline1,
@@ -114,15 +113,24 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                   top: 10, left: 40),
                                               child: Row(
                                                 children: [
-                                                  Text(
-                                                    'Appointment Date:    ',
-                                                    style:
-                                                        Theme.of(widget.context)
-                                                            .textTheme
-                                                            .bodyText1,
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 10.0),
+                                                    child: Text(
+                                                      AppLocalizations.of(
+                                                                  context)!
+                                                              .buildingAssessment_appointmentDate +
+                                                          ":",
+                                                      style: Theme.of(
+                                                              widget.context)
+                                                          .textTheme
+                                                          .bodyText1,
+                                                    ),
                                                   ),
                                                   Text(
-                                                      DateFormat.yMMMMd()
+                                                      DateFormat.yMMMMd(
+                                                              languageCode)
                                                           .format(widget.entry!
                                                                   .appointmentDate
                                                               as DateTime),
@@ -141,12 +149,21 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                           top: 15, left: 40),
                                                   child: Row(
                                                     children: [
-                                                      Text(
-                                                        'Number of Apartments:    ',
-                                                        style: Theme.of(
-                                                                widget.context)
-                                                            .textTheme
-                                                            .bodyText1,
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                right: 10.0),
+                                                        child: Text(
+                                                          AppLocalizations.of(
+                                                                      context)!
+                                                                  .buildingAssessment_numberOFApartaments +
+                                                              ":",
+                                                          style: Theme.of(widget
+                                                                  .context)
+                                                              .textTheme
+                                                              .bodyText1,
+                                                        ),
                                                       ),
                                                       Text(
                                                           widget.entry!
@@ -173,12 +190,21 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                           top: 15, left: 40),
                                                   child: Row(
                                                     children: [
-                                                      Text(
-                                                        'Voluntary Deduction:    ',
-                                                        style: Theme.of(
-                                                                widget.context)
-                                                            .textTheme
-                                                            .bodyText1,
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                right: 10.0),
+                                                        child: Text(
+                                                          AppLocalizations.of(
+                                                                      context)!
+                                                                  .buildingAssessment_voulentaryDeduction +
+                                                              ":",
+                                                          style: Theme.of(widget
+                                                                  .context)
+                                                              .textTheme
+                                                              .bodyText1,
+                                                        ),
                                                       ),
                                                       Text(
                                                           widget.entry!
@@ -201,12 +227,21 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                           top: 15, left: 40),
                                                   child: Row(
                                                     children: [
-                                                      Text(
-                                                        'Assessment Fee:    ',
-                                                        style: Theme.of(
-                                                                widget.context)
-                                                            .textTheme
-                                                            .bodyText1,
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                right: 10.0),
+                                                        child: Text(
+                                                          AppLocalizations.of(
+                                                                      context)!
+                                                                  .buildingAssessment_assessmentFee +
+                                                              ":",
+                                                          style: Theme.of(widget
+                                                                  .context)
+                                                              .textTheme
+                                                              .bodyText1,
+                                                        ),
                                                       ),
                                                       Text(
                                                           widget.entry!
@@ -247,13 +282,23 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                                   bottom: 15.0),
                                                           child: Row(
                                                             children: [
-                                                              Text(
-                                                                'Description:    ',
-                                                                style: Theme.of(
-                                                                        widget
-                                                                            .context)
-                                                                    .textTheme
-                                                                    .bodyText1,
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        right:
+                                                                            10.0),
+                                                                child: Text(
+                                                                  AppLocalizations.of(
+                                                                              context)!
+                                                                          .description +
+                                                                      ":",
+                                                                  style: Theme.of(
+                                                                          widget
+                                                                              .context)
+                                                                      .textTheme
+                                                                      .bodyText1,
+                                                                ),
                                                               ),
                                                             ],
                                                           ),
@@ -301,13 +346,23 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                               bottom: 15.0),
                                                       child: Row(
                                                         children: [
-                                                          Text(
-                                                            'Assessment Cause:    ',
-                                                            style: Theme.of(
-                                                                    widget
-                                                                        .context)
-                                                                .textTheme
-                                                                .bodyText1,
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    right:
+                                                                        10.0),
+                                                            child: Text(
+                                                              AppLocalizations.of(
+                                                                          context)!
+                                                                      .buildingAssessment_assessmentCause +
+                                                                  ":",
+                                                              style: Theme.of(
+                                                                      widget
+                                                                          .context)
+                                                                  .textTheme
+                                                                  .bodyText1,
+                                                            ),
                                                           ),
                                                         ],
                                                       ),
@@ -371,11 +426,17 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                           : Theme.of(context)
                                                               .colorScheme
                                                               .onPrimary)),
-                                              title: Text(
-                                                'Building parts',
-                                                style: Theme.of(widget.context)
-                                                    .textTheme
-                                                    .headline2,
+                                              title: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 10.0),
+                                                child: Text(
+                                                  AppLocalizations.of(context)!
+                                                      .assessments_buildingParts,
+                                                  style:
+                                                      Theme.of(widget.context)
+                                                          .textTheme
+                                                          .headline2,
+                                                ),
                                               ),
                                               children: widget.buildingParts
                                                   as List<Widget>)))

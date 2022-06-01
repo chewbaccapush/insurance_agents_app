@@ -15,6 +15,7 @@ import '../services/navigator_service.dart';
 import '../services/sqs_sender.dart';
 import '../services/storage_service.dart';
 import '../widgets/custom_popup.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BuildingAssessmentForm extends StatefulWidget {
   const BuildingAssessmentForm({Key? key}) : super(key: key);
@@ -115,7 +116,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                     icon: const Icon(Icons.arrow_back),
                   ),
                   Text(
-                    "Edit Building Assessment",
+                    AppLocalizations.of(context)!.buildingAssessmentForm_edit,
                     style: TextStyle(
                         fontSize: 20,
                         color: Theme.of(context).colorScheme.onPrimary),
@@ -148,7 +149,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                         ),
                         CustomTextFormField(
                           type: TextInputType.text,
-                          labelText: "Description",
+                          labelText: AppLocalizations.of(context)!.description,
                           initialValue: buildingAssessment.description,
                           onChanged: (newValue) => {
                             setState(() => {
@@ -161,7 +162,8 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                         ),
                         CustomTextFormField(
                           type: TextInputType.text,
-                          labelText: "Assessment Cause",
+                          labelText: AppLocalizations.of(context)!
+                              .buildingAssessment_assessmentCause,
                           initialValue: buildingAssessment.assessmentCause,
                           onChanged: (newValue) => {
                             setState(() => {
@@ -179,7 +181,8 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               width: 175,
                               type: const TextInputType.numberWithOptions(
                                   decimal: false),
-                              labelText: "Number of Apartments",
+                              labelText: AppLocalizations.of(context)!
+                                  .buildingAssessment_numberOFApartaments,
                               initialValue: buildingAssessment.numOfAppartments
                                   .toString(),
                               onChanged: (newValue) => {
@@ -197,7 +200,8 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               width: 175,
                               type: const TextInputType.numberWithOptions(
                                   decimal: true),
-                              labelText: "Voluntary Deduction",
+                              labelText: AppLocalizations.of(context)!
+                                  .buildingAssessment_voulentaryDeduction,
                               initialValue: buildingAssessment
                                   .voluntaryDeduction
                                   .toString(),
@@ -217,7 +221,8 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                   color: Colors.grey),
                               type: const TextInputType.numberWithOptions(
                                   decimal: true),
-                              labelText: "Assessment Fee",
+                              labelText: AppLocalizations.of(context)!
+                                  .buildingAssessment_assessmentFee,
                               initialValue:
                                   buildingAssessment.assessmentFee.toString(),
                               onChanged: (newValue) => {
@@ -254,8 +259,9 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                 NavigatorService.navigateTo(
                                     context, const HistoryPage()),
                               },
-                              label: const Text(
-                                "OK",
+                              label: Text(
+                                AppLocalizations.of(context)!
+                                    .buildingAssessment_okButton,
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.white,
@@ -280,7 +286,9 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                         ? Color.fromARGB(220, 112, 14, 46)
                                         : Color.fromARGB(148, 112, 14, 46),
                               ),
-                              label: const Text("Cancel",
+                              label: Text(
+                                  AppLocalizations.of(context)!
+                                      .buildingAssessment_cancelButton,
                                   style: TextStyle(
                                       fontSize: 15, color: Colors.white)),
                             ),
@@ -307,7 +315,9 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                         ? Color.fromARGB(220, 112, 14, 46)
                                         : Color.fromARGB(148, 112, 14, 46),
                               ),
-                              label: const Text("Finalize",
+                              label: Text(
+                                  AppLocalizations.of(context)!
+                                      .buildingAssessment_finalizeButton,
                                   style: TextStyle(
                                       fontSize: 15, color: Colors.white)),
                             ),
