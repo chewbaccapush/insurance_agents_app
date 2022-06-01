@@ -155,6 +155,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
             Form(
               key: _formKey,
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Flexible(
                     child: Column(

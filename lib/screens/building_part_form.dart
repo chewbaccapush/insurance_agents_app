@@ -205,10 +205,12 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
             Form(
               key: _formKey,
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Flexible(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         CustomTextFormField(
                           type: TextInputType.text,

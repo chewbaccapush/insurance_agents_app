@@ -128,17 +128,23 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
               key: _formKey,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Flexible(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        CustomDateFormField(
-                          initialValue: buildingAssessment.appointmentDate,
-                          onDateSaved: (newValue) => {
-                            setState((() => {
-                                  buildingAssessment.appointmentDate = newValue
-                                }))
-                          },
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: CustomDateFormField(
+                            initialValue: buildingAssessment.appointmentDate,
+                            onDateSaved: (newValue) => {
+                              setState((() => {
+                                    buildingAssessment.appointmentDate =
+                                        newValue
+                                  }))
+                            },
+                          ),
                         ),
                         CustomTextFormField(
                           type: TextInputType.text,
