@@ -10,6 +10,7 @@ import 'package:msg/models/Database/database_helper.dart';
 import 'package:msg/screens/building_assessment_form.dart';
 import 'package:msg/screens/measurement_form.dart';
 import 'package:msg/services/navigator_service.dart';
+import 'package:msg/validators/validate_building_part.dart';
 import 'package:msg/validators/validators.dart';
 import 'package:msg/widgets/add_objects_section.dart';
 import 'package:msg/widgets/custom_dropdown.dart';
@@ -80,6 +81,13 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
     return buildingPart.sumInsured?.round();
   }
 
+  void isValid() {
+    buildingPart.validated = false;
+    if (ValidateBuildingPart().check(buildingPart))
+      buildingPart.validated = true;
+    print("VALID: ${buildingPart.validated.toString()}");
+  }
+
   saveBuildingPart() async {
     await DatabaseHelper.instance
         .persistBuildingPart(buildingPart, buildingAssessment)
@@ -139,6 +147,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                 children: [
                   IconButton(
                     onPressed: () async => {
+                      isValid(),
                       if (dirtyFlag)
                         {
                           await showDialog(
@@ -393,6 +402,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                               onPressed: () async => {
                                 if (_formKey.currentState!.validate())
                                   {
+                                    buildingPart.validated = true,
                                     await saveBuildingPart(),
                                     NavigatorService.navigateTo(
                                         context, const BuildingAssessmentForm())

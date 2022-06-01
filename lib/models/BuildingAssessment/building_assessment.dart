@@ -14,7 +14,8 @@ class BuildingAssessmentFields {
     numOfAppartments,
     voluntaryDeduction,
     assessmentFee,
-    sent
+    sent,
+    finalized
   ];
 
   static const String id = 'buildingAssessmentId';
@@ -26,6 +27,7 @@ class BuildingAssessmentFields {
   static const String assessmentFee = 'assessmentFee';
   static const String buildingParts = 'buildingParts';
   static const String sent = 'sent';
+  static const String finalized = 'finalized';
 }
 
 class BuildingAssessment {
@@ -38,6 +40,7 @@ class BuildingAssessment {
   double? assessmentFee;
   List<BuildingPart> buildingParts;
   bool? sent = false;
+  bool? finalized = false;
 
   BuildingAssessment(
       {this.id,
@@ -48,6 +51,7 @@ class BuildingAssessment {
       this.voluntaryDeduction,
       this.assessmentFee,
       this.sent,
+      this.finalized,
       List<BuildingPart>? buildingParts})
       : buildingParts = buildingParts ?? [];
 
@@ -61,7 +65,8 @@ class BuildingAssessment {
       BuildingAssessmentFields.numOfAppartments: numOfAppartments,
       BuildingAssessmentFields.voluntaryDeduction: voluntaryDeduction,
       BuildingAssessmentFields.assessmentFee: assessmentFee,
-      BuildingAssessmentFields.sent: sent == true ? 1 : 0
+      BuildingAssessmentFields.sent: sent == true ? 1 : 0,
+      BuildingAssessmentFields.finalized: finalized == true ? 1 : 0
     };
   }
 
@@ -83,10 +88,9 @@ class BuildingAssessment {
   }
 
   static BuildingAssessment fromJson(Map<String, Object?> json) {
-    bool sentBoolean =
-        int.tryParse(json[BuildingAssessmentFields.sent].toString()) == 1
-            ? true
-            : false;
+    bool sentBoolean = int.tryParse(json[BuildingAssessmentFields.sent].toString()) == 1 ? true : false;
+    bool finalizedBoolean = int.tryParse(json[BuildingAssessmentFields.finalized].toString()) == 1 ? true : false;
+    
     return BuildingAssessment(
         id: int.tryParse(json[BuildingAssessmentFields.id].toString()),
         appointmentDate: DateTime.parse(
@@ -100,7 +104,9 @@ class BuildingAssessment {
             json[BuildingAssessmentFields.voluntaryDeduction].toString()),
         assessmentFee: double.tryParse(
             json[BuildingAssessmentFields.assessmentFee].toString()),
-        sent: sentBoolean);
+        sent: sentBoolean,
+        finalized: finalizedBoolean
+        );
   }
 
   BuildingAssessment copy({
@@ -113,17 +119,20 @@ class BuildingAssessment {
     double? assessmentFee,
     List<BuildingPart>? buildingParts,
     bool? sent,
+    bool? finalized,
   }) =>
       BuildingAssessment(
-          id: id ?? this.id,
-          appointmentDate: appointmentDate ?? this.appointmentDate,
-          description: description ?? this.description,
-          assessmentCause: assessmentCause ?? this.assessmentCause,
-          numOfAppartments: numOfAppartments ?? this.numOfAppartments,
-          voluntaryDeduction: voluntaryDeduction ?? this.voluntaryDeduction,
-          assessmentFee: assessmentFee ?? this.assessmentFee,
-          buildingParts: buildingParts ?? this.buildingParts,
-          sent: sent ?? this.sent);
+        id: id ?? this.id,
+        appointmentDate: appointmentDate ?? this.appointmentDate,
+        description: description ?? this.description,
+        assessmentCause: assessmentCause ?? this.assessmentCause,
+        numOfAppartments: numOfAppartments ?? this.numOfAppartments,
+        voluntaryDeduction: voluntaryDeduction ?? this.voluntaryDeduction,
+        assessmentFee: assessmentFee ?? this.assessmentFee,
+        buildingParts: buildingParts ?? this.buildingParts,
+        sent: sent ?? this.sent,
+        finalized: finalized ?? this.finalized
+      );
 
   get getId => this.id;
 
@@ -162,4 +171,8 @@ class BuildingAssessment {
   set setBuildingParts(buildingParts) => this.buildingParts = buildingParts;
 
   set setSent(sent) => this.sent = sent;
+
+  get getFinalized => this.finalized;
+
+  set setFinalized(finalized) => this.finalized = finalized;
 }

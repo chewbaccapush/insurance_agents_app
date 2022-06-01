@@ -48,7 +48,8 @@ class DatabaseHelper {
           ${BuildingAssessmentFields.numOfAppartments} $intagerNullable,
           ${BuildingAssessmentFields.voluntaryDeduction} $numericNullable,
           ${BuildingAssessmentFields.assessmentFee} $numericNullable,
-          ${BuildingAssessmentFields.sent} $boolType   
+          ${BuildingAssessmentFields.sent} $boolType,   
+          ${BuildingAssessmentFields.finalized} $boolType   
       )''');
 
     await db.execute('''
@@ -66,6 +67,7 @@ class DatabaseHelper {
           ${BuildingPartFields.cubature} $numericNullable,
           ${BuildingPartFields.value} $numericNullable,
           ${BuildingPartFields.sumInsured} $numericNullable,
+          ${BuildingPartFields.validated} $boolType,
           FOREIGN KEY(${BuildingPartFields.buildingAssesment}) REFERENCES $tableBuildingAssesment(${BuildingAssessmentFields.id})
           
       )''');
@@ -140,9 +142,9 @@ class DatabaseHelper {
 
   Future<int> deleteBuildingPart(int id) async {
     final db = await instance.database;
+    await deleteMeasurementByFk(id);
 
-    return await db.delete(tableBuildingPart,
-        where: 'buildingPartId = ?', whereArgs: [id]);
+    return await db.delete(tableBuildingPart, where: 'buildingPartId = ?', whereArgs: [id]);
   }
 
   Future<int> deleteMeasurement(int id) async {
@@ -150,6 +152,21 @@ class DatabaseHelper {
 
     return await db
         .delete(tableMeasurement, where: 'measurementId = ?', whereArgs: [id]);
+  }
+
+  Future<void> deleteMeasurementByFk(int id) async {
+    final db = await instance.database;
+
+    await db.delete(tableMeasurement, where: '${MeasurementFields.buildingPart} = ?', whereArgs: [id]);
+  }
+
+  Future<List<BuildingPart>> getBuildingPartsByFk(int id) async {
+    final db = await instance.database;
+
+    final result = await db.query(tableBuildingPart,
+            where: '${BuildingPartFields.buildingAssesment} = ?',
+            whereArgs: [id]);
+    return result.map((json) => BuildingPart.fromJson(json)).toList();
   }
 
   Future<BuildingAssessment> readAssessment(int id) async {

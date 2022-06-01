@@ -23,6 +23,7 @@ class BuildingPartFields {
     cubature,
     value,
     sumInsured,
+    validated
   ];
 
   static const String id = 'buildingPartId';
@@ -39,6 +40,7 @@ class BuildingPartFields {
   static const String sumInsured = 'sumInsured';
   static const String buildingAssesment = 'fk_buildingAssessmentId';
   static const String measurements = 'measurements';
+  static const String validated = 'validated';
 }
 
 class BuildingPart {
@@ -55,6 +57,7 @@ class BuildingPart {
   double? value;
   double? sumInsured;
   int? fk_buildingAssesmentId;
+  bool? validated;
   List<Measurement> measurements;
 
   BuildingPart(
@@ -70,6 +73,7 @@ class BuildingPart {
       this.cubature,
       this.value,
       this.sumInsured,
+      this.validated,
       this.fk_buildingAssesmentId,
       List<Measurement>? measurements})
       : measurements = measurements ?? [];
@@ -95,6 +99,7 @@ class BuildingPart {
       BuildingPartFields.cubature: cubature,
       BuildingPartFields.sumInsured: sumInsured,
       BuildingPartFields.value: value,
+      BuildingPartFields.validated: validated == true ? 1 : 0,
       BuildingPartFields.buildingAssesment: fk_buildingAssesmentId
     };
   }
@@ -130,6 +135,10 @@ class BuildingPart {
   }
 
   static BuildingPart fromJson(Map<String, dynamic> json) {
+    bool validatedBool =
+        int.tryParse(json[BuildingPartFields.validated].toString()) == 1
+            ? true
+            : false;
     return BuildingPart(
       id: int.tryParse(json[BuildingPartFields.id].toString()),
       description: json[BuildingPartFields.description] as String?,
@@ -158,6 +167,7 @@ class BuildingPart {
       value: double.tryParse(json[BuildingPartFields.value].toString()),
       sumInsured:
           double.tryParse(json[BuildingPartFields.sumInsured].toString()),
+      validated: validatedBool
     );
   }
 
@@ -175,6 +185,7 @@ class BuildingPart {
     double? value,
     double? sumInsured,
     int? fk_buildingAssesmentId,
+    bool? validated,
   }) =>
       BuildingPart(
           id: id ?? this.id,
@@ -191,37 +202,9 @@ class BuildingPart {
           value: value ?? this.value,
           sumInsured: sumInsured ?? this.sumInsured,
           fk_buildingAssesmentId:
-              fk_buildingAssesmentId ?? this.fk_buildingAssesmentId);
-
-  calculateAll(Measurement measurement) {
-    calculateCubature(measurement);
-    calculateValue();
-    calculateSumInsured();
-  }
-
-  calculateCubature(Measurement measurement) {
-    /*
-    if(measurement.length == null) {
-      cubature = measurement.radius * measurement.radius * measurement.height;
-    } else {
-      cubature = measurement.length * measurement.height * measurement.width;
-    }
-    */
-  }
-
-  calculateValue() {
-    // value = cubature * unitPrice;
-  }
-
-  calculateSumInsured() {
-    if (insuredType == InsuredType.newValue) {
-      sumInsured = value;
-    } else if (insuredType == InsuredType.timeValue) {
-      // sumInsured = value - (devaluationPercentage * value);
-    } else {
-      throw Exception("Wrong Insured Type");
-    }
-  }
+              fk_buildingAssesmentId ?? this.fk_buildingAssesmentId,
+          validated: validated ?? this.validated
+        );
 
   get getId => this.id;
 
