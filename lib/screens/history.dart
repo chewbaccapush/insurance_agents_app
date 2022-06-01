@@ -393,7 +393,9 @@ class _HistoryPageState extends State<HistoryPage> {
                               : Theme.of(context).colorScheme.onPrimary,
                         )),
                     title: Text(
-                      element.description.toString(),
+                      element.description.toString() == "DRAFT"
+                          ? "Draft"
+                          : element.description.toString(),
                       overflow: TextOverflow.fade,
                       maxLines: 1,
                       softWrap: false,

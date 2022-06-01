@@ -337,46 +337,51 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                   ),
                                 ]),
                               ),
-                              Padding(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 25, top: 0, left: 25, right: 25),
-                                  child: Theme(
-                                      data: ThemeData().copyWith(
-                                          dividerColor:
-                                              Color.fromARGB(0, 246, 0, 0)),
-                                      child: ExpansionTile(
-                                          onExpansionChanged: (value) {
-                                            setState(() {
-                                              _isExpanded = value;
-                                            });
-                                          },
-                                          collapsedIconColor: Colors.white,
-                                          iconColor: Colors.white,
-                                          textColor: Colors.white,
-                                          trailing: AnimatedRotation(
-                                              turns: _isExpanded ? .5 : 0,
-                                              duration:
-                                                  Duration(milliseconds: 400),
-                                              child: Icon(
-                                                  Icons
-                                                      .expand_circle_down_outlined,
-                                                  size: 30,
-                                                  color: (StorageService
-                                                              .getAppThemeId() ==
-                                                          false)
-                                                      ? Color.fromARGB(
-                                                          148, 112, 14, 46)
-                                                      : Theme.of(context)
-                                                          .colorScheme
-                                                          .onPrimary)),
-                                          title: Text(
-                                            'Building parts',
-                                            style: Theme.of(widget.context)
-                                                .textTheme
-                                                .headline2,
-                                          ),
-                                          children: widget.buildingParts
-                                              as List<Widget>)))
+                              widget.buildingParts!.isNotEmpty
+                                  ? Padding(
+                                      padding: const EdgeInsets.only(
+                                          bottom: 25,
+                                          top: 0,
+                                          left: 25,
+                                          right: 25),
+                                      child: Theme(
+                                          data: ThemeData().copyWith(
+                                              dividerColor: Color.fromARGB(
+                                                  0, 246, 0, 0)),
+                                          child: ExpansionTile(
+                                              onExpansionChanged: (value) {
+                                                setState(() {
+                                                  _isExpanded = value;
+                                                });
+                                              },
+                                              collapsedIconColor: Colors.white,
+                                              iconColor: Colors.white,
+                                              textColor: Colors.white,
+                                              trailing: AnimatedRotation(
+                                                  turns: _isExpanded ? .5 : 0,
+                                                  duration: Duration(
+                                                      milliseconds: 400),
+                                                  child: Icon(Icons.expand_circle_down_outlined,
+                                                      size: 30,
+                                                      color: (StorageService
+                                                                  .getAppThemeId() ==
+                                                              false)
+                                                          ? const Color.fromARGB(
+                                                              148, 112, 14, 46)
+                                                          : Theme.of(context)
+                                                              .colorScheme
+                                                              .onPrimary)),
+                                              title: Text(
+                                                'Building parts',
+                                                style: Theme.of(widget.context)
+                                                    .textTheme
+                                                    .headline2,
+                                              ),
+                                              children: widget.buildingParts
+                                                  as List<Widget>)))
+                                  : Container(
+                                      margin: EdgeInsets.only(bottom: 40),
+                                    )
                             ]))))));
   }
 }
