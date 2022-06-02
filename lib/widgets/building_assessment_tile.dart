@@ -158,7 +158,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                       style: Theme.of(
                                                               widget.context)
                                                           .textTheme
-                                                          .bodyText1,
+                                                          .bodyText2,
                                                     ),
                                                   ),
                                                   Text(
@@ -170,7 +170,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                       style: Theme.of(
                                                               widget.context)
                                                           .textTheme
-                                                          .bodyText2)
+                                                          .bodyText1)
                                                 ],
                                               )),
                                           widget.entry!.numOfAppartments
@@ -195,7 +195,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                           style: Theme.of(widget
                                                                   .context)
                                                               .textTheme
-                                                              .bodyText1,
+                                                              .bodyText2,
                                                         ),
                                                       ),
                                                       Text(
@@ -210,7 +210,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                           style: Theme.of(widget
                                                                   .context)
                                                               .textTheme
-                                                              .bodyText2)
+                                                              .bodyText1)
                                                     ],
                                                   ))
                                               : Container(),
@@ -236,7 +236,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                           style: Theme.of(widget
                                                                   .context)
                                                               .textTheme
-                                                              .bodyText1,
+                                                              .bodyText2,
                                                         ),
                                                       ),
                                                       Text(
@@ -247,7 +247,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                           style: Theme.of(widget
                                                                   .context)
                                                               .textTheme
-                                                              .bodyText2)
+                                                              .bodyText1)
                                                     ],
                                                   ))
                                               : Container(),
@@ -273,7 +273,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                           style: Theme.of(widget
                                                                   .context)
                                                               .textTheme
-                                                              .bodyText1,
+                                                              .bodyText2,
                                                         ),
                                                       ),
                                                       Text(
@@ -284,7 +284,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                           style: Theme.of(widget
                                                                   .context)
                                                               .textTheme
-                                                              .bodyText2)
+                                                              .bodyText1)
                                                     ],
                                                   ))
                                               : Container(),
@@ -330,7 +330,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                                           widget
                                                                               .context)
                                                                       .textTheme
-                                                                      .bodyText1,
+                                                                      .bodyText2,
                                                                 ),
                                                               ),
                                                             ],
@@ -347,7 +347,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                                           widget
                                                                               .context)
                                                                       .textTheme
-                                                                      .bodyText2),
+                                                                      .bodyText1),
                                                             ),
                                                           ],
                                                         ),
@@ -393,7 +393,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                                       widget
                                                                           .context)
                                                                   .textTheme
-                                                                  .bodyText1,
+                                                                  .bodyText2,
                                                             ),
                                                           ),
                                                         ],
@@ -410,7 +410,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                                       widget
                                                                           .context)
                                                                   .textTheme
-                                                                  .bodyText2),
+                                                                  .bodyText1),
                                                         ),
                                                       ],
                                                     )

@@ -29,7 +29,7 @@ import '../services/sqs_sender.dart';
 import '../services/state_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-enum AlignedTo { all, sent, queue }
+enum AlignedTo { all, draft, finialized, synced }
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({Key? key}) : super(key: key);
@@ -42,13 +42,18 @@ class _HistoryPageState extends State<HistoryPage> {
   List<BuildingAssessment> buildingAssessments = [];
 
   List<BuildingAssessment> searchResults = [];
-  List<BuildingAssessment> sentAssessments = [];
-  List<BuildingAssessment> unsentAssessments = [];
+  List<BuildingAssessment> draftAssessments = [];
+  List<BuildingAssessment> finalizedAssessments = [];
+  List<BuildingAssessment> syncedAssessments = [];
+  String languageCode = StorageService.getLocale()!.languageCode.toString();
+
   TextEditingController textController = TextEditingController();
   final SQSSender sqsSender = SQSSender();
   int numberOfUnsent = 0;
   AlignedTo alignment = AlignedTo.all;
-  int countSentAssessments = 0;
+  int countDraftAssessments = 0;
+  int countFinalizedAssessments = 0;
+  int countSyncedAssessments = 0;
   int allAssessments = 0;
   bool _isExpanded = false;
   bool hasConnection = false;
@@ -137,10 +142,12 @@ class _HistoryPageState extends State<HistoryPage> {
 
   void filterBuildingAssessments() {
     for (var assessment in buildingAssessments) {
-      if (assessment.sent == true) {
-        sentAssessments.add(assessment);
-      } else if (assessment.sent == false) {
-        unsentAssessments.add(assessment);
+      if (assessment.finalized == false) {
+        draftAssessments.add(assessment);
+      } else if (assessment.finalized == true && assessment.sent == false) {
+        finalizedAssessments.add(assessment);
+      } else if (assessment.finalized == true && assessment.sent == true) {
+        syncedAssessments.add(assessment);
       }
     }
 
@@ -152,23 +159,38 @@ class _HistoryPageState extends State<HistoryPage> {
         .readAllAssessments()
         .then((value) => buildingAssessments = value.reversed.toList());
 
-    countSentAssessments =
-        buildingAssessments.where((c) => c.sent == true).length;
+    countDraftAssessments =
+        buildingAssessments.where((c) => c.finalized == false).length;
+    countFinalizedAssessments = buildingAssessments
+        .where((c) => c.finalized == true && c.sent == false)
+        .length;
+    countSyncedAssessments = buildingAssessments
+        .where((c) => c.finalized == true && c.sent == true)
+        .length;
     filterBuildingAssessments();
     setState(() {});
   }
 
   onSearchTextChanged(String text) {
     searchResults.clear();
+
     if (text.isEmpty) {
       setState(() {});
       return;
     }
 
     for (var assessment in buildingAssessments) {
-      if (assessment.description!.contains(text) ||
-          assessment.assessmentCause!.contains(text) ||
-          assessment.appointmentDate.toString().contains(text)) {
+      if (assessment.description != null) {
+        if ((assessment.description!.contains(text) ||
+            assessment.appointmentDate.toString().contains(text))) {
+          searchResults.add(assessment);
+          continue;
+        }
+      }
+
+      if (DateFormat.MMMMEEEEd(languageCode)
+          .format(assessment.appointmentDate as DateTime)
+          .contains(text)) {
         searchResults.add(assessment);
       }
     }
@@ -204,7 +226,12 @@ class _HistoryPageState extends State<HistoryPage> {
                     Row(
                       children: [
                         Container(
-                          width: 300,
+                          width: StorageService.getLocale()!
+                                      .languageCode
+                                      .toString() ==
+                                  "en"
+                              ? 480
+                              : 640,
                           child: _buildFilterRow(),
                         ),
                       ],
@@ -282,12 +309,15 @@ class _HistoryPageState extends State<HistoryPage> {
                 if (searchResults.isNotEmpty ||
                     textController.text.isNotEmpty) ...[
                   buildView(searchResults),
-                ] else if (alignment == AlignedTo.sent &&
+                ] else if (alignment == AlignedTo.draft &&
                     (searchResults.isEmpty || textController.text.isEmpty)) ...[
-                  buildView(sentAssessments),
-                ] else if (alignment == AlignedTo.queue &&
+                  buildView(draftAssessments),
+                ] else if (alignment == AlignedTo.finialized &&
                     (searchResults.isEmpty || textController.text.isEmpty)) ...[
-                  buildView(unsentAssessments)
+                  buildView(finalizedAssessments)
+                ] else if (alignment == AlignedTo.synced &&
+                    (searchResults.isEmpty || textController.text.isEmpty)) ...[
+                  buildView(syncedAssessments)
                 ] else ...[
                   buildView(buildingAssessments)
                 ]
@@ -496,7 +526,7 @@ class _HistoryPageState extends State<HistoryPage> {
                         curve: Curves.easeOutCubic,
                         alignment: getCorrectContainerAlignment(),
                         child: FractionallySizedBox(
-                          widthFactor: .33,
+                          widthFactor: .25,
                           child: Container(
                             margin: const EdgeInsets.symmetric(
                               horizontal: 6.0,
@@ -504,13 +534,13 @@ class _HistoryPageState extends State<HistoryPage> {
                             ),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20.0),
-                                color: Color.fromARGB(255, 95, 10, 38)
+                                color: const Color.fromARGB(255, 95, 10, 38)
                                     .withOpacity(0.8)),
                           ),
                         ),
                       ),
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Expanded(
                               child: GestureDetector(
@@ -520,7 +550,6 @@ class _HistoryPageState extends State<HistoryPage> {
                               });
                             },
                             child: Container(
-                              // DON'T REMOVE THIS CONTAINER! HIT TARGET IS ONLY TEXT WITHOUT IT
                               color: Colors.transparent,
                               child: Center(
                                 child: Row(
@@ -542,7 +571,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                                       .onPrimary),
                                     ),
                                     Text(
-                                      '(' +
+                                      ' (' +
                                           buildingAssessments.length
                                               .toString() +
                                           ")",
@@ -568,7 +597,7 @@ class _HistoryPageState extends State<HistoryPage> {
                               child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                alignment = AlignedTo.sent;
+                                alignment = AlignedTo.draft;
                               });
                             },
                             child: Container(
@@ -579,22 +608,22 @@ class _HistoryPageState extends State<HistoryPage> {
                                   children: [
                                     Text(
                                       AppLocalizations.of(context)!
-                                          .assessments_sent,
+                                          .assessments_drafts,
                                       style: TextStyle(
                                           fontWeight: FontWeight.normal,
                                           color:
                                               (StorageService.getAppThemeId() ==
                                                           false &&
                                                       alignment ==
-                                                          AlignedTo.sent)
+                                                          AlignedTo.draft)
                                                   ? Colors.white
                                                   : Theme.of(context)
                                                       .colorScheme
                                                       .onPrimary),
                                     ),
                                     Text(
-                                      '(' +
-                                          sentAssessments.length.toString() +
+                                      ' (' +
+                                          countDraftAssessments.toString() +
                                           ')',
                                       style: TextStyle(
                                           fontWeight: FontWeight.normal,
@@ -602,7 +631,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                               (StorageService.getAppThemeId() ==
                                                           false &&
                                                       alignment ==
-                                                          AlignedTo.sent)
+                                                          AlignedTo.draft)
                                                   ? Colors.white
                                                   : Theme.of(context)
                                                       .colorScheme
@@ -618,37 +647,33 @@ class _HistoryPageState extends State<HistoryPage> {
                               child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                alignment = AlignedTo.queue;
+                                alignment = AlignedTo.finialized;
                               });
                             },
                             child: Container(
                               color: Colors.transparent,
                               child: Center(
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 18),
-                                      child: Text(
-                                        AppLocalizations.of(context)!
-                                            .assessments_queue,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.normal,
-                                            color: (StorageService
-                                                            .getAppThemeId() ==
-                                                        false &&
-                                                    alignment ==
-                                                        AlignedTo.queue)
-                                                ? Colors.white
-                                                : Theme.of(context)
-                                                    .colorScheme
-                                                    .onPrimary),
-                                      ),
+                                    Text(
+                                      AppLocalizations.of(context)!
+                                          .assessments_finalized,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          color:
+                                              (StorageService.getAppThemeId() ==
+                                                          false &&
+                                                      alignment ==
+                                                          AlignedTo.finialized)
+                                                  ? Colors.white
+                                                  : Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimary),
                                     ),
                                     Text(
-                                      '(' +
-                                          (buildingAssessments.length -
-                                                  countSentAssessments)
-                                              .toString() +
+                                      ' (' +
+                                          countFinalizedAssessments.toString() +
                                           ')',
                                       style: TextStyle(
                                           fontWeight: FontWeight.normal,
@@ -656,12 +681,62 @@ class _HistoryPageState extends State<HistoryPage> {
                                               (StorageService.getAppThemeId() ==
                                                           false &&
                                                       alignment ==
-                                                          AlignedTo.queue)
+                                                          AlignedTo.finialized)
                                                   ? Colors.white
                                                   : Theme.of(context)
                                                       .colorScheme
                                                       .onPrimary,
-                                          fontSize: 13.5),
+                                          fontSize: 12.5),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )),
+                          Expanded(
+                              child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                alignment = AlignedTo.synced;
+                              });
+                            },
+                            child: Container(
+                              color: Colors.transparent,
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      AppLocalizations.of(context)!
+                                          .assessments_synced,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          color:
+                                              (StorageService.getAppThemeId() ==
+                                                          false &&
+                                                      alignment ==
+                                                          AlignedTo.synced)
+                                                  ? Colors.white
+                                                  : Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimary),
+                                    ),
+                                    Text(
+                                      ' (' +
+                                          countSyncedAssessments.toString() +
+                                          ')',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          color:
+                                              (StorageService.getAppThemeId() ==
+                                                          false &&
+                                                      alignment ==
+                                                          AlignedTo.synced)
+                                                  ? Colors.white
+                                                  : Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimary,
+                                          fontSize: 12.5),
                                     ),
                                   ],
                                 ),
@@ -684,11 +759,13 @@ class _HistoryPageState extends State<HistoryPage> {
   Alignment getCorrectContainerAlignment() {
     switch (alignment) {
       case AlignedTo.all:
-        return Alignment.centerLeft;
-      case AlignedTo.sent:
-        return Alignment.center;
-      case AlignedTo.queue:
-        return Alignment.centerRight;
+        return const Alignment(-1, 0);
+      case AlignedTo.draft:
+        return const Alignment(-0.35, 0);
+      case AlignedTo.finialized:
+        return const Alignment(0.33, 0);
+      case AlignedTo.synced:
+        return const Alignment(0.99, 0);
       default:
         return Alignment.centerLeft;
     }
