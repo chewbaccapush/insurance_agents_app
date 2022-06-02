@@ -13,13 +13,15 @@ class BuildingAssessmentTile extends StatefulWidget {
   final BuildContext context;
   final BuildingAssessment? entry;
   final List<Widget>? buildingParts;
+  final dynamic onDelete;
 
-  const BuildingAssessmentTile({
-    Key? key,
-    required this.context,
-    this.entry,
-    this.buildingParts,
-  }) : super(key: key);
+  const BuildingAssessmentTile(
+      {Key? key,
+      required this.context,
+      this.entry,
+      this.buildingParts,
+      required this.onDelete})
+      : super(key: key);
 
   @override
   State<BuildingAssessmentTile> createState() => _BuildingAssessmentTileState();
@@ -80,26 +82,50 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                           .headline1,
                                     ),
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
                                   widget.entry!.finalized == false
-                                      ? ElevatedButton(
-                                          child: const Icon(Icons.edit,
-                                              size: 18, color: Colors.white),
-                                          onPressed: () => {
-                                            StateService.buildingAssessment =
-                                                widget.entry!,
-                                            NavigatorService.navigateTo(context,
-                                                const BuildingAssessmentForm())
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                              shape: CircleBorder(),
-                                              primary: (StorageService
-                                                          .getAppThemeId() ==
-                                                      false)
-                                                  ? Color.fromARGB(
-                                                      220, 112, 14, 46)
-                                                  : Color.fromARGB(
-                                                      148, 112, 14, 46)),
+                                      ? Row(
+                                          children: [
+                                            ElevatedButton(
+                                              child: const Icon(Icons.edit,
+                                                  size: 18,
+                                                  color: Colors.white),
+                                              onPressed: () => {
+                                                StateService
+                                                        .buildingAssessment =
+                                                    widget.entry!,
+                                                NavigatorService.navigateTo(
+                                                    context,
+                                                    const BuildingAssessmentForm())
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                shape: const CircleBorder(),
+                                                primary: (StorageService
+                                                            .getAppThemeId() ==
+                                                        false)
+                                                    ? Color.fromARGB(
+                                                        220, 112, 14, 46)
+                                                    : Color.fromARGB(
+                                                        148, 112, 14, 46),
+                                              ),
+                                            ),
+                                            ElevatedButton(
+                                              child: const Icon(Icons.delete,
+                                                  size: 18,
+                                                  color: Colors.white),
+                                              onPressed: widget.onDelete,
+                                              style: ElevatedButton.styleFrom(
+                                                shape: const CircleBorder(),
+                                                primary: (StorageService
+                                                            .getAppThemeId() ==
+                                                        false)
+                                                    ? Color.fromARGB(
+                                                        220, 112, 14, 46)
+                                                    : Color.fromARGB(
+                                                        148, 112, 14, 46),
+                                              ),
+                                            )
+                                          ],
                                         )
                                       : Container(),
                                 ]),
@@ -317,7 +343,6 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                                   widget.entry!
                                                                       .description
                                                                       .toString(),
-                                                                  //'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.',
                                                                   style: Theme.of(
                                                                           widget
                                                                               .context)
@@ -381,7 +406,6 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                               widget.entry!
                                                                   .assessmentCause
                                                                   .toString(),
-                                                              //'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.',
                                                               style: Theme.of(
                                                                       widget
                                                                           .context)

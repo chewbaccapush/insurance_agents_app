@@ -133,54 +133,129 @@ class DatabaseHelper {
         tableMeasurement, measurement.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace);
 
-    print("PRE SEND:");
     measurement.measurementId = measurementId;
-    print(measurement.toJson());
 
     return measurement;
   }
 
-  Future<int> deleteBuildingPart(int id) async {
+  deleteAssessment(BuildingAssessment buildingAssessment) async {
+    await deleteAllBuildingParts(buildingAssessment);
+    deleteEmptyAssessment(buildingAssessment);
+  }
+
+  deleteEmptyAssessment(BuildingAssessment buildingAssessment) async {
+    final db = await instance.database;
+    await db.delete(tableBuildingAssesment,
+        where: '${BuildingAssessmentFields.id} = ?',
+        whereArgs: [buildingAssessment.id!]);
+  }
+
+  deleteAllBuildingParts(BuildingAssessment buildingAssessment) async {
+    for (var buildingPart in buildingAssessment.buildingParts) {
+      await deleteBuildingPart(buildingPart.id!);
+    }
+  }
+
+  deleteBuildingPart(int id) async {
     final db = await instance.database;
     await deleteMeasurementByFk(id);
 
-    return await db.delete(tableBuildingPart, where: 'buildingPartId = ?', whereArgs: [id]);
+    await db.delete(tableBuildingPart,
+        where: '${BuildingPartFields.id} = ?', whereArgs: [id]);
   }
 
-  Future<int> deleteMeasurement(int id) async {
+  deleteMeasurement(int id) async {
     final db = await instance.database;
 
-    return await db
-        .delete(tableMeasurement, where: 'measurementId = ?', whereArgs: [id]);
+    await db.delete(tableMeasurement,
+        where: '${MeasurementFields.id} = ?', whereArgs: [id]);
   }
 
-  Future<void> deleteMeasurementByFk(int id) async {
+  deleteMeasurementByFk(int fk) async {
     final db = await instance.database;
 
-    await db.delete(tableMeasurement, where: '${MeasurementFields.buildingPart} = ?', whereArgs: [id]);
+    await db.delete(tableMeasurement,
+        where: '${MeasurementFields.buildingPart} = ?', whereArgs: [fk]);
   }
 
   Future<List<BuildingPart>> getBuildingPartsByFk(int id) async {
     final db = await instance.database;
 
     final result = await db.query(tableBuildingPart,
-            where: '${BuildingPartFields.buildingAssesment} = ?',
-            whereArgs: [id]);
+        where: '${BuildingPartFields.buildingAssesment} = ?', whereArgs: [id]);
     return result.map((json) => BuildingPart.fromJson(json)).toList();
   }
 
   Future<BuildingAssessment> readAssessment(int id) async {
     final db = await instance.database;
 
-    final maps = await db.query(
+    final buildingAssessmentMap = await db.query(
       tableBuildingAssesment,
       columns: BuildingAssessmentFields.values,
       where: '${BuildingAssessmentFields.id} = ?',
       whereArgs: [id],
     );
+    if (buildingAssessmentMap.isNotEmpty) {
+      BuildingAssessment buildingAssessment = buildingAssessmentMap
+          .map((json) => BuildingAssessment.fromJson(json))
+          .toList()
+          .first;
 
-    if (maps.isNotEmpty) {
-      return BuildingAssessment.fromJson(maps.first);
+      final buildingPartMap = await db.query(
+        tableBuildingPart,
+        columns: BuildingPartFields.values,
+        where: '${BuildingPartFields.buildingAssesment} = ?',
+        whereArgs: [buildingAssessment.id],
+      );
+
+      buildingAssessment.buildingParts =
+          buildingPartMap.map((json) => BuildingPart.fromJson(json)).toList();
+
+      for (var buildingPart in buildingAssessment.buildingParts) {
+        final measurementMap = await db.query(
+          tableMeasurement,
+          columns: MeasurementFields.values,
+          where: '${MeasurementFields.buildingPart} = ?',
+          whereArgs: [buildingPart.id],
+        );
+
+        buildingPart.measurements =
+            measurementMap.map((json) => Measurement.fromJson(json)).toList();
+      }
+
+      return buildingAssessment;
+    } else {
+      throw Exception(' ID $id not found.');
+    }
+  }
+
+  Future<BuildingPart> readBuildingPart(int id) async {
+    final db = await instance.database;
+
+    final buildingPartMaps = await db.query(
+      tableBuildingPart,
+      columns: BuildingPartFields.values,
+      where: '${BuildingPartFields.id} = ?',
+      whereArgs: [id],
+    );
+
+    if (buildingPartMaps.isNotEmpty) {
+      BuildingPart buildingPart = buildingPartMaps
+          .map((json) => BuildingPart.fromJson(json))
+          .toList()
+          .first;
+
+      final measurementMaps = await db.query(
+        tableMeasurement,
+        columns: MeasurementFields.values,
+        where: '${MeasurementFields.buildingPart} = ?',
+        whereArgs: [buildingPart.id],
+      );
+
+      buildingPart.measurements =
+          measurementMaps.map((json) => Measurement.fromJson(json)).toList();
+
+      return buildingPart;
     } else {
       throw Exception(' ID $id not found.');
     }
