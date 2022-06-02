@@ -37,12 +37,10 @@ class ConnectivityCheker {
 
     if (result == ConnectivityResult.none) {
       print(false);
-      //connectionChangeController.sink.add({result: false});
       connectionChangeController.sink.add(false);
       return false;
     } else {
       print(true);
-      // connectionChangeController.sink.add({result: true});
       connectionChangeController.sink.add(true);
       return true;
     }

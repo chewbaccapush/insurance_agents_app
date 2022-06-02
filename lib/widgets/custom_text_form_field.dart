@@ -10,6 +10,7 @@ class CustomTextFormField extends StatelessWidget {
   final double? fontSize;
   final bool? enabled;
   final Widget? suffix;
+  final bool? obscureText;
 
   const CustomTextFormField({
     Key? key,
@@ -22,7 +23,8 @@ class CustomTextFormField extends StatelessWidget {
     this.fontSize,
     this.enabled,
     this.suffix,
-  }) : super(key: key);
+    this.obscureText
+  }) : super(key: key); 
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +44,7 @@ class CustomTextFormField extends StatelessWidget {
             decoration: inputDecoration(labelText, width),
             keyboardType: type,
             validator: validator,
+            obscureText: obscureText == null ? false : true,
           ),
         ),
         const Padding(padding: EdgeInsets.all(10)),
@@ -53,6 +56,7 @@ class CustomTextFormField extends StatelessWidget {
     return InputDecoration(
       label: Text(labelText),
       suffixIcon: suffix,
+      errorStyle: TextStyle(fontSize: 13.0),
     );
   }
 }
