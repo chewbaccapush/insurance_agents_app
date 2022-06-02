@@ -29,6 +29,8 @@ import '../services/sqs_sender.dart';
 import '../services/state_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../widgets/custom_popup.dart';
+
 enum AlignedTo { all, draft, finialized, synced }
 
 class HistoryPage extends StatefulWidget {
@@ -91,20 +93,37 @@ class _HistoryPageState extends State<HistoryPage> {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
     List unsent = await iterateAssessments();
-    print("UNSENT:" + unsent[0].toString());
-    print(unsentAssessments.length);
 
     if (unsent[0] != 0) {
       if (unsent[1].length == 0) {
         if (unsent[0] == 1) {
-          showDialogPopup("Info", "Assessments successfully sent");
+          await showDialog(
+            context: context,
+            builder: (BuildContext context) => CustomDialog(
+                title: const Text("Assessments successfully sent"),
+                twoButtons: false,
+                titleButtonOne: const Text("Dismiss"),
+                onPressedButtonOne: () => {Navigator.pop(context, true)}),
+          );
         } else {
-          showDialogPopup(
-              "Info", "All ${unsent[0]} assessments successfully sent");
+          await showDialog(
+            context: context,
+            builder: (BuildContext context) => CustomDialog(
+                title: Text("All ${unsent[0]} assessments successfully sent"),
+                twoButtons: false,
+                titleButtonOne: const Text("Dismiss"),
+                onPressedButtonOne: () => {Navigator.pop(context, true)}),
+          );
         }
       } else {
-        showDialogPopup(
-            "Alert", "${unsent[1].length} assessment has not been sent!");
+        await showDialog(
+          context: context,
+          builder: (BuildContext context) => CustomDialog(
+              title: Text("${unsent[1].length} assessment has not been sent!"),
+              twoButtons: false,
+              titleButtonOne: const Text("Dismiss"),
+              onPressedButtonOne: () => {Navigator.pop(context, true)}),
+        );
       }
     }
   }
@@ -114,16 +133,15 @@ class _HistoryPageState extends State<HistoryPage> {
     int numOfUnsent = 0;
     List<BuildingAssessment> unsentAssessments = [];
     buildingAssessments.forEach((element) async {
-      if (element.sent == false) {
+      if (element.sent == false && element.finalized == true) {
         numOfUnsent++;
         debugPrint("Sending" + element.id.toString());
         await sqsSender.sendToSQS(element.toMessage().toString()).then((value) {
-          print("ok");
-          element.sent = true;
+          setState(() {
+            element.sent = true;
+          });
           DatabaseHelper.instance.updateAssessment(element);
         }).onError((error, stackTrace) {
-          print(error);
-          print(stackTrace);
           unsentAssessments.add(element);
         });
       }
@@ -131,7 +149,6 @@ class _HistoryPageState extends State<HistoryPage> {
     return [numOfUnsent, unsentAssessments];
   }
 
-  // TODO: move to
   void showDialogPopup(String title, String content) {
     showDialog(
         context: context,

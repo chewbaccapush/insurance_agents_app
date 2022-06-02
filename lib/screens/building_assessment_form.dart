@@ -18,7 +18,6 @@ import '../widgets/custom_popup.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../widgets/alert.dart';
 import '../widgets/custom_popup.dart';
-import '../widgets/custom_dialog.dart' as customDialog;
 
 class BuildingAssessmentForm extends StatefulWidget {
   const BuildingAssessmentForm({Key? key}) : super(key: key);
@@ -53,39 +52,26 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
         builder: (BuildContext context) => CustomDialog(
           title: const Text(
               "Are you sure you want to finalize this assessment? Further changes will not be possible."),
-          actions: [
-            ElevatedButton(
-              child: const Text("No"),
-              style: ElevatedButton.styleFrom(
-                shape: const StadiumBorder(),
-                primary: (StorageService.getAppThemeId() == false)
-                    ? const Color.fromARGB(220, 112, 14, 46)
-                    : const Color.fromARGB(148, 112, 14, 46),
-              ),
-              onPressed: () => {Navigator.pop(context, true)},
-            ),
-            ElevatedButton(
-              child: const Text("Yes"),
-              style: ElevatedButton.styleFrom(
-                shape: const StadiumBorder(),
-                primary: (StorageService.getAppThemeId() == false)
-                    ? const Color.fromARGB(220, 112, 14, 46)
-                    : const Color.fromARGB(148, 112, 14, 46),
-              ),
-              onPressed: () async => {
-                buildingAssessment.finalized = true,
-                await saveBuildingAssessment(),
-                NavigatorService.navigateTo(context, const HistoryPage())
-              },
-            ),
-          ],
+          twoButtons: true,
+          titleButtonOne: const Text("No"),
+          onPressedButtonOne: () => {Navigator.pop(context, true)},
+          titleButtonTwo: const Text("Yes"),
+          onPressedButtonTwo: () async => {
+            buildingAssessment.finalized = true,
+            await saveBuildingAssessment(),
+            NavigatorService.navigateTo(context, const HistoryPage())
+          },
         ),
       );
     } else {
       return showDialog(
-          context: context,
-          builder: (BuildContext context) => customDialog.CustomDialog(
-              text: "Please complete all building part forms."));
+        context: context,
+        builder: (BuildContext context) => const CustomDialog(
+          title: Text("Please complete all building part forms."),
+          twoButtons: false,
+          titleButtonOne: Icon(Icons.cancel),
+        ),
+      );
     }
   }
 
@@ -112,43 +98,18 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                 context: context,
                                 builder: (BuildContext context) => CustomDialog(
                                   title: const Text("Save Changes?"),
-                                  actions: [
-                                    ElevatedButton(
-                                      child: const Text("No"),
-                                      style: ElevatedButton.styleFrom(
-                                        shape: const StadiumBorder(),
-                                        primary:
-                                            (StorageService.getAppThemeId() ==
-                                                    false)
-                                                ? const Color.fromARGB(
-                                                    220, 112, 14, 46)
-                                                : const Color.fromARGB(
-                                                    148, 112, 14, 46),
-                                      ),
-                                      onPressed: () => {
-                                        NavigatorService.navigateTo(
-                                            context, const HistoryPage())
-                                      },
-                                    ),
-                                    ElevatedButton(
-                                      child: const Text("Yes"),
-                                      style: ElevatedButton.styleFrom(
-                                        shape: const StadiumBorder(),
-                                        primary:
-                                            (StorageService.getAppThemeId() ==
-                                                    false)
-                                                ? const Color.fromARGB(
-                                                    220, 112, 14, 46)
-                                                : const Color.fromARGB(
-                                                    148, 112, 14, 46),
-                                      ),
-                                      onPressed: () async => {
-                                        await saveBuildingAssessment(),
-                                        NavigatorService.navigateTo(
-                                            context, const HistoryPage())
-                                      },
-                                    ),
-                                  ],
+                                  twoButtons: true,
+                                  titleButtonOne: const Text("No"),
+                                  onPressedButtonOne: () => {
+                                    NavigatorService.navigateTo(
+                                        context, const HistoryPage())
+                                  },
+                                  titleButtonTwo: const Text("Yes"),
+                                  onPressedButtonTwo: () async => {
+                                    await saveBuildingAssessment(),
+                                    NavigatorService.navigateTo(
+                                        context, const HistoryPage())
+                                  },
                                 ),
                               ),
                             },

@@ -1,15 +1,25 @@
-import 'dart:ui';
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
+import '../services/storage_service.dart';
 
 class CustomDialog extends StatelessWidget {
-  final Text? title;
+  final dynamic title;
   final dynamic actions;
-  const CustomDialog({Key? key, this.title, this.actions}) : super(key: key);
+  final bool twoButtons;
+  final dynamic titleButtonOne;
+  final dynamic onPressedButtonOne;
+  final Text? titleButtonTwo;
+  final dynamic onPressedButtonTwo;
+  const CustomDialog({
+    Key? key,
+    this.title,
+    this.actions,
+    this.twoButtons = true,
+    required this.titleButtonOne,
+    this.onPressedButtonOne,
+    this.titleButtonTwo,
+    this.onPressedButtonTwo,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +31,41 @@ class CustomDialog extends StatelessWidget {
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(40))),
       title: title,
-      actions: actions,
+      actions: twoButtons
+          ? [
+              ElevatedButton(
+                child: titleButtonOne,
+                style: ElevatedButton.styleFrom(
+                  shape: const StadiumBorder(),
+                  primary: (StorageService.getAppThemeId() == false)
+                      ? const Color.fromARGB(220, 112, 14, 46)
+                      : const Color.fromARGB(148, 112, 14, 46),
+                ),
+                onPressed: onPressedButtonOne,
+              ),
+              ElevatedButton(
+                child: titleButtonTwo,
+                style: ElevatedButton.styleFrom(
+                  shape: const StadiumBorder(),
+                  primary: (StorageService.getAppThemeId() == false)
+                      ? const Color.fromARGB(220, 112, 14, 46)
+                      : const Color.fromARGB(148, 112, 14, 46),
+                ),
+                onPressed: onPressedButtonTwo,
+              ),
+            ]
+          : [
+              ElevatedButton(
+                child: titleButtonOne,
+                style: ElevatedButton.styleFrom(
+                  shape: const StadiumBorder(),
+                  primary: (StorageService.getAppThemeId() == false)
+                      ? const Color.fromARGB(220, 112, 14, 46)
+                      : const Color.fromARGB(148, 112, 14, 46),
+                ),
+                onPressed: onPressedButtonOne,
+              ),
+            ],
     );
   }
 }
