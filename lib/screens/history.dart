@@ -58,7 +58,8 @@ class _HistoryPageState extends State<HistoryPage> {
   void initState() {
     _localGet();
     ConnectivityCheker().initialize();
-    subscription = ConnectivityCheker().connectionChange.listen(connectionChanged);
+    subscription =
+        ConnectivityCheker().connectionChange.listen(connectionChanged);
     super.initState();
   }
 
@@ -205,7 +206,7 @@ class _HistoryPageState extends State<HistoryPage> {
                     Row(
                       children: [
                         Container(
-                          width: 300,
+                          width: 350,
                           child: _buildFilterRow(),
                         ),
                       ],
@@ -252,7 +253,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                               const EdgeInsets.only(left: 15.0),
                                           child: ElevatedButton.icon(
                                               icon: const Icon(
-                                                Icons.sync ,
+                                                Icons.sync,
                                                 size: 22,
                                                 color: Colors.white,
                                               ),
@@ -266,7 +267,9 @@ class _HistoryPageState extends State<HistoryPage> {
                                                     : Color.fromARGB(
                                                         148, 112, 14, 46),
                                               ),
-                                              onPressed: hasConnection ? () => synchronize() : null,
+                                              onPressed: hasConnection
+                                                  ? () => synchronize()
+                                                  : null,
                                               label: Text(
                                                   AppLocalizations.of(context)!
                                                       .assessments_sendButton,
@@ -504,7 +507,7 @@ class _HistoryPageState extends State<HistoryPage> {
                         ),
                       ),
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Expanded(
                               child: GestureDetector(
@@ -536,7 +539,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                                       .onPrimary),
                                     ),
                                     Text(
-                                      '(' +
+                                      ' (' +
                                           buildingAssessments.length
                                               .toString() +
                                           ")",
@@ -587,7 +590,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                                       .onPrimary),
                                     ),
                                     Text(
-                                      '(' +
+                                      ' (' +
                                           sentAssessments.length.toString() +
                                           ')',
                                       style: TextStyle(
@@ -619,27 +622,25 @@ class _HistoryPageState extends State<HistoryPage> {
                               color: Colors.transparent,
                               child: Center(
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 18),
-                                      child: Text(
-                                        AppLocalizations.of(context)!
-                                            .assessments_queue,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.normal,
-                                            color: (StorageService
-                                                            .getAppThemeId() ==
-                                                        false &&
-                                                    alignment ==
-                                                        AlignedTo.queue)
-                                                ? Colors.white
-                                                : Theme.of(context)
-                                                    .colorScheme
-                                                    .onPrimary),
-                                      ),
+                                    Text(
+                                      AppLocalizations.of(context)!
+                                          .assessments_queue,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          color:
+                                              (StorageService.getAppThemeId() ==
+                                                          false &&
+                                                      alignment ==
+                                                          AlignedTo.queue)
+                                                  ? Colors.white
+                                                  : Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimary),
                                     ),
                                     Text(
-                                      '(' +
+                                      ' (' +
                                           (buildingAssessments.length -
                                                   countSentAssessments)
                                               .toString() +
@@ -655,7 +656,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                                   : Theme.of(context)
                                                       .colorScheme
                                                       .onPrimary,
-                                          fontSize: 13.5),
+                                          fontSize: 12.5),
                                     ),
                                   ],
                                 ),

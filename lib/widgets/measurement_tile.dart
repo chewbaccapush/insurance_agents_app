@@ -53,7 +53,7 @@ class MeasurementTile extends StatelessWidget {
                                                 ":",
                                             style: Theme.of(widgetContext)
                                                 .textTheme
-                                                .bodyText1,
+                                                .bodyText2,
                                           ),
                                         ),
                                         Text(
@@ -62,7 +62,7 @@ class MeasurementTile extends StatelessWidget {
                                               : entry.length.toString() + " m",
                                           style: Theme.of(widgetContext)
                                               .textTheme
-                                              .bodyText2,
+                                              .bodyText1,
                                         ),
                                       ],
                                     ),
@@ -83,7 +83,7 @@ class MeasurementTile extends StatelessWidget {
                                                 ":",
                                             style: Theme.of(widgetContext)
                                                 .textTheme
-                                                .bodyText1,
+                                                .bodyText2,
                                           ),
                                         ),
                                         Text(
@@ -93,7 +93,7 @@ class MeasurementTile extends StatelessWidget {
                                                     " m",
                                             style: Theme.of(widgetContext)
                                                 .textTheme
-                                                .bodyText2)
+                                                .bodyText1)
                                       ],
                                     ),
                                   )
@@ -113,7 +113,7 @@ class MeasurementTile extends StatelessWidget {
                                                 ":",
                                             style: Theme.of(widgetContext)
                                                 .textTheme
-                                                .bodyText1,
+                                                .bodyText2,
                                           ),
                                         ),
                                         Text(
@@ -122,7 +122,7 @@ class MeasurementTile extends StatelessWidget {
                                                 : entry.width.toString() + " m",
                                             style: Theme.of(widgetContext)
                                                 .textTheme
-                                                .bodyText2)
+                                                .bodyText1)
                                       ],
                                     ),
                                   )
@@ -142,7 +142,7 @@ class MeasurementTile extends StatelessWidget {
                                                 ":",
                                             style: Theme.of(widgetContext)
                                                 .textTheme
-                                                .bodyText1,
+                                                .bodyText2,
                                           ),
                                         ),
                                         Text(
@@ -151,7 +151,7 @@ class MeasurementTile extends StatelessWidget {
                                               : entry.radius.toString() + " m",
                                           style: Theme.of(widgetContext)
                                               .textTheme
-                                              .bodyText2,
+                                              .bodyText1,
                                         ),
                                       ],
                                     ),
@@ -181,7 +181,7 @@ class MeasurementTile extends StatelessWidget {
                                       ":",
                                   style: Theme.of(widgetContext)
                                       .textTheme
-                                      .bodyText1,
+                                      .bodyText2,
                                 ),
                               ],
                             ),
@@ -199,7 +199,7 @@ class MeasurementTile extends StatelessWidget {
                                         // 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.',
                                         style: Theme.of(widgetContext)
                                             .textTheme
-                                            .bodyText2),
+                                            .bodyText1),
                                   ),
                                 ],
                               ),

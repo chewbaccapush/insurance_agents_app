@@ -36,12 +36,10 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
           size: 32, color: Color.fromARGB(255, 197, 179, 24));
     } else {
       if (widget.entry!.sent == true) {
-      return const Icon(Icons.sync,
-          size: 32, color: Colors.green);
-    } else {
-      return const Icon(Icons.sync,
-          size: 32, color: Colors.red);
-    }
+        return const Icon(Icons.sync, size: 32, color: Colors.green);
+      } else {
+        return const Icon(Icons.sync, size: 32, color: Colors.red);
+      }
     }
   }
 
@@ -83,25 +81,27 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                     ),
                                   ),
                                   Spacer(),
-                                  widget.entry!.finalized == false ?
-                                  ElevatedButton(
-                                    child: const Icon(Icons.edit,
-                                        size: 18, color: Colors.white),
-                                    onPressed: () => {
-                                      StateService.buildingAssessment =
-                                          widget.entry!,
-                                      NavigatorService.navigateTo(context,
-                                          const BuildingAssessmentForm())
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        shape: CircleBorder(),
-                                        primary: (StorageService
-                                                    .getAppThemeId() ==
-                                                false)
-                                            ? Color.fromARGB(220, 112, 14, 46)
-                                            : Color.fromARGB(148, 112, 14, 46)),
-                                  ):
-                                  Container(),
+                                  widget.entry!.finalized == false
+                                      ? ElevatedButton(
+                                          child: const Icon(Icons.edit,
+                                              size: 18, color: Colors.white),
+                                          onPressed: () => {
+                                            StateService.buildingAssessment =
+                                                widget.entry!,
+                                            NavigatorService.navigateTo(context,
+                                                const BuildingAssessmentForm())
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                              shape: CircleBorder(),
+                                              primary: (StorageService
+                                                          .getAppThemeId() ==
+                                                      false)
+                                                  ? Color.fromARGB(
+                                                      220, 112, 14, 46)
+                                                  : Color.fromARGB(
+                                                      148, 112, 14, 46)),
+                                        )
+                                      : Container(),
                                 ]),
                               ),
                               IntrinsicHeight(
@@ -132,7 +132,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                       style: Theme.of(
                                                               widget.context)
                                                           .textTheme
-                                                          .bodyText1,
+                                                          .bodyText2,
                                                     ),
                                                   ),
                                                   Text(
@@ -144,7 +144,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                       style: Theme.of(
                                                               widget.context)
                                                           .textTheme
-                                                          .bodyText2)
+                                                          .bodyText1)
                                                 ],
                                               )),
                                           widget.entry!.numOfAppartments
@@ -169,7 +169,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                           style: Theme.of(widget
                                                                   .context)
                                                               .textTheme
-                                                              .bodyText1,
+                                                              .bodyText2,
                                                         ),
                                                       ),
                                                       Text(
@@ -184,7 +184,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                           style: Theme.of(widget
                                                                   .context)
                                                               .textTheme
-                                                              .bodyText2)
+                                                              .bodyText1)
                                                     ],
                                                   ))
                                               : Container(),
@@ -210,7 +210,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                           style: Theme.of(widget
                                                                   .context)
                                                               .textTheme
-                                                              .bodyText1,
+                                                              .bodyText2,
                                                         ),
                                                       ),
                                                       Text(
@@ -221,7 +221,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                           style: Theme.of(widget
                                                                   .context)
                                                               .textTheme
-                                                              .bodyText2)
+                                                              .bodyText1)
                                                     ],
                                                   ))
                                               : Container(),
@@ -247,7 +247,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                           style: Theme.of(widget
                                                                   .context)
                                                               .textTheme
-                                                              .bodyText1,
+                                                              .bodyText2,
                                                         ),
                                                       ),
                                                       Text(
@@ -258,7 +258,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                           style: Theme.of(widget
                                                                   .context)
                                                               .textTheme
-                                                              .bodyText2)
+                                                              .bodyText1)
                                                     ],
                                                   ))
                                               : Container(),
@@ -304,7 +304,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                                           widget
                                                                               .context)
                                                                       .textTheme
-                                                                      .bodyText1,
+                                                                      .bodyText2,
                                                                 ),
                                                               ),
                                                             ],
@@ -322,7 +322,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                                           widget
                                                                               .context)
                                                                       .textTheme
-                                                                      .bodyText2),
+                                                                      .bodyText1),
                                                             ),
                                                           ],
                                                         ),
@@ -368,7 +368,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                                       widget
                                                                           .context)
                                                                   .textTheme
-                                                                  .bodyText1,
+                                                                  .bodyText2,
                                                             ),
                                                           ),
                                                         ],
@@ -386,7 +386,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                                       widget
                                                                           .context)
                                                                   .textTheme
-                                                                  .bodyText2),
+                                                                  .bodyText1),
                                                         ),
                                                       ],
                                                     )

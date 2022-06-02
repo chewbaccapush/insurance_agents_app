@@ -76,7 +76,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                 ":",
                                             style: Theme.of(widget.context)
                                                 .textTheme
-                                                .bodyText1,
+                                                .bodyText2,
                                           ),
                                         ),
                                         Text(
@@ -84,7 +84,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                 .toString(),
                                             style: Theme.of(widget.context)
                                                 .textTheme
-                                                .bodyText2)
+                                                .bodyText1)
                                       ],
                                     ))
                                 : Container(),
@@ -105,7 +105,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                     ":",
                                                 style: Theme.of(widget.context)
                                                     .textTheme
-                                                    .bodyText1,
+                                                    .bodyText2,
                                               ),
                                             ),
                                             Text(
@@ -113,7 +113,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                   widget.entry!.fireProtection),
                                               style: Theme.of(widget.context)
                                                   .textTheme
-                                                  .bodyText2,
+                                                  .bodyText1,
                                             )
                                           ],
                                         )
@@ -138,7 +138,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                     ":",
                                                 style: Theme.of(widget.context)
                                                     .textTheme
-                                                    .bodyText1,
+                                                    .bodyText2,
                                               ),
                                             ),
                                             Text(
@@ -147,7 +147,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                       .constructionClass),
                                               style: Theme.of(widget.context)
                                                   .textTheme
-                                                  .bodyText2,
+                                                  .bodyText1,
                                             )
                                           ],
                                         )
@@ -171,7 +171,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                     ":",
                                                 style: Theme.of(widget.context)
                                                     .textTheme
-                                                    .bodyText1,
+                                                    .bodyText2,
                                               ),
                                             ),
                                             Text(
@@ -179,7 +179,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                   widget.entry!.riskClass),
                                               style: Theme.of(widget.context)
                                                   .textTheme
-                                                  .bodyText2,
+                                                  .bodyText1,
                                             )
                                           ],
                                         )
@@ -201,7 +201,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                 ":",
                                             style: Theme.of(widget.context)
                                                 .textTheme
-                                                .bodyText1,
+                                                .bodyText2,
                                           ),
                                         ),
                                         Text(
@@ -209,7 +209,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                 ' €',
                                             style: Theme.of(widget.context)
                                                 .textTheme
-                                                .bodyText2)
+                                                .bodyText1)
                                       ],
                                     ))
                                 : Container(),
@@ -230,7 +230,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                     ":",
                                                 style: Theme.of(widget.context)
                                                     .textTheme
-                                                    .bodyText1,
+                                                    .bodyText2,
                                               ),
                                             ),
                                             Text(
@@ -238,7 +238,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                   widget.entry!.insuredType),
                                               style: Theme.of(widget.context)
                                                   .textTheme
-                                                  .bodyText2,
+                                                  .bodyText1,
                                             )
                                           ],
                                         )
@@ -260,7 +260,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                 ":",
                                             style: Theme.of(widget.context)
                                                 .textTheme
-                                                .bodyText1,
+                                                .bodyText2,
                                           ),
                                         ),
                                         Text(
@@ -274,7 +274,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                     ' %',
                                             style: Theme.of(widget.context)
                                                 .textTheme
-                                                .bodyText2)
+                                                .bodyText1)
                                       ],
                                     ))
                                 : Container(),
@@ -309,7 +309,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                   ":",
                                               style: Theme.of(widget.context)
                                                   .textTheme
-                                                  .bodyText1,
+                                                  .bodyText2,
                                             ),
                                           ),
                                           Text(
@@ -318,7 +318,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                   " m\u00B3",
                                               style: Theme.of(widget.context)
                                                   .textTheme
-                                                  .bodyText2)
+                                                  .bodyText1)
                                         ],
                                       ))
                                   : Container(),
@@ -340,7 +340,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                   ":",
                                               style: Theme.of(widget.context)
                                                   .textTheme
-                                                  .bodyText1,
+                                                  .bodyText2,
                                             ),
                                           ),
                                           Text(
@@ -349,7 +349,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                   " \u20A3",
                                               style: Theme.of(widget.context)
                                                   .textTheme
-                                                  .bodyText2)
+                                                  .bodyText1)
                                         ],
                                       ))
                                   : Container(),
@@ -371,7 +371,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                   ":",
                                               style: Theme.of(widget.context)
                                                   .textTheme
-                                                  .bodyText1,
+                                                  .bodyText2,
                                             ),
                                           ),
                                           Text(
@@ -380,7 +380,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                   " \u20A3",
                                               style: Theme.of(widget.context)
                                                   .textTheme
-                                                  .bodyText2),
+                                                  .bodyText1)
                                         ],
                                       ))
                                   : Container(),
@@ -411,7 +411,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                               ":",
                                           style: Theme.of(widget.context)
                                               .textTheme
-                                              .bodyText1,
+                                              .bodyText2,
                                         ),
                                       ),
                                     ],
@@ -431,7 +431,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                           // 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.',
                                           style: Theme.of(widget.context)
                                               .textTheme
-                                              .bodyText2),
+                                              .bodyText1),
                                     ),
                                   ],
                                 )
