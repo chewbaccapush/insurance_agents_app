@@ -58,7 +58,8 @@ class _HistoryPageState extends State<HistoryPage> {
   void initState() {
     _localGet();
     ConnectivityCheker().initialize();
-    subscription = ConnectivityCheker().connectionChange.listen(connectionChanged);
+    subscription =
+        ConnectivityCheker().connectionChange.listen(connectionChanged);
     super.initState();
   }
 
@@ -146,7 +147,6 @@ class _HistoryPageState extends State<HistoryPage> {
     setState(() {});
   }
 
-  // Get orders from users local storage
   _localGet() async {
     await DatabaseHelper.instance
         .readAllAssessments()
@@ -155,7 +155,6 @@ class _HistoryPageState extends State<HistoryPage> {
     countSentAssessments =
         buildingAssessments.where((c) => c.sent == true).length;
     filterBuildingAssessments();
-    // print(buildingAssessments[buildingAssessments.length-1].toJson());
     setState(() {});
   }
 
@@ -252,7 +251,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                               const EdgeInsets.only(left: 15.0),
                                           child: ElevatedButton.icon(
                                               icon: const Icon(
-                                                Icons.sync ,
+                                                Icons.sync,
                                                 size: 22,
                                                 color: Colors.white,
                                               ),
@@ -266,7 +265,9 @@ class _HistoryPageState extends State<HistoryPage> {
                                                     : Color.fromARGB(
                                                         148, 112, 14, 46),
                                               ),
-                                              onPressed: hasConnection ? () => synchronize() : null,
+                                              onPressed: hasConnection
+                                                  ? () => synchronize()
+                                                  : null,
                                               label: Text(
                                                   AppLocalizations.of(context)!
                                                       .assessments_sendButton,
@@ -366,6 +367,11 @@ class _HistoryPageState extends State<HistoryPage> {
             itemCount: assessments.length,
             itemBuilder: (context, position) {
               return BuildingAssessmentTile(
+                  onDelete: () async => {
+                        await DatabaseHelper.instance
+                            .deleteAssessment(assessments[position]),
+                        _localGet(),
+                      },
                   context: context,
                   entry: assessments[position],
                   buildingParts: _getBuildingParts(assessments[position]));

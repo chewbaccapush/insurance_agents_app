@@ -13,9 +13,11 @@ enum ObjectType { buildingPart, measurement }
 
 class AddObjectsSection extends StatefulWidget {
   final dynamic onPressed;
+  final dynamic onDelete;
   final ObjectType objectType;
 
-  const AddObjectsSection({Key? key, this.onPressed, required this.objectType})
+  const AddObjectsSection(
+      {Key? key, this.onPressed, required this.objectType, this.onDelete})
       : super(key: key);
 
   @override
@@ -28,31 +30,50 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
   List<ListTile> objects = [];
 
   Icon getIcon(BuildingPart e) {
-    return e.validated == true ?
-     Icon(Icons.done, color: Colors.green) :
-     Icon(Icons.access_time_outlined, color: Color.fromARGB(255, 197, 179, 24));
+    return e.validated == true
+        ? const Icon(Icons.done, color: Colors.green)
+        : const Icon(Icons.access_time_outlined,
+            color: Color.fromARGB(255, 197, 179, 24));
   }
-  @override
-  void initState() {
+
+  _getFromDB() async {
+    if (ObjectType.buildingPart == widget.objectType) {
+      int buildingAssessmentId = buildingAssessment.id!;
+      await DatabaseHelper.instance
+          .readAssessment(buildingAssessmentId)
+          .then((value) => buildingAssessment = value);
+    } else {
+      int buildingPartId = buildingPart.id!;
+      await DatabaseHelper.instance
+          .readBuildingPart(buildingPartId)
+          .then((value) => buildingPart = value);
+    }
+
+    setState(() {
+      _fillObjects();
+    });
+  }
+
+  _fillObjects() {
     objects = widget.objectType == ObjectType.buildingPart
         ? buildingAssessment.buildingParts
             .map(
-              (e) => ListTile(
-                leading: getIcon(e),
+              (buildingPart) => ListTile(
+                leading: getIcon(buildingPart),
                 title: Transform.translate(
-                  offset: Offset(-20, 0),
-                  child: Text(e.description!),
+                  offset: const Offset(-20, 0),
+                  child: Text(buildingPart.description!),
                 ),
                 trailing: IconButton(
                   onPressed: () async => {
-                    await DatabaseHelper.instance.deleteBuildingPart(e.id!)
-                    .then((value) => buildingAssessment.buildingParts.remove(e)),
+                    await DatabaseHelper.instance
+                        .deleteBuildingPart(buildingPart.id!),
+                    await _getFromDB(),
                   },
-                      
                   icon: const Icon(Icons.delete),
                 ),
                 onTap: () => {
-                  StateService.buildingPart = e,
+                  StateService.buildingPart = buildingPart,
                   NavigatorService.navigateTo(context, const BuildingPartForm())
                 },
               ),
@@ -60,21 +81,29 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
             .toList()
         : buildingPart.measurements
             .map(
-              (e) => ListTile(
-                title: Text(e.description!),
+              (measurement) => ListTile(
+                title: Text(measurement.description!),
                 trailing: IconButton(
-                  onPressed: () => {
-                    DatabaseHelper.instance.deleteMeasurement(e.measurementId!)
+                  onPressed: () async => {
+                    await DatabaseHelper.instance
+                        .deleteMeasurement(measurement.measurementId!),
+                    _getFromDB(),
                   },
                   icon: const Icon(Icons.delete),
                 ),
                 onTap: () => {
-                  StateService.measurement = e,
+                  StateService.measurement = measurement,
                   NavigatorService.navigateTo(context, const MeasurementForm())
                 },
               ),
             )
             .toList();
+  }
+
+  @override
+  void initState() {
+    _getFromDB();
+    _fillObjects();
     super.initState();
   }
 

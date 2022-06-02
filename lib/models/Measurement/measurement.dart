@@ -12,9 +12,10 @@ class MeasurementFields {
     length,
     height,
     width,
-    width,
     measurementType,
-    cubature
+    radius,
+    buildingPart,
+    cubature,
   ];
 
   static const String id = 'measurementId';
@@ -78,7 +79,7 @@ class Measurement {
   }
 
   static Measurement fromJson(Map<String, Object?> json) => Measurement(
-      measurementId: int.tryParse([MeasurementFields.id].toString()),
+      measurementId: int.tryParse(json[MeasurementFields.id].toString()),
       description: json[MeasurementFields.description] as String,
       length: double.tryParse(json[MeasurementFields.length].toString()),
       height: double.tryParse(json[MeasurementFields.height].toString()),
@@ -86,7 +87,9 @@ class Measurement {
       measurementType: EnumToString.fromString(MeasurementType.values,
           json[MeasurementFields.measurementType].toString()),
       radius: double.tryParse(json[MeasurementFields.radius].toString()),
-      cubature: double.tryParse(json[MeasurementFields.cubature].toString()));
+      cubature: double.tryParse(json[MeasurementFields.cubature].toString()),
+      fk_buildingPartId:
+          int.tryParse(json[MeasurementFields.buildingPart].toString()));
 
   Measurement copy(
           {int? id,
