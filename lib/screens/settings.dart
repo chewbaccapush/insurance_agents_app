@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:msg/main.dart';
 import 'package:msg/screens/building_assessment_form.dart';
 import 'package:msg/screens/history.dart';
+import 'package:msg/screens/login.dart';
+import 'package:msg/screens/pin.dart';
+import 'package:msg/services/navigator_service.dart';
 import 'package:msg/services/storage_service.dart';
 import 'package:msg/services/theme_provider.dart';
 import 'package:provider/provider.dart';
@@ -167,6 +170,61 @@ class _SettingsPageState extends State<SettingsPage> {
                     ],
                   ),
                 )),
+              
+              // ---- Change pin ----
+
+              InkWell(
+                onTap: () {
+                  NavigatorService.navigateTo(context, PinPage(changingPin: true));
+                },
+                child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.only(right: 10.0),
+                        child: Icon(Icons.key, size: 18),
+                      ),
+                      Text(
+                        "Change Pin",
+                        style: TextStyle(fontSize: 16),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            )),
+
+            // ---- Logout ----
+
+            InkWell(
+                onTap: () {
+                  StorageService.setLoggedIn(false);
+                  NavigatorService.navigateTo(context, LoginPage());
+                },
+                child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: Icon(Icons.logout, size: 18),
+                      ),
+                      Text(
+                        "Log Out",
+                        style: TextStyle(fontSize: 16),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            )),
           ],
         ),
       ),

@@ -181,120 +181,124 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     double cWidth = MediaQuery.of(context).size.width * 0.5;
-    return Scaffold(
-        body: Padding(
-            padding: const EdgeInsets.only(top: 50, right: 50, left: 50),
-            child: Column(
-              children: [
-                Row(
+    return 
+    GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+          body: Padding(
+              padding: const EdgeInsets.only(top: 50, right: 50, left: 50),
+              child: Column(
+                children: [
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        searchBar(cWidth),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: const [
+                              RoutingButton(
+                                destination: SettingsPage(),
+                                icon: Icon(Icons.settings),
+                                tooltip: 'Settings',
+                              )
+                            ])
+                      ]),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      searchBar(cWidth),
                       Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: const [
-                            RoutingButton(
-                              destination: SettingsPage(),
-                              icon: Icon(Icons.settings),
-                              tooltip: 'Settings',
-                            )
-                          ])
-                    ]),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          width: 350,
-                          child: _buildFilterRow(),
-                        ),
-                      ],
-                    ),
-                    AnimationConfiguration.staggeredList(
-                        position: 1,
-                        duration: const Duration(milliseconds: 500),
-                        delay: const Duration(milliseconds: 25),
-                        child: FadeInAnimation(
-                            child: SlideAnimation(
-                                verticalOffset: 35.0,
-                                curve: Curves.easeOutCubic,
-                                duration: const Duration(milliseconds: 500),
-                                child: ScaleAnimation(
-                                    scale: .9,
-                                    child: Row(
-                                      children: [
-                                        OutlinedButton.icon(
-                                          style: OutlinedButton.styleFrom(
-                                              side: const BorderSide(
-                                                  color: Colors.transparent)),
-                                          onPressed: () => {
-                                            StateService.resetState(),
-                                            NavigatorService.navigateTo(context,
-                                                const BuildingAssessmentForm())
-                                          },
-                                          label: Text(
-                                            AppLocalizations.of(context)!
-                                                .assessments_addButton,
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onPrimary),
+                        children: [
+                          Container(
+                            width: 350,
+                            child: _buildFilterRow(),
+                          ),
+                        ],
+                      ),
+                      AnimationConfiguration.staggeredList(
+                          position: 1,
+                          duration: const Duration(milliseconds: 500),
+                          delay: const Duration(milliseconds: 25),
+                          child: FadeInAnimation(
+                              child: SlideAnimation(
+                                  verticalOffset: 35.0,
+                                  curve: Curves.easeOutCubic,
+                                  duration: const Duration(milliseconds: 500),
+                                  child: ScaleAnimation(
+                                      scale: .9,
+                                      child: Row(
+                                        children: [
+                                          OutlinedButton.icon(
+                                            style: OutlinedButton.styleFrom(
+                                                side: const BorderSide(
+                                                    color: Colors.transparent)),
+                                            onPressed: () => {
+                                              StateService.resetState(),
+                                              NavigatorService.navigateTo(context,
+                                                  const BuildingAssessmentForm())
+                                            },
+                                            label: Text(
+                                              AppLocalizations.of(context)!
+                                                  .assessments_addButton,
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimary),
+                                            ),
+                                            icon: Icon(
+                                              Icons.add,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary,
+                                            ),
                                           ),
-                                          icon: Icon(
-                                            Icons.add,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onPrimary,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 15.0),
-                                          child: ElevatedButton.icon(
-                                              icon: const Icon(
-                                                Icons.sync,
-                                                size: 22,
-                                                color: Colors.white,
-                                              ),
-                                              style: ElevatedButton.styleFrom(
-                                                shape: const StadiumBorder(),
-                                                primary: (StorageService
-                                                            .getAppThemeId() ==
-                                                        false)
-                                                    ? Color.fromARGB(
-                                                        220, 112, 14, 46)
-                                                    : Color.fromARGB(
-                                                        148, 112, 14, 46),
-                                              ),
-                                              onPressed: hasConnection
-                                                  ? () => synchronize()
-                                                  : null,
-                                              label: Text(
-                                                  AppLocalizations.of(context)!
-                                                      .assessments_sendButton,
-                                                  style: TextStyle(
-                                                      fontSize: 15,
-                                                      color: Colors.white))),
-                                        )
-                                      ],
-                                    )))))
-                  ],
-                ),
-                if (searchResults.isNotEmpty ||
-                    textController.text.isNotEmpty) ...[
-                  buildView(searchResults),
-                ] else if (alignment == AlignedTo.sent &&
-                    (searchResults.isEmpty || textController.text.isEmpty)) ...[
-                  buildView(sentAssessments),
-                ] else if (alignment == AlignedTo.queue &&
-                    (searchResults.isEmpty || textController.text.isEmpty)) ...[
-                  buildView(unsentAssessments)
-                ] else ...[
-                  buildView(buildingAssessments)
-                ]
-              ],
-            )));
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 15.0),
+                                            child: ElevatedButton.icon(
+                                                icon: const Icon(
+                                                  Icons.sync,
+                                                  size: 22,
+                                                  color: Colors.white,
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  shape: const StadiumBorder(),
+                                                  primary: (StorageService
+                                                              .getAppThemeId() ==
+                                                          false)
+                                                      ? Color.fromARGB(
+                                                          220, 112, 14, 46)
+                                                      : Color.fromARGB(
+                                                          148, 112, 14, 46),
+                                                ),
+                                                onPressed: hasConnection
+                                                    ? () => synchronize()
+                                                    : null,
+                                                label: Text(
+                                                    AppLocalizations.of(context)!
+                                                        .assessments_sendButton,
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        color: Colors.white))),
+                                          )
+                                        ],
+                                      )))))
+                    ],
+                  ),
+                  if (searchResults.isNotEmpty ||
+                      textController.text.isNotEmpty) ...[
+                    buildView(searchResults),
+                  ] else if (alignment == AlignedTo.sent &&
+                      (searchResults.isEmpty || textController.text.isEmpty)) ...[
+                    buildView(sentAssessments),
+                  ] else if (alignment == AlignedTo.queue &&
+                      (searchResults.isEmpty || textController.text.isEmpty)) ...[
+                    buildView(unsentAssessments)
+                  ] else ...[
+                    buildView(buildingAssessments)
+                  ]
+                ],
+              ))),
+    );
   }
 
   Widget searchBar(width) {

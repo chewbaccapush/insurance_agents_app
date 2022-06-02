@@ -6,6 +6,8 @@ class StorageService {
   static const String _appThemeKey = 'theme';
   static const String _appLanguageKey = 'languageCode';
   static const String _appCountryKey = 'countryCode';
+  static const String _loggedIn = 'loggedIn';
+  static const String _pinCode = 'pinCode';
 
   static SharedPreferences? _prefs;
 
@@ -35,6 +37,7 @@ class StorageService {
     return Locale(languageCode, countryCode);
   }
 
+
   static Future<bool?> getAppTheme() async {
     if (!_checkInitialized()) {
       return null;
@@ -53,7 +56,6 @@ class StorageService {
     if (!_checkInitialized()) {
       return;
     }
-
     _prefs!.setBool(_appThemeKey, isDarkMode);
   }
 
@@ -64,6 +66,47 @@ class StorageService {
 
     _prefs!.setString(_appLanguageKey, languageKey);
     _prefs!.setString(_appCountryKey, countryKey);
+  }
+
+  static bool? isLoggedIn() {
+    if (!_checkInitialized()) {
+      return null;
+    }
+
+    if (_prefs!.containsKey(_loggedIn)) {
+      return _prefs!.getBool(_loggedIn);
+    } else {
+      _prefs!.setBool(_loggedIn, false);
+      return _prefs!.getBool(_loggedIn);
+    }
+  }
+
+  static void setLoggedIn(bool value) {
+    if (!_checkInitialized()) {
+      return;
+    }
+
+    _prefs!.setBool(_loggedIn, value);
+  }
+
+  static String? getPinCode() {
+    if (!_checkInitialized()) {
+      return null;
+    }
+
+    if (_prefs!.containsKey(_pinCode)) {
+      return _prefs!.getString(_pinCode);
+    } else {
+      _prefs!.setString(_loggedIn, '0000');
+      return _prefs!.getString(_loggedIn);
+    }
+  }
+
+  static void setPinCode(String pinCode) {
+     if (!_checkInitialized()) {
+      return;
+    }
+    _prefs!.setString(_pinCode, pinCode);
   }
 
   static bool _checkInitialized() {
