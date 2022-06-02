@@ -291,7 +291,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                           widget.entry!
                                                                   .assessmentFee
                                                                   .toString() +
-                                                              " €",
+                                                              " \u20A3",
                                                           style: Theme.of(widget
                                                                   .context)
                                                               .textTheme

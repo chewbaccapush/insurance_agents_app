@@ -20,6 +20,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       splash: Column(
         children: [
           Image.asset(
@@ -30,10 +31,10 @@ class SplashScreen extends StatelessWidget {
       ),
       nextScreen: getNextScreen(),
       splashIconSize: 250,
-      duration: 2000,
-      animationDuration: const Duration(milliseconds: 1500),
-      splashTransition: SplashTransition.slideTransition,
-      pageTransitionType: PageTransitionType.rightToLeft,
+      duration: 1000,
+      animationDuration: const Duration(milliseconds: 800),
+      splashTransition: SplashTransition.fadeTransition,
+      pageTransitionType: PageTransitionType.fade,
     );
   }
 }

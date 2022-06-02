@@ -1,26 +1,21 @@
 import 'dart:async';
-import 'dart:ffi';
 
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:msg/models/Measurement/measurement.dart';
 import 'package:msg/services/connectivity_cheker.dart';
 import 'package:msg/services/navigator_service.dart';
 import 'package:msg/services/storage_service.dart';
-import 'package:msg/widgets/alert.dart';
+
 import 'package:msg/screens/building_assessment_form.dart';
 import 'package:msg/screens/settings.dart';
 import 'package:msg/widgets/building_assessment_tile.dart';
 import 'package:msg/widgets/building_part_tile.dart';
-import 'package:msg/widgets/filter_assessments.dart';
 
 import 'package:msg/widgets/measurement_tile.dart';
 import 'package:msg/widgets/routing_button.dart';
-import 'package:msg/widgets/search_bar.dart';
 
 import 'package:intl/intl.dart';
-import 'package:connectivity/connectivity.dart';
 
 import '../models/BuildingAssessment/building_assessment.dart';
 import '../models/BuildingPart/building_part.dart';
@@ -152,14 +147,6 @@ class _HistoryPageState extends State<HistoryPage> {
       }
     });
     return [numOfUnsent, unsentAssessments];
-  }
-
-  void showDialogPopup(String title, String content) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Alert(title: title, content: content);
-        });
   }
 
   void filterBuildingAssessments() {

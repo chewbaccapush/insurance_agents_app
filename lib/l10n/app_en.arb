@@ -60,6 +60,10 @@
     "dialog_assessments_notSent":  " assessment has not been sent!",
 
     "log_out": "Log Out",
-    "change_pin": "Change Pin"
+    "change_pin": "Change Pin",
+
+    "enter_pin": "Please enter your pin",
+    "enter_new_pin": "Please enter new pin",
+    "incorrect_pin": "Pin is incorrect"
     
 }

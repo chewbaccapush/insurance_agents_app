@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: Center(
-          child: SingleChildScrollView(
+            child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               Padding(
@@ -32,45 +32,43 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               const Padding(
-                //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                child: CustomTextFormField(
-                  type: TextInputType.text,
-                  labelText: "Username",
-                  width: 500,
-                  suffix: Icon(Icons.person),
-                )
-              ),
+                  //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: CustomTextFormField(
+                    type: TextInputType.text,
+                    labelText: "Username",
+                    width: 500,
+                    suffix: Icon(Icons.person),
+                  )),
               const Padding(
-                padding: EdgeInsets.only(
-                    left: 15.0, right: 15.0, top: 0, bottom: 0),
-                //padding: EdgeInsets.symmetric(horizontal: 15),
-                child: CustomTextFormField(
-                  type: TextInputType.text,
-                  labelText: "Password",
-                  width: 500,
-                  obscureText: true,
-                  suffix: Icon(Icons.key),
-                )
-              ),
+                  padding: EdgeInsets.only(
+                      left: 15.0, right: 15.0, top: 0, bottom: 0),
+                  //padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: CustomTextFormField(
+                    type: TextInputType.text,
+                    labelText: "Password",
+                    width: 500,
+                    obscureText: true,
+                    suffix: Icon(Icons.key),
+                  )),
               ElevatedButton.icon(
                 icon: Icon(Icons.login),
-                  label: const Text("Login"),
-                  style: ElevatedButton.styleFrom(
-                    shape: const StadiumBorder(),
-                    primary: (StorageService.getAppThemeId() ==
-                            false)
-                        ? const Color.fromARGB(220, 112, 14, 46)
-                        : const Color.fromARGB(
-                            148, 112, 14, 46),
-                  ),
-                  onPressed: () => {
-                    StorageService.setLoggedIn(true),
-                    print(StorageService.isLoggedIn()),
-                    NavigatorService.navigateTo(
-                        context, const HistoryPage())
-                  },
+                label: const Text(
+                  "Login",
+                  style: TextStyle(color: Colors.white),
                 ),
+                style: ElevatedButton.styleFrom(
+                  shape: const StadiumBorder(),
+                  primary: (StorageService.getAppThemeId() == false)
+                      ? const Color.fromARGB(220, 112, 14, 46)
+                      : const Color.fromARGB(148, 112, 14, 46),
+                ),
+                onPressed: () => {
+                  StorageService.setLoggedIn(true),
+                  print(StorageService.isLoggedIn()),
+                  NavigatorService.navigateTo(context, const HistoryPage())
+                },
+              ),
               SizedBox(
                 height: 130,
               ),
