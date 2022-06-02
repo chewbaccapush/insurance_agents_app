@@ -47,6 +47,18 @@
 
         "settings_heading": "Einstellungen",
         "settings_darkMode": "Dunkler Modus",
-        "settings_language": "Sprache"
+        "settings_language": "Sprache",
+
+        "dialog_finilize": "Sind Sie sicher, dass Sie diese Bewertung abschließen möchten? Weitere Änderungen sind nicht möglich.",
+        "dialog_yes": "Ja",
+        "dialog_no": "Nein",
+        "missingDialog_finalize": "Bitte füllen Sie alle Gebäudeteilformulare aus.",
+        "dialog_save": "Änderungen speichern?",
+        "dialog_assessments_sent": "Bewertungen erfolgreich gesendett",
+        "dialog_dissmiss": "Zurückweisen",
+        "dialog_assessments_notSent":  " Bewertung wurde nicht gesendet!",
+
+        "log_out": "Ausloggen",
+        "change_pin": "PIN ändern"
     
 }

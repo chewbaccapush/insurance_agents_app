@@ -48,6 +48,18 @@
 
     "settings_heading": "Settings",
     "settings_darkMode": "Dark Mode",
-    "settings_language": "Language"
+    "settings_language": "Language",
+
+    "dialog_finilize": "Are you sure you want to finalize this assessment? Further changes will not be possible.",
+    "dialog_yes": "Yes",
+    "dialog_no": "No",
+    "missingDialog_finalize": "Please complete all building part forms.",
+    "dialog_save": "Save changes?",
+    "dialog_assessments_sent": "Assessments successfully sent",
+    "dialog_dissmiss": "Dismiss",
+    "dialog_assessments_notSent":  " assessment has not been sent!",
+
+    "log_out": "Log Out",
+    "change_pin": "Change Pin"
     
 }

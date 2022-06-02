@@ -100,9 +100,11 @@ class _HistoryPageState extends State<HistoryPage> {
           await showDialog(
             context: context,
             builder: (BuildContext context) => CustomDialog(
-                title: const Text("Assessments successfully sent"),
+                title:
+                    Text(AppLocalizations.of(context)!.dialog_assessments_sent),
                 twoButtons: false,
-                titleButtonOne: const Text("Dismiss"),
+                titleButtonOne:
+                    Text(AppLocalizations.of(context)!.dialog_dissmiss),
                 onPressedButtonOne: () => {Navigator.pop(context, true)}),
           );
         } else {
@@ -111,7 +113,8 @@ class _HistoryPageState extends State<HistoryPage> {
             builder: (BuildContext context) => CustomDialog(
                 title: Text("All ${unsent[0]} assessments successfully sent"),
                 twoButtons: false,
-                titleButtonOne: const Text("Dismiss"),
+                titleButtonOne:
+                    Text(AppLocalizations.of(context)!.dialog_dissmiss),
                 onPressedButtonOne: () => {Navigator.pop(context, true)}),
           );
         }
@@ -119,9 +122,11 @@ class _HistoryPageState extends State<HistoryPage> {
         await showDialog(
           context: context,
           builder: (BuildContext context) => CustomDialog(
-              title: Text("${unsent[1].length} assessment has not been sent!"),
+              title: Text("${unsent[1].length}" +
+                  AppLocalizations.of(context)!.dialog_assessments_notSent),
               twoButtons: false,
-              titleButtonOne: const Text("Dismiss"),
+              titleButtonOne:
+                  Text(AppLocalizations.of(context)!.dialog_dissmiss),
               onPressedButtonOne: () => {Navigator.pop(context, true)}),
         );
       }

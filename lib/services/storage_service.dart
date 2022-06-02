@@ -37,7 +37,6 @@ class StorageService {
     return Locale(languageCode, countryCode);
   }
 
-
   static Future<bool?> getAppTheme() async {
     if (!_checkInitialized()) {
       return null;
@@ -97,13 +96,13 @@ class StorageService {
     if (_prefs!.containsKey(_pinCode)) {
       return _prefs!.getString(_pinCode);
     } else {
-      _prefs!.setString(_loggedIn, '0000');
-      return _prefs!.getString(_loggedIn);
+      _prefs!.setString(_pinCode, '0000');
+      return _prefs!.getString(_pinCode);
     }
   }
 
   static void setPinCode(String pinCode) {
-     if (!_checkInitialized()) {
+    if (!_checkInitialized()) {
       return;
     }
     _prefs!.setString(_pinCode, pinCode);

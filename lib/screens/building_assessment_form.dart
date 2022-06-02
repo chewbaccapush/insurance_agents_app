@@ -16,8 +16,7 @@ import '../services/navigator_service.dart';
 import '../services/storage_service.dart';
 import '../widgets/custom_popup.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../widgets/alert.dart';
-import '../widgets/custom_popup.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BuildingAssessmentForm extends StatefulWidget {
   const BuildingAssessmentForm({Key? key}) : super(key: key);
@@ -50,12 +49,11 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
       return showDialog(
         context: context,
         builder: (BuildContext context) => CustomDialog(
-          title: const Text(
-              "Are you sure you want to finalize this assessment? Further changes will not be possible."),
+          title: Text(AppLocalizations.of(context)!.dialog_finilize),
           twoButtons: true,
-          titleButtonOne: const Text("No"),
+          titleButtonOne: Text(AppLocalizations.of(context)!.dialog_no),
           onPressedButtonOne: () => {Navigator.pop(context, true)},
-          titleButtonTwo: const Text("Yes"),
+          titleButtonTwo: Text(AppLocalizations.of(context)!.dialog_yes),
           onPressedButtonTwo: () async => {
             buildingAssessment.finalized = true,
             await saveBuildingAssessment(),
@@ -66,10 +64,11 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
     } else {
       return showDialog(
         context: context,
-        builder: (BuildContext context) => const CustomDialog(
-          title: Text("Please complete all building part forms."),
+        builder: (BuildContext context) => CustomDialog(
+          title: Text(AppLocalizations.of(context)!.missingDialog_finalize),
           twoButtons: false,
-          titleButtonOne: Icon(Icons.cancel),
+          titleButtonOne: Icon(Icons.clear),
+          onPressedButtonOne: () => {Navigator.pop(context, true)},
         ),
       );
     }
@@ -97,14 +96,17 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               await showDialog(
                                 context: context,
                                 builder: (BuildContext context) => CustomDialog(
-                                  title: const Text("Save Changes?"),
+                                  title: Text(AppLocalizations.of(context)!
+                                      .dialog_save),
                                   twoButtons: true,
-                                  titleButtonOne: const Text("No"),
+                                  titleButtonOne: Text(
+                                      AppLocalizations.of(context)!.dialog_no),
                                   onPressedButtonOne: () => {
                                     NavigatorService.navigateTo(
                                         context, const HistoryPage())
                                   },
-                                  titleButtonTwo: const Text("Yes"),
+                                  titleButtonTwo: Text(
+                                      AppLocalizations.of(context)!.dialog_yes),
                                   onPressedButtonTwo: () async => {
                                     await saveBuildingAssessment(),
                                     NavigatorService.navigateTo(
@@ -226,7 +228,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                 ),
                                 CustomTextFormField(
                                   width: 175,
-                                  suffix: const Icon(Icons.euro_rounded,
+                                  suffix: const Icon(FontAwesomeIcons.francSign,
                                       color: Colors.grey),
                                   type: const TextInputType.numberWithOptions(
                                       decimal: true),

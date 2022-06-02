@@ -69,66 +69,77 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                               Padding(
                                 padding: const EdgeInsets.only(
                                     top: 30, bottom: 0, left: 35, right: 25),
-                                child: Row(children: [
-                                  getIcon(),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 10),
-                                    child: Text(
-                                      DateFormat.MMMMEEEEd(languageCode).format(
-                                          widget.entry!.appointmentDate
-                                              as DateTime),
-                                      style: Theme.of(widget.context)
-                                          .textTheme
-                                          .headline1,
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  widget.entry!.finalized == false
-                                      ? Row(
-                                          children: [
-                                            ElevatedButton(
-                                              child: const Icon(Icons.edit,
-                                                  size: 18,
-                                                  color: Colors.white),
-                                              onPressed: () => {
-                                                StateService
-                                                        .buildingAssessment =
-                                                    widget.entry!,
-                                                NavigatorService.navigateTo(
-                                                    context,
-                                                    const BuildingAssessmentForm())
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                shape: const CircleBorder(),
-                                                primary: (StorageService
-                                                            .getAppThemeId() ==
-                                                        false)
-                                                    ? Color.fromARGB(
-                                                        220, 112, 14, 46)
-                                                    : Color.fromARGB(
-                                                        148, 112, 14, 46),
-                                              ),
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          getIcon(),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 10),
+                                            child: Text(
+                                              DateFormat.MMMMEEEEd(languageCode)
+                                                  .format(widget.entry!
+                                                          .appointmentDate
+                                                      as DateTime),
+                                              style: Theme.of(widget.context)
+                                                  .textTheme
+                                                  .headline1,
                                             ),
-                                            ElevatedButton(
-                                              child: const Icon(Icons.delete,
-                                                  size: 18,
-                                                  color: Colors.white),
-                                              onPressed: widget.onDelete,
-                                              style: ElevatedButton.styleFrom(
-                                                shape: const CircleBorder(),
-                                                primary: (StorageService
-                                                            .getAppThemeId() ==
-                                                        false)
-                                                    ? Color.fromARGB(
-                                                        220, 112, 14, 46)
-                                                    : Color.fromARGB(
-                                                        148, 112, 14, 46),
-                                              ),
+                                          ),
+                                        ],
+                                      ),
+                                      widget.entry!.finalized == false
+                                          ? Row(
+                                              children: [
+                                                ElevatedButton(
+                                                  child: const Icon(Icons.edit,
+                                                      size: 18,
+                                                      color: Colors.white),
+                                                  onPressed: () => {
+                                                    StateService
+                                                            .buildingAssessment =
+                                                        widget.entry!,
+                                                    NavigatorService.navigateTo(
+                                                        context,
+                                                        const BuildingAssessmentForm())
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    shape: const CircleBorder(),
+                                                    primary: (StorageService
+                                                                .getAppThemeId() ==
+                                                            false)
+                                                        ? const Color.fromARGB(
+                                                            220, 112, 14, 46)
+                                                        : const Color.fromARGB(
+                                                            148, 112, 14, 46),
+                                                  ),
+                                                ),
+                                                ElevatedButton(
+                                                  child: const Icon(
+                                                      Icons.delete,
+                                                      size: 18,
+                                                      color: Colors.white),
+                                                  onPressed: widget.onDelete,
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    shape: const CircleBorder(),
+                                                    primary: (StorageService
+                                                                .getAppThemeId() ==
+                                                            false)
+                                                        ? const Color.fromARGB(
+                                                            220, 112, 14, 46)
+                                                        : const Color.fromARGB(
+                                                            148, 112, 14, 46),
+                                                  ),
+                                                )
+                                              ],
                                             )
-                                          ],
-                                        )
-                                      : Container(),
-                                ]),
+                                          : Container(),
+                                    ]),
                               ),
                               IntrinsicHeight(
                                 child: Row(children: [

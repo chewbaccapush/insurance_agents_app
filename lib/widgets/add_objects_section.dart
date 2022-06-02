@@ -38,15 +38,19 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
 
   _getFromDB() async {
     if (ObjectType.buildingPart == widget.objectType) {
-      int buildingAssessmentId = buildingAssessment.id!;
-      await DatabaseHelper.instance
-          .readAssessment(buildingAssessmentId)
-          .then((value) => buildingAssessment = value);
+      if (buildingAssessment.id != null) {
+        int buildingAssessmentId = buildingAssessment.id!;
+        await DatabaseHelper.instance
+            .readAssessment(buildingAssessmentId)
+            .then((value) => buildingAssessment = value);
+      }
     } else {
-      int buildingPartId = buildingPart.id!;
-      await DatabaseHelper.instance
-          .readBuildingPart(buildingPartId)
-          .then((value) => buildingPart = value);
+      if (buildingPart.id != null) {
+        int buildingPartId = buildingPart.id!;
+        await DatabaseHelper.instance
+            .readBuildingPart(buildingPartId)
+            .then((value) => buildingPart = value);
+      }
     }
 
     setState(() {

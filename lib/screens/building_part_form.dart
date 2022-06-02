@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:msg/models/BuildingAssessment/building_assessment.dart';
 import 'package:msg/models/BuildingPart/building_part.dart';
@@ -280,8 +281,8 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                 ],
                               ),
                               CustomTextFormField(
-                                suffix:
-                                    const Icon(Icons.euro, color: Colors.grey),
+                                suffix: const Icon(FontAwesomeIcons.francSign,
+                                    color: Colors.grey),
                                 type: TextInputType.numberWithOptions(
                                     decimal: true),
                                 labelText: AppLocalizations.of(context)!

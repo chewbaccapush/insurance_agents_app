@@ -170,33 +170,35 @@ class _SettingsPageState extends State<SettingsPage> {
                     ],
                   ),
                 )),
-              
-              // ---- Change pin ----
 
-              InkWell(
+            // ---- Change pin ----
+
+            InkWell(
                 onTap: () {
-                  NavigatorService.navigateTo(context, PinPage(changingPin: true));
+                  NavigatorService.navigateTo(
+                      context, PinPage(changingPin: true));
                 },
                 child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: const [
-                      Padding(
-                        padding: EdgeInsets.only(right: 10.0),
-                        child: Icon(Icons.key, size: 18),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(right: 10.0),
+                            child: Icon(Icons.key, size: 18),
+                          ),
+                          Text(
+                            AppLocalizations.of(context)!.change_pin,
+                            style: TextStyle(fontSize: 16),
+                          )
+                        ],
                       ),
-                      Text(
-                        "Change Pin",
-                        style: TextStyle(fontSize: 16),
-                      )
                     ],
                   ),
-                ],
-              ),
-            )),
+                )),
 
             // ---- Logout ----
 
@@ -206,25 +208,26 @@ class _SettingsPageState extends State<SettingsPage> {
                   NavigatorService.navigateTo(context, LoginPage());
                 },
                 child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10.0),
-                        child: Icon(Icons.logout, size: 18),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Icon(Icons.logout, size: 18),
+                          ),
+                          Text(
+                            AppLocalizations.of(context)!.log_out,
+                            style: TextStyle(fontSize: 16),
+                          )
+                        ],
                       ),
-                      Text(
-                        "Log Out",
-                        style: TextStyle(fontSize: 16),
-                      )
                     ],
                   ),
-                ],
-              ),
-            )),
+                )),
           ],
         ),
       ),
