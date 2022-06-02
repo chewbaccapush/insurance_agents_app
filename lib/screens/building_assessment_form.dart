@@ -48,47 +48,44 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
 
   showFinalizeDialog(bool result) {
     if (result) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) => CustomDialog(
-        title: const Text("Are you sure you want to finalize this assessment? Further changes will not be possible."),
-        actions: [
-          ElevatedButton(
-            child: const Text("No"),
-            style: ElevatedButton.styleFrom(
-              shape: const StadiumBorder(),
-              primary: (StorageService.getAppThemeId() ==
-                      false)
-                  ? const Color.fromARGB(220, 112, 14, 46)
-                  : const Color.fromARGB(
-                      148, 112, 14, 46),
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) => CustomDialog(
+          title: const Text(
+              "Are you sure you want to finalize this assessment? Further changes will not be possible."),
+          actions: [
+            ElevatedButton(
+              child: const Text("No"),
+              style: ElevatedButton.styleFrom(
+                shape: const StadiumBorder(),
+                primary: (StorageService.getAppThemeId() == false)
+                    ? const Color.fromARGB(220, 112, 14, 46)
+                    : const Color.fromARGB(148, 112, 14, 46),
+              ),
+              onPressed: () => {Navigator.pop(context, true)},
             ),
-            onPressed: () => {
-              Navigator.pop(context, true)
-            },
-          ),
-          ElevatedButton(
-            child: const Text("Yes"),
-            style: ElevatedButton.styleFrom(
-              shape: const StadiumBorder(),
-              primary: (StorageService.getAppThemeId() ==
-                      false)
-                  ? const Color.fromARGB(220, 112, 14, 46)
-                  : const Color.fromARGB(
-                      148, 112, 14, 46),
+            ElevatedButton(
+              child: const Text("Yes"),
+              style: ElevatedButton.styleFrom(
+                shape: const StadiumBorder(),
+                primary: (StorageService.getAppThemeId() == false)
+                    ? const Color.fromARGB(220, 112, 14, 46)
+                    : const Color.fromARGB(148, 112, 14, 46),
+              ),
+              onPressed: () async => {
+                buildingAssessment.finalized = true,
+                await saveBuildingAssessment(),
+                NavigatorService.navigateTo(context, const HistoryPage())
+              },
             ),
-            onPressed: () async => {
-              buildingAssessment.finalized = true,
-              await saveBuildingAssessment(),
-              NavigatorService.navigateTo(
-                  context, const HistoryPage())
-            },
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
     } else {
-      return showDialog(context: context, builder: (BuildContext context) => customDialog.CustomDialog(text: "Please complete all building part forms."));
+      return showDialog(
+          context: context,
+          builder: (BuildContext context) => customDialog.CustomDialog(
+              text: "Please complete all building part forms."));
     }
   }
 
@@ -325,7 +322,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               label: Text(
                                   AppLocalizations.of(context)!
                                       .buildingAssessment_cancelButton,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 15, color: Colors.white)),
                             ),
                             const Padding(padding: EdgeInsets.only(right: 10)),
@@ -338,11 +335,14 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               onPressed: () async {
                                 // Validates form
                                 if (_formKey.currentState!.validate()) {
-                                  if (!buildingAssessment.buildingParts.isEmpty) {
-                                    List<BuildingPart> unvalidParts = await ValidateAll().check(buildingAssessment);
+                                  if (!buildingAssessment
+                                      .buildingParts.isEmpty) {
+                                    List<BuildingPart> unvalidParts =
+                                        await ValidateAll()
+                                            .check(buildingAssessment);
                                     if (unvalidParts.isEmpty) {
                                       showFinalizeDialog(true);
-                                      _formKey.currentState!.save(); 
+                                      _formKey.currentState!.save();
                                     } else {
                                       showFinalizeDialog(false);
                                     }
@@ -361,7 +361,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               label: Text(
                                   AppLocalizations.of(context)!
                                       .buildingAssessment_finalizeButton,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 15, color: Colors.white)),
                             ),
                             const Padding(padding: EdgeInsets.only(left: 10)),
