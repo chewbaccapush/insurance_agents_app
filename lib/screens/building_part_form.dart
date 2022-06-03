@@ -242,6 +242,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                           .buildingPart_fireProtection),
                                       height: 60,
                                       value: buildingPart.fireProtection,
+                                      validator: (value) => value == null ? 'Field required' : null,
                                       items: fireProtectionList,
                                       onChanged: (newValue) {
                                         setState(() {
@@ -256,6 +257,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                           .buildingPart_constructionClass),
                                       height: 60,
                                       value: buildingPart.constructionClass,
+                                      validator: (value) => value == null ? 'Field required' : null,
                                       items: constructionClassList,
                                       onChanged: (newValue) {
                                         setState(() {
@@ -270,6 +272,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                           .buildingPart_riskClass),
                                       height: 60,
                                       value: buildingPart.riskClass,
+                                      validator: (value) => value == null ? 'Field required' : null,
                                       items: riskClassList,
                                       onChanged: (newValue) {
                                         setState(() {
@@ -309,6 +312,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                             .buildingPart_insuredType),
                                         height: 60,
                                         value: buildingPart.insuredType,
+                                        validator: (value) => value == null ? 'Field required' : null,
                                         items: insuredTypeList,
                                         onChanged: (newValue) {
                                           setState(() {

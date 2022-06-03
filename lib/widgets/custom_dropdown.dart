@@ -9,6 +9,7 @@ class CustomDropdown extends StatelessWidget {
   final Text? hint;
   final List<DropdownMenuItem<dynamic>> items;
   final dynamic onChanged;
+  final dynamic? validator;
   const CustomDropdown(
       {Key? key,
       required this.value,
@@ -16,7 +17,8 @@ class CustomDropdown extends StatelessWidget {
       required this.items,
       required this.onChanged,
       this.width,
-      this.height})
+      this.height,
+      this.validator})
       : super(key: key);
 
   @override
@@ -24,9 +26,15 @@ class CustomDropdown extends StatelessWidget {
     return SizedBox(
       width: width,
       height: height,
-      child: DropdownButton<dynamic>(
+      child: DropdownButtonFormField<dynamic>(
           isExpanded: true,
           value: value,
+          validator: validator,
+          decoration: const InputDecoration(
+            errorStyle: TextStyle(
+              fontSize: 13.0,
+            ),
+          ),
           hint: hint,
           items: items,
           onChanged: onChanged,
