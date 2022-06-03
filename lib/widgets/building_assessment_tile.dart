@@ -133,7 +133,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                       title: Text(
                                                           AppLocalizations.of(
                                                                   context)!
-                                                              .dialog_save),
+                                                              .dialog_delete),
                                                       twoButtons: true,
                                                       titleButtonOne: Text(
                                                           AppLocalizations.of(

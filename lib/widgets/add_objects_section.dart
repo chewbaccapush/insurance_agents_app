@@ -72,7 +72,8 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
                   onPressed: () async => await showDialog(
                     context: context,
                     builder: (BuildContext context) => CustomDialog(
-                        title: Text(AppLocalizations.of(context)!.dialog_save),
+                        title:
+                            Text(AppLocalizations.of(context)!.dialog_delete),
                         twoButtons: true,
                         titleButtonOne:
                             Text(AppLocalizations.of(context)!.dialog_no),
@@ -104,7 +105,8 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
                   onPressed: () async => await showDialog(
                     context: context,
                     builder: (BuildContext context) => CustomDialog(
-                        title: Text(AppLocalizations.of(context)!.dialog_save),
+                        title:
+                            Text(AppLocalizations.of(context)!.dialog_delete),
                         twoButtons: true,
                         titleButtonOne:
                             Text(AppLocalizations.of(context)!.dialog_no),

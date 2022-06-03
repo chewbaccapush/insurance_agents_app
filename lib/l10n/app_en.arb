@@ -64,6 +64,7 @@
 
     "enter_pin": "Please enter your pin",
     "enter_new_pin": "Please enter new pin",
-    "incorrect_pin": "Pin is incorrect"
+    "incorrect_pin": "Pin is incorrect",
+    "dialog_delete": "Are you sure you want to delete this item?"
     
 }
