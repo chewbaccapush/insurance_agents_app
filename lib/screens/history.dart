@@ -418,6 +418,7 @@ class _HistoryPageState extends State<HistoryPage> {
                         await DatabaseHelper.instance
                             .deleteAssessment(assessments[position]),
                         _localGet(),
+                        Navigator.pop(context, true),
                       },
                   context: context,
                   entry: assessments[position],
