@@ -299,9 +299,9 @@ class _HistoryPageState extends State<HistoryPage> {
                                                   primary: (StorageService
                                                               .getAppThemeId() ==
                                                           false)
-                                                      ? Color.fromARGB(
+                                                      ? const Color.fromARGB(
                                                           220, 112, 14, 46)
-                                                      : Color.fromARGB(
+                                                      : const Color.fromARGB(
                                                           148, 112, 14, 46),
                                                 ),
                                                 onPressed: hasConnection
@@ -311,7 +311,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                                     AppLocalizations.of(
                                                             context)!
                                                         .assessments_sendButton,
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         fontSize: 15,
                                                         color: Colors.white))),
                                           )
@@ -785,7 +785,7 @@ class _HistoryPageState extends State<HistoryPage> {
       case AlignedTo.synced:
         return const Alignment(0.99, 0);
       default:
-        return Alignment.centerLeft;
+        return const Alignment(-1, 0);
     }
   }
 }
