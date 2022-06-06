@@ -80,7 +80,8 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                             padding:
                                                 const EdgeInsets.only(left: 10),
                                             child: Text(
-                                              DateFormat.MMMMEEEEd(languageCode)
+                                              DateFormat('dd.MM.yyyy',
+                                                      languageCode)
                                                   .format(widget.entry!
                                                           .appointmentDate
                                                       as DateTime),
@@ -173,7 +174,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                     ),
                                                   ),
                                                   Text(
-                                                      DateFormat.yMMMMd(
+                                                      DateFormat('dd.MM.yyyy',
                                                               languageCode)
                                                           .format(widget.entry!
                                                                   .appointmentDate
@@ -252,8 +253,9 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                       ),
                                                       Text(
                                                           widget.entry!
-                                                                  .voluntaryDeduction
-                                                                  .toString() +
+                                                                  .voluntaryDeduction!
+                                                                  .toStringAsFixed(
+                                                                      0) +
                                                               " %",
                                                           style: Theme.of(widget
                                                                   .context)
@@ -289,8 +291,9 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                       ),
                                                       Text(
                                                           widget.entry!
-                                                                  .assessmentFee
-                                                                  .toString() +
+                                                                  .assessmentFee!
+                                                                  .toStringAsFixed(
+                                                                      0) +
                                                               " \u20A3",
                                                           style: Theme.of(widget
                                                                   .context)

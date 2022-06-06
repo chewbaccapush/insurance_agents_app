@@ -58,6 +58,7 @@
     "dialog_assessments_sent": "Assessments successfully sent",
     "dialog_dissmiss": "Dismiss",
     "dialog_assessments_notSent":  " assessment has not been sent!",
+    "dialog_delete": "Are you sure you want to delete item?",
 
     "log_out": "Log Out",
     "change_pin": "Change Pin",

@@ -1,5 +1,9 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
+import 'package:msg/models/BuildingPart/insured_type.dart';
+import 'package:msg/models/BuildingPart/construction_class.dart';
+import 'package:msg/models/BuildingPart/fire_protection.dart';
+import 'package:msg/models/BuildingPart/risk_class.dart';
 
 import '../models/BuildingPart/building_part.dart';
 import '../services/storage_service.dart';
@@ -120,9 +124,8 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                 ),
                                               ),
                                               Text(
-                                                EnumToString.convertToString(
-                                                    widget
-                                                        .entry!.fireProtection),
+                                                widget.entry!.fireProtection!
+                                                    .name!,
                                                 style: Theme.of(widget.context)
                                                     .textTheme
                                                     .bodyText1,
@@ -158,9 +161,8 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                 ),
                                               ),
                                               Text(
-                                                EnumToString.convertToString(
-                                                    widget.entry!
-                                                        .constructionClass),
+                                                widget.entry!.constructionClass!
+                                                    .name!,
                                                 style: Theme.of(widget.context)
                                                     .textTheme
                                                     .bodyText1,
@@ -195,8 +197,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                 ),
                                               ),
                                               Text(
-                                                EnumToString.convertToString(
-                                                    widget.entry!.riskClass),
+                                                widget.entry!.riskClass!.name!,
                                                 style: Theme.of(widget.context)
                                                     .textTheme
                                                     .bodyText1,
@@ -228,8 +229,8 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                             ),
                                           ),
                                           Text(
-                                              widget.entry!.unitPrice
-                                                      .toString() +
+                                              widget.entry!.unitPrice!
+                                                      .toStringAsFixed(0) +
                                                   ' €',
                                               style: Theme.of(widget.context)
                                                   .textTheme
@@ -253,7 +254,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                     right: 10.0),
                                                 child: Text(
                                                   AppLocalizations.of(context)!
-                                                          .buildingPart_unitPrice +
+                                                          .buildingPart_insuredType +
                                                       ":",
                                                   style:
                                                       Theme.of(widget.context)
@@ -262,8 +263,8 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                 ),
                                               ),
                                               Text(
-                                                EnumToString.convertToString(
-                                                    widget.entry!.insuredType),
+                                                widget
+                                                    .entry!.insuredType!.name!,
                                                 style: Theme.of(widget.context)
                                                     .textTheme
                                                     .bodyText1,
@@ -298,8 +299,8 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                       "null"
                                                   ? ""
                                                   : widget.entry!
-                                                          .devaluationPercentage
-                                                          .toString() +
+                                                          .devaluationPercentage!
+                                                          .toStringAsFixed(0) +
                                                       ' %',
                                               style: Theme.of(widget.context)
                                                   .textTheme

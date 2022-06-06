@@ -390,14 +390,14 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                       primary:
                                           (StorageService.getAppThemeId() ==
                                                   false)
-                                              ? Color.fromARGB(220, 112, 14, 46)
-                                              : Color.fromARGB(
+                                              ? const Color.fromARGB(220, 112, 14, 46)
+                                              : const Color.fromARGB(
                                                   148, 112, 14, 46),
                                     ),
                                     label: Text(
                                       AppLocalizations.of(context)!
                                           .buildingAssessment_okButton,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 15, color: Colors.white),
                                     ),
                                     onPressed: () async => {
@@ -433,7 +433,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                       label: Text(
                                           AppLocalizations.of(context)!
                                               .buildingAssessment_cancelButton,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 15,
                                               color: Colors.white)),
                                     ),
