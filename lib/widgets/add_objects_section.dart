@@ -6,6 +6,8 @@ import 'package:msg/screens/measurement_form.dart';
 import 'package:msg/screens/building_part_form.dart';
 import 'package:msg/services/navigator_service.dart';
 import 'package:msg/services/state_service.dart';
+import 'package:msg/widgets/custom_popup.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../services/storage_service.dart';
 
@@ -13,11 +15,9 @@ enum ObjectType { buildingPart, measurement }
 
 class AddObjectsSection extends StatefulWidget {
   final dynamic onPressed;
-  final dynamic onDelete;
   final ObjectType objectType;
 
-  const AddObjectsSection(
-      {Key? key, this.onPressed, required this.objectType, this.onDelete})
+  const AddObjectsSection({Key? key, this.onPressed, required this.objectType})
       : super(key: key);
 
   @override
@@ -69,11 +69,25 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
                   child: Text(buildingPart.description!),
                 ),
                 trailing: IconButton(
-                  onPressed: () async => {
-                    await DatabaseHelper.instance
-                        .deleteBuildingPart(buildingPart.id!),
-                    await _getFromDB(),
-                  },
+                  onPressed: () async => await showDialog(
+                    context: context,
+                    builder: (BuildContext context) => CustomDialog(
+                        title:
+                            Text(AppLocalizations.of(context)!.dialog_delete),
+                        twoButtons: true,
+                        titleButtonOne:
+                            Text(AppLocalizations.of(context)!.dialog_no),
+                        onPressedButtonOne: () =>
+                            {Navigator.pop(context, true)},
+                        titleButtonTwo:
+                            Text(AppLocalizations.of(context)!.dialog_yes),
+                        onPressedButtonTwo: () async => {
+                              await DatabaseHelper.instance
+                                  .deleteBuildingPart(buildingPart.id!),
+                              await _getFromDB(),
+                              Navigator.pop(context, true),
+                            }),
+                  ),
                   icon: const Icon(Icons.delete),
                 ),
                 onTap: () => {
@@ -88,11 +102,25 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
               (measurement) => ListTile(
                 title: Text(measurement.description!),
                 trailing: IconButton(
-                  onPressed: () async => {
-                    await DatabaseHelper.instance
-                        .deleteMeasurement(measurement.measurementId!),
-                    _getFromDB(),
-                  },
+                  onPressed: () async => await showDialog(
+                    context: context,
+                    builder: (BuildContext context) => CustomDialog(
+                        title:
+                            Text(AppLocalizations.of(context)!.dialog_delete),
+                        twoButtons: true,
+                        titleButtonOne:
+                            Text(AppLocalizations.of(context)!.dialog_no),
+                        onPressedButtonOne: () =>
+                            {Navigator.pop(context, true)},
+                        titleButtonTwo:
+                            Text(AppLocalizations.of(context)!.dialog_yes),
+                        onPressedButtonTwo: () async => {
+                              await DatabaseHelper.instance.deleteMeasurement(
+                                  measurement.measurementId!),
+                              _getFromDB(),
+                              Navigator.pop(context, true),
+                            }),
+                  ),
                   icon: const Icon(Icons.delete),
                 ),
                 onTap: () => {

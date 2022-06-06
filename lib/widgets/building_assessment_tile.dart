@@ -3,6 +3,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:intl/intl.dart';
 import 'package:msg/screens/building_assessment_form.dart';
 import 'package:msg/services/navigator_service.dart';
+import 'package:msg/widgets/custom_popup.dart';
 
 import '../models/BuildingAssessment/building_assessment.dart';
 import '../services/state_service.dart';
@@ -124,7 +125,34 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                       Icons.delete,
                                                       size: 18,
                                                       color: Colors.white),
-                                                  onPressed: widget.onDelete,
+                                                  onPressed: () async =>
+                                                      await showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        CustomDialog(
+                                                      title: Text(
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .dialog_delete),
+                                                      twoButtons: true,
+                                                      titleButtonOne: Text(
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .dialog_no),
+                                                      onPressedButtonOne: () =>
+                                                          {
+                                                        Navigator.pop(
+                                                            context, true)
+                                                      },
+                                                      titleButtonTwo: Text(
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .dialog_yes),
+                                                      onPressedButtonTwo:
+                                                          widget.onDelete,
+                                                    ),
+                                                  ),
                                                   style:
                                                       ElevatedButton.styleFrom(
                                                     shape: const CircleBorder(),

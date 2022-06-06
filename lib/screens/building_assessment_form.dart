@@ -33,6 +33,8 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
 
   @override
   void initState() {
+    // DatabaseHelper.instance.deleteDatabase(
+    //     "/data/user/0/com.example.msg/databases/msgDatabase.db");
     uneditedBuildingAssessment = buildingAssessment.copy();
     super.initState();
   }

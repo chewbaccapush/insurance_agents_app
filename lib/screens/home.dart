@@ -10,6 +10,7 @@ class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   Widget getNextScreen() {
+    // StorageService.setLoggedIn(false);
     if (StorageService.isLoggedIn()!) {
       return const PinPage(changingPin: false);
     } else {
