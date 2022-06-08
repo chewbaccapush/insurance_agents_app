@@ -45,6 +45,8 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
   }
 
   int? getCubature() {
+    print("cubature::");
+    print(buildingPart.measurements.length);
     buildingPart.cubature = 0;
     for (Measurement measurement in buildingPart.measurements) {
       if (buildingPart.cubature != null) {

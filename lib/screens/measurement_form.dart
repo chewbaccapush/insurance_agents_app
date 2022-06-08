@@ -43,12 +43,17 @@ class _MeasurementFormState extends State<MeasurementForm> {
             });
 
     if (!buildingPart.measurements.contains(measurement)) {
+      print("adding");
       buildingPart.measurements.add(measurement);
+    } else {
+      print("contains");
     }
   }
 
   @override
   void initState() {
+    print(measurement.measurementId);
+    print(measurement.cubature);
     uneditedMeasurement = measurement.copy();
     measurement.measurementType =
         measurement.measurementType ?? MeasurementType.rectangular;
@@ -172,12 +177,12 @@ class _MeasurementFormState extends State<MeasurementForm> {
                                       child: MeasurementTypeSwitcher(
                                         measurement: measurement,
                                         onTapCircular: () => setState(() {
-                                          print(measurement.toJson());
+                                          dirtyFlag = true;
                                           measurement.measurementType =
                                               MeasurementType.circular;
                                         }),
                                         onTapRectangular: () => setState(() {
-                                          print(measurement.toJson());
+                                          dirtyFlag = true;
                                           measurement.measurementType =
                                               MeasurementType.rectangular;
                                         }),
@@ -188,36 +193,56 @@ class _MeasurementFormState extends State<MeasurementForm> {
                                 ],
                               ),
                             ),
-                            CustomTextFormField(
-                              enabled: measurement.measurementType ==
-                                      MeasurementType.rectangular
-                                  ? true
-                                  : false,
-                              suffix: const Padding(
-                                padding: EdgeInsets.only(top: 15.0),
-                                child: Text("metres",
-                                    style: TextStyle(color: Colors.grey)),
+                            Visibility(
+                              visible: measurement.measurementType == MeasurementType.rectangular 
+                              ? true : false,
+                              child: Column(
+                                children: [
+                                  CustomTextFormField(
+                                    suffix: const Padding(
+                                      padding: EdgeInsets.only(top: 15.0),
+                                      child: Text("metres",
+                                          style: TextStyle(color: Colors.grey)),
+                                    ),
+                                    type: const TextInputType.numberWithOptions(
+                                        decimal: false),
+                                    labelText: AppLocalizations.of(context)!
+                                        .measurement_length,
+                                    initialValue: measurement.length.toString(),
+                                    onChanged: (newValue) => {
+                                      setState(() => {
+                                            dirtyFlag = true,
+                                            measurement.length =
+                                                double.tryParse(newValue)
+                                          })
+                                    },
+                                    validator: (value) =>
+                                        Validators.measurementValidator(value!),
+                                  ),
+                                  CustomTextFormField(
+                                    suffix: const Padding(
+                                      padding: EdgeInsets.only(top: 15.0),
+                                      child: Text("meters",
+                                          style: TextStyle(color: Colors.grey)),
+                                    ),
+                                    type: const TextInputType.numberWithOptions(
+                                        decimal: true),
+                                    labelText: AppLocalizations.of(context)!
+                                        .measurement_width,
+                                    initialValue: measurement.width.toString(),
+                                    onChanged: (newValue) => {
+                                      setState(() => {
+                                            dirtyFlag = true,
+                                            measurement.width =
+                                                double.tryParse(newValue),
+                                          })
+                                    },
+                                    validator: (value) =>
+                                        Validators.measurementValidator(value!),
+                                  ),
+                                ],
                               ),
-                              type: const TextInputType.numberWithOptions(
-                                  decimal: false),
-                              labelText: AppLocalizations.of(context)!
-                                  .measurement_length,
-                              initialValue: measurement.length.toString(),
-                              onChanged: (newValue) => {
-                                setState(() => {
-                                      dirtyFlag = true,
-                                      measurement.length =
-                                          double.tryParse(newValue)
-                                    })
-                              },
-                              validator: (value) =>
-                                  Validators.measurementValidator(value!),
-                            ),
-                            CustomTextFormField(
-                              enabled: measurement.measurementType ==
-                                      MeasurementType.rectangular
-                                  ? true
-                                  : false,
+                              replacement: CustomTextFormField(
                               suffix: const Padding(
                                 padding: EdgeInsets.only(top: 15.0),
                                 child: Text("meters",
@@ -226,17 +251,18 @@ class _MeasurementFormState extends State<MeasurementForm> {
                               type: const TextInputType.numberWithOptions(
                                   decimal: true),
                               labelText: AppLocalizations.of(context)!
-                                  .measurement_width,
-                              initialValue: measurement.width.toString(),
+                                  .measurement_radius,
+                              initialValue: measurement.radius.toString(),
                               onChanged: (newValue) => {
                                 setState(() => {
                                       dirtyFlag = true,
-                                      measurement.width =
-                                          double.tryParse(newValue),
+                                      measurement.radius =
+                                          double.tryParse(newValue)
                                     })
                               },
                               validator: (value) =>
                                   Validators.measurementValidator(value!),
+                            ),
                             ),
                             CustomTextFormField(
                               suffix: const Padding(
@@ -253,31 +279,6 @@ class _MeasurementFormState extends State<MeasurementForm> {
                                 setState(() => {
                                       dirtyFlag = true,
                                       measurement.height =
-                                          double.tryParse(newValue)
-                                    })
-                              },
-                              validator: (value) =>
-                                  Validators.measurementValidator(value!),
-                            ),
-                            CustomTextFormField(
-                              enabled: measurement.measurementType ==
-                                      MeasurementType.circular
-                                  ? true
-                                  : false,
-                              suffix: const Padding(
-                                padding: EdgeInsets.only(top: 15.0),
-                                child: Text("meters",
-                                    style: TextStyle(color: Colors.grey)),
-                              ),
-                              type: const TextInputType.numberWithOptions(
-                                  decimal: true),
-                              labelText: AppLocalizations.of(context)!
-                                  .measurement_radius,
-                              initialValue: measurement.radius.toString(),
-                              onChanged: (newValue) => {
-                                setState(() => {
-                                      dirtyFlag = true,
-                                      measurement.radius =
                                           double.tryParse(newValue)
                                     })
                               },
