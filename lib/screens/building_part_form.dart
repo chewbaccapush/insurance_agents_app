@@ -95,9 +95,9 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
     await DatabaseHelper.instance
         .persistBuildingPart(buildingPart, buildingAssessment)
         .then((value) => {
-              buildingPart.id = value.id,
-              buildingAssessment.id = value.fk_buildingAssesmentId
-            });
+            buildingPart.id = value.id,
+            buildingAssessment.id = value.fk_buildingAssesmentId
+          });
     if (!buildingAssessment.buildingParts.contains(buildingPart)) {
       buildingAssessment.buildingParts.add(buildingPart);
     }
@@ -170,8 +170,9 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                           },
                                           titleButtonTwo: const Text("Yes"),
                                           onPressedButtonTwo: () async => {
-                                            buildingPart.description ??=
-                                                "DRAFT",
+                                            if (buildingPart.description == null || buildingPart.description == "") {
+                                              buildingPart.description = "DRAFT",
+                                            },
                                             await saveBuildingPart(),
                                             NavigatorService.navigateTo(context,
                                                 const BuildingAssessmentForm())

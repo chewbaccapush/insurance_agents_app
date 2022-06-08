@@ -33,8 +33,6 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
 
   @override
   void initState() {
-    // DatabaseHelper.instance.deleteDatabase(
-    //     "/data/user/0/com.example.msg/databases/msgDatabase.db");
     uneditedBuildingAssessment = buildingAssessment.copy();
     super.initState();
   }
@@ -42,7 +40,6 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
   // Save to database
   Future<void> saveBuildingAssessment() async {
     buildingAssessment.sent = false;
-    buildingAssessment.appointmentDate = new DateTime.now();
     await DatabaseHelper.instance.persistAssessment(buildingAssessment);
   }
 
@@ -150,8 +147,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                     buildingAssessment.appointmentDate,
                                 onDateSaved: (newValue) => {
                                   setState((() => {
-                                        buildingAssessment.appointmentDate =
-                                            newValue
+                                        buildingAssessment.appointmentDate = newValue
                                       }))
                                 },
                               ),
@@ -269,7 +265,6 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                     //Color.fromARGB(220, 18, 136, 85),
                                   ),
                                   onPressed: () async => {
-                                    _formKey.currentState!.save(),
                                     await saveBuildingAssessment(),
                                     NavigatorService.navigateTo(
                                         context, const HistoryPage()),
