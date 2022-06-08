@@ -50,6 +50,8 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
   bool _isExpanded = false;
   @override
   Widget build(BuildContext context) {
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     return Padding(
       padding: widget.entry!.measurements.isEmpty
           ? const EdgeInsets.only(bottom: 20.0)
@@ -140,33 +142,73 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                           top: 5,
                                           bottom: 5,
                                           left: 20,
-                                          right: 20),
+                                          right: 0),
                                       child: Row(
                                         children: [
-                                          Row(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 10.0),
-                                                child: Text(
-                                                  AppLocalizations.of(context)!
-                                                          .buildingPart_constructionClass +
-                                                      ":",
-                                                  style:
-                                                      Theme.of(widget.context)
+                                          (isPortrait &&
+                                                  checkIfEmptySecondColumn() ==
+                                                      false)
+                                              ? Column(
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          AppLocalizations.of(
+                                                                      context)!
+                                                                  .buildingPart_constructionClass +
+                                                              ":",
+                                                          style: Theme.of(widget
+                                                                  .context)
+                                                              .textTheme
+                                                              .bodyText2,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          widget
+                                                              .entry!
+                                                              .constructionClass!
+                                                              .name!,
+                                                          style: Theme.of(widget
+                                                                  .context)
+                                                              .textTheme
+                                                              .bodyText1,
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                )
+                                              : Row(
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 10.0),
+                                                      child: Text(
+                                                        AppLocalizations.of(
+                                                                    context)!
+                                                                .buildingPart_constructionClass +
+                                                            ":",
+                                                        style: Theme.of(
+                                                                widget.context)
+                                                            .textTheme
+                                                            .bodyText2,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      widget
+                                                          .entry!
+                                                          .constructionClass!
+                                                          .name!,
+                                                      style: Theme.of(
+                                                              widget.context)
                                                           .textTheme
-                                                          .bodyText2,
-                                                ),
-                                              ),
-                                              Text(
-                                                widget.entry!.constructionClass!
-                                                    .name!,
-                                                style: Theme.of(widget.context)
-                                                    .textTheme
-                                                    .bodyText1,
-                                              )
-                                            ],
-                                          )
+                                                          .bodyText1,
+                                                    )
+                                                  ],
+                                                )
                                         ],
                                       ))
                                   : Container(),
@@ -275,7 +317,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                               widget.entry!.devaluationPercentage != null
                                   ? Padding(
                                       padding: const EdgeInsets.only(
-                                          top: 5, left: 20, right: 20),
+                                          top: 5, left: 20, right: 0),
                                       child: Row(
                                         children: [
                                           Padding(
