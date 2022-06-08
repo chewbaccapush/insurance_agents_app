@@ -23,6 +23,7 @@ class BuildingPartFields {
     cubature,
     value,
     sumInsured,
+    buildingAssesment,
     validated
   ];
 
@@ -167,7 +168,8 @@ class BuildingPart {
       value: double.tryParse(json[BuildingPartFields.value].toString()),
       sumInsured:
           double.tryParse(json[BuildingPartFields.sumInsured].toString()),
-      validated: validatedBool
+      validated: validatedBool,
+      fk_buildingAssesmentId: int.tryParse(json[BuildingPartFields.buildingAssesment].toString())
     );
   }
 

@@ -99,7 +99,6 @@ class DatabaseHelper {
     final db = await instance.database;
 
     if (assessment.id == null) {
-      assessment.appointmentDate = new DateTime.now();
       assessment.sent = false;
       buildingPart.fk_buildingAssesmentId = await persistAssessment(assessment);
     } else {
@@ -116,12 +115,10 @@ class DatabaseHelper {
     return buildingPart.copy();
   }
 
-  Future<Measurement> persistMeasurement(Measurement measurement,
-      BuildingPart buildingPart, BuildingAssessment assessment) async {
+  Future<Measurement> persistMeasurement(Measurement measurement, BuildingPart buildingPart, BuildingAssessment assessment) async {
     final db = await instance.database;
 
     if (buildingPart.id == null) {
-      buildingPart.description = "DRAFT";
       BuildingPart tempPart =
           await persistBuildingPart(buildingPart, assessment);
       measurement.fk_buildingPartId = tempPart.id;

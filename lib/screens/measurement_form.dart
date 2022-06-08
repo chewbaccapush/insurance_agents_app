@@ -43,17 +43,12 @@ class _MeasurementFormState extends State<MeasurementForm> {
             });
 
     if (!buildingPart.measurements.contains(measurement)) {
-      print("adding");
       buildingPart.measurements.add(measurement);
-    } else {
-      print("contains");
     }
   }
 
   @override
   void initState() {
-    print(measurement.measurementId);
-    print(measurement.cubature);
     uneditedMeasurement = measurement.copy();
     measurement.measurementType =
         measurement.measurementType ?? MeasurementType.rectangular;
@@ -177,12 +172,12 @@ class _MeasurementFormState extends State<MeasurementForm> {
                                       child: MeasurementTypeSwitcher(
                                         measurement: measurement,
                                         onTapCircular: () => setState(() {
-                                          dirtyFlag = true;
+                                          print(measurement.toJson());
                                           measurement.measurementType =
                                               MeasurementType.circular;
                                         }),
                                         onTapRectangular: () => setState(() {
-                                          dirtyFlag = true;
+                                          print(measurement.toJson());
                                           measurement.measurementType =
                                               MeasurementType.rectangular;
                                         }),
@@ -194,7 +189,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
                               ),
                             ),
                             Visibility(
-                              visible: measurement.measurementType == MeasurementType.rectangular 
+                              visible: measurement.measurementType == MeasurementType.rectangular
                               ? true : false,
                               child: Column(
                                 children: [
