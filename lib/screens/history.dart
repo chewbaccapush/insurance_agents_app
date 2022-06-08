@@ -150,6 +150,10 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   void filterBuildingAssessments() {
+    draftAssessments.clear();
+    finalizedAssessments.clear();
+    syncedAssessments.clear();
+
     for (var assessment in buildingAssessments) {
       if (assessment.finalized == false) {
         draftAssessments.add(assessment);

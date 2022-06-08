@@ -81,8 +81,8 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                             padding:
                                                 const EdgeInsets.only(left: 10),
                                             child: Text(
-                                              DateFormat('dd.MM.yyyy',
-                                                      languageCode)
+                                              DateFormat(
+                                                      'd.M.yyyy', languageCode)
                                                   .format(widget.entry!
                                                           .appointmentDate
                                                       as DateTime),
@@ -202,7 +202,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                     ),
                                                   ),
                                                   Text(
-                                                      DateFormat('dd.MM.yyyy',
+                                                      DateFormat('d.M.yyyy',
                                                               languageCode)
                                                           .format(widget.entry!
                                                                   .appointmentDate

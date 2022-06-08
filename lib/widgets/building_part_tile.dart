@@ -31,10 +31,8 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
         widget.entry!.riskClass == null &&
         widget.entry!.devaluationPercentage == null &&
         double.tryParse(widget.entry!.unitPrice.toString()) == null) {
-      print("yes it is");
       return true;
     } else {
-      print("no it isnt");
       return false;
     }
   }
