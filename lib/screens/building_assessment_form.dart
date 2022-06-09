@@ -128,6 +128,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                             ),
                           ),
                         },
+                      NavigatorService.navigateTo(context, const HistoryPage()),
                     },
                     icon: const Icon(Icons.arrow_back),
                   ),
