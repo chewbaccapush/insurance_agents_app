@@ -45,8 +45,6 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
   }
 
   int? getCubature() {
-    print("cubature::");
-    print(buildingPart.measurements.length);
     buildingPart.cubature = 0;
     for (Measurement measurement in buildingPart.measurements) {
       if (buildingPart.cubature != null) {
@@ -214,7 +212,6 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                 ],
               ),
             ),
-            const Padding(padding: EdgeInsets.only(bottom: 20)),
             Form(
               key: _formKey,
               child: Row(
@@ -327,7 +324,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                               child: CustomDropdown(
                                   hint: Text(AppLocalizations.of(context)!
                                       .buildingPart_insuredType),
-                                  height: 60,
+                                  height: 53,
                                   value: buildingPart.insuredType,
                                   validator: (value) =>
                                       value == null ? 'Field required' : null,
@@ -647,7 +644,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                             child: CustomDropdown(
                                 hint: Text(AppLocalizations.of(context)!
                                     .buildingPart_insuredType),
-                                height: 53,
+                                height: 50,
                                 value: buildingPart.insuredType,
                                 validator: (value) =>
                                     value == null ? 'Field required' : null,
@@ -725,7 +722,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
+                    padding: const EdgeInsets.only(top: 10.0, right: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [

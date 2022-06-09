@@ -12,19 +12,19 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? suffix;
   final bool? obscureText;
 
-  const CustomTextFormField({
-    Key? key,
-    required this.type,
-    this.labelText,
-    this.width,
-    this.initialValue,
-    this.onChanged,
-    this.validator,
-    this.fontSize,
-    this.enabled,
-    this.suffix,
-    this.obscureText
-  }) : super(key: key); 
+  const CustomTextFormField(
+      {Key? key,
+      required this.type,
+      this.labelText,
+      this.width,
+      this.initialValue,
+      this.onChanged,
+      this.validator,
+      this.fontSize,
+      this.enabled,
+      this.suffix,
+      this.obscureText})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
