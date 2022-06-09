@@ -149,6 +149,10 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                                   checkIfEmptySecondColumn() ==
                                                       false)
                                               ? Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     Row(
                                                       children: [
@@ -218,7 +222,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                           top: 5,
                                           bottom: 5,
                                           left: 20,
-                                          right: 20),
+                                          right: 0),
                                       child: Row(
                                         children: [
                                           Row(
@@ -253,7 +257,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                           top: 5,
                                           bottom: 5,
                                           left: 20,
-                                          right: 20),
+                                          right: 0),
                                       child: Row(
                                         children: [
                                           Padding(
@@ -284,7 +288,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                           top: 5,
                                           bottom: 5,
                                           left: 20,
-                                          right: 20),
+                                          right: 0),
                                       child: Row(
                                         children: [
                                           Row(
@@ -367,7 +371,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                             top: 5,
                                             bottom: 5,
                                             left: 20,
-                                            right: 20),
+                                            right: 0),
                                         child: Row(
                                           children: [
                                             Padding(
@@ -398,7 +402,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                             top: 5,
                                             bottom: 5,
                                             left: 20,
-                                            right: 20),
+                                            right: 0),
                                         child: Row(
                                           children: [
                                             Padding(
@@ -429,7 +433,7 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                             top: 5,
                                             bottom: 0,
                                             left: 20,
-                                            right: 20),
+                                            right: 0),
                                         child: Row(
                                           children: [
                                             Padding(

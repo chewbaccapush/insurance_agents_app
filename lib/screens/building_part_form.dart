@@ -95,9 +95,9 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
     await DatabaseHelper.instance
         .persistBuildingPart(buildingPart, buildingAssessment)
         .then((value) => {
-            buildingPart.id = value.id,
-            buildingAssessment.id = value.fk_buildingAssesmentId
-          });
+              buildingPart.id = value.id,
+              buildingAssessment.id = value.fk_buildingAssesmentId
+            });
     if (!buildingAssessment.buildingParts.contains(buildingPart)) {
       buildingAssessment.buildingParts.add(buildingPart);
     }
@@ -105,6 +105,8 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
 
   @override
   Widget build(BuildContext context) {
+    double verticalWidth = MediaQuery.of(context).size.width * 0.88;
+    double horizontalWidth = MediaQuery.of(context).size.width * 0.42;
     List<DropdownMenuItem<FireProtection>> fireProtectionList = FireProtection
         .values
         .map<DropdownMenuItem<FireProtection>>((FireProtection value) {
@@ -143,324 +145,641 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
           resizeToAvoidBottomInset: true,
-          body: SingleChildScrollView(
-            physics: ClampingScrollPhysics(),
-            child: Container(
-              padding: const EdgeInsets.all(50.0),
-              child: Column(
+          body: OrientationBuilder(
+            builder: (context, orientation) {
+              return orientation == Orientation.portrait
+                  ? _buildVerticalLayout(verticalWidth, fireProtectionList,
+                      constructionClassList, insuredTypeList, riskClassList)
+                  : _buildHorizontalLayout(horizontalWidth, fireProtectionList,
+                      constructionClassList, insuredTypeList, riskClassList);
+            },
+          ),
+        ));
+  }
+
+  Widget _buildHorizontalLayout(
+      double horizontalWidth,
+      List<DropdownMenuItem<FireProtection>> fireProtectionList,
+      List<DropdownMenuItem<ConstructionClass>> constructionClassList,
+      List<DropdownMenuItem<InsuredType>> insuredTypeList,
+      List<DropdownMenuItem<RiskClass>> riskClassList) {
+    return SingleChildScrollView(
+      physics: ClampingScrollPhysics(),
+      child: Container(
+        padding: const EdgeInsets.all(50.0),
+        child: Column(
+          children: [
+            CustomNavbar(
+              leading: Row(
                 children: [
-                  CustomNavbar(
-                    leading: Row(
-                      children: [
-                        IconButton(
-                          onPressed: () async => {
-                            isValid(),
-                            if (dirtyFlag)
-                              {
-                                await showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        CustomDialog(
-                                          title: const Text("Save Changes?"),
-                                          twoButtons: true,
-                                          titleButtonOne: const Text("No"),
-                                          onPressedButtonOne: () => {
-                                            NavigatorService.navigateTo(context,
-                                                const BuildingAssessmentForm())
-                                          },
-                                          titleButtonTwo: const Text("Yes"),
-                                          onPressedButtonTwo: () async => {
-                                            if (buildingPart.description == null || buildingPart.description == "") {
-                                              buildingPart.description = "DRAFT",
-                                            },
-                                            await saveBuildingPart(),
-                                            NavigatorService.navigateTo(context,
-                                                const BuildingAssessmentForm())
-                                          },
-                                        )),
-                              },
-                            NavigatorService.navigateTo(
-                                context, const BuildingAssessmentForm())
+                  IconButton(
+                    onPressed: () async => {
+                      isValid(),
+                      if (dirtyFlag)
+                        {
+                          await showDialog(
+                              context: context,
+                              builder: (BuildContext context) => CustomDialog(
+                                    title: const Text("Save Changes?"),
+                                    twoButtons: true,
+                                    titleButtonOne: const Text("No"),
+                                    onPressedButtonOne: () => {
+                                      NavigatorService.navigateTo(context,
+                                          const BuildingAssessmentForm())
+                                    },
+                                    titleButtonTwo: const Text("Yes"),
+                                    onPressedButtonTwo: () async => {
+                                      if (buildingPart.description == null ||
+                                          buildingPart.description == "")
+                                        {
+                                          buildingPart.description = "DRAFT",
+                                        },
+                                      await saveBuildingPart(),
+                                      NavigatorService.navigateTo(context,
+                                          const BuildingAssessmentForm())
+                                    },
+                                  )),
+                        },
+                      NavigatorService.navigateTo(
+                          context, const BuildingAssessmentForm())
+                    },
+                    icon: const Icon(Icons.arrow_back),
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!.buildingAssessment_addButton,
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Theme.of(context).colorScheme.onPrimary),
+                  ),
+                ],
+              ),
+            ),
+            const Padding(padding: EdgeInsets.only(bottom: 20)),
+            Form(
+              key: _formKey,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        CustomTextFormField(
+                          type: TextInputType.text,
+                          labelText: AppLocalizations.of(context)!.description,
+                          initialValue: buildingPart.description,
+                          onChanged: (newValue) => {
+                            setState(() {
+                              dirtyFlag = true;
+                              buildingPart.description = newValue;
+                            })
                           },
-                          icon: const Icon(Icons.arrow_back),
+                          validator: (value) =>
+                              Validators.defaultValidator(value!),
                         ),
-                        Text(
-                          AppLocalizations.of(context)!
-                              .buildingAssessment_addButton,
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Theme.of(context).colorScheme.onPrimary),
+                        CustomTextFormField(
+                          type: const TextInputType.numberWithOptions(
+                              decimal: false),
+                          labelText: AppLocalizations.of(context)!
+                              .buildingPartForm_buildingYear,
+                          initialValue: buildingPart.buildingYear.toString(),
+                          onChanged: (newValue) => {
+                            setState(() {
+                              dirtyFlag = true;
+                              buildingPart.buildingYear = int.parse(newValue);
+                            })
+                          },
+                          validator: (value) => Validators.intValidator(value!),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomDropdown(
+                                hint: Text(AppLocalizations.of(context)!
+                                    .buildingPart_fireProtection),
+                                height: 60,
+                                value: buildingPart.fireProtection,
+                                validator: (value) =>
+                                    value == null ? 'Field required' : null,
+                                items: fireProtectionList,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    dirtyFlag = true;
+                                    buildingPart.fireProtection = newValue;
+                                  });
+                                },
+                                width: 170),
+                            CustomDropdown(
+                                hint: Text(AppLocalizations.of(context)!
+                                    .buildingPart_constructionClass),
+                                height: 60,
+                                value: buildingPart.constructionClass,
+                                validator: (value) =>
+                                    value == null ? 'Field required' : null,
+                                items: constructionClassList,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    dirtyFlag = true;
+                                    buildingPart.constructionClass = newValue;
+                                  });
+                                },
+                                width: 170),
+                            CustomDropdown(
+                                hint: Text(AppLocalizations.of(context)!
+                                    .buildingPart_riskClass),
+                                height: 60,
+                                value: buildingPart.riskClass,
+                                validator: (value) =>
+                                    value == null ? 'Field required' : null,
+                                items: riskClassList,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    dirtyFlag = true;
+                                    buildingPart.riskClass = newValue;
+                                  });
+                                },
+                                width: 170),
+                          ],
+                        ),
+                        CustomTextFormField(
+                          suffix: const Icon(FontAwesomeIcons.francSign,
+                              color: Colors.grey),
+                          type: TextInputType.numberWithOptions(decimal: true),
+                          labelText: AppLocalizations.of(context)!
+                              .buildingPart_unitPrice,
+                          initialValue: buildingPart.unitPrice.toString(),
+                          onChanged: (newValue) => {
+                            setState(() {
+                              dirtyFlag = true;
+                              buildingPart.unitPrice =
+                                  double.tryParse(newValue);
+                            })
+                          },
+                          validator: (value) =>
+                              Validators.floatValidator(value!),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15.0),
+                              child: CustomDropdown(
+                                  hint: Text(AppLocalizations.of(context)!
+                                      .buildingPart_insuredType),
+                                  height: 60,
+                                  value: buildingPart.insuredType,
+                                  validator: (value) =>
+                                      value == null ? 'Field required' : null,
+                                  items: insuredTypeList,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      dirtyFlag = true;
+                                      buildingPart.insuredType = newValue;
+                                    });
+                                  },
+                                  width: 120),
+                            ),
+                            CustomTextFormField(
+                              suffix: Icon(Icons.percent_rounded,
+                                  color: (buildingPart.insuredType ==
+                                          InsuredType.timeValue)
+                                      ? Colors.grey
+                                      : Colors.grey[700]),
+                              enabled: buildingPart.insuredType ==
+                                      InsuredType.timeValue
+                                  ? true
+                                  : false,
+                              width: 450,
+                              type: const TextInputType.numberWithOptions(
+                                  decimal: true),
+                              labelText: AppLocalizations.of(context)!
+                                  .buildingPart_devaluationPercentage,
+                              initialValue:
+                                  buildingPart.devaluationPercentage.toString(),
+                              onChanged: (newValue) => {
+                                setState(() {
+                                  dirtyFlag = true;
+                                  buildingPart.devaluationPercentage =
+                                      double.tryParse(newValue);
+                                })
+                              },
+                              validator: (value) {
+                                if (buildingPart.getInsuredType ==
+                                    InsuredType.timeValue) {
+                                  return Validators.floatValidator(value!);
+                                } else {
+                                  return null;
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(AppLocalizations.of(context)!.cubature +
+                                  ': ${getCubature()} m\u00B3'),
+                              Text(AppLocalizations.of(context)!.value +
+                                  ': ${getValue()} \u20A3'),
+                              Text(AppLocalizations.of(context)!.sumInsured +
+                                  ': ${getSumInsured()} \u20A3'),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ElevatedButton.icon(
+                                icon: const Icon(
+                                  Icons.check_rounded,
+                                  size: 18,
+                                  color: Colors.white,
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  shape: const StadiumBorder(),
+                                  primary: (StorageService.getAppThemeId() ==
+                                          false)
+                                      ? const Color.fromARGB(220, 112, 14, 46)
+                                      : const Color.fromARGB(148, 112, 14, 46),
+                                ),
+                                label: Text(
+                                  AppLocalizations.of(context)!
+                                      .buildingAssessment_okButton,
+                                  style: const TextStyle(
+                                      fontSize: 15, color: Colors.white),
+                                ),
+                                onPressed: () async => {
+                                  if (_formKey.currentState!.validate())
+                                    {
+                                      buildingPart.validated = true,
+                                      await saveBuildingPart(),
+                                      NavigatorService.navigateTo(context,
+                                          const BuildingAssessmentForm())
+                                    }
+                                },
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                child: ElevatedButton.icon(
+                                  icon: const Icon(
+                                    Icons.cancel_rounded,
+                                    size: 18,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    NavigatorService.navigateTo(context,
+                                        const BuildingAssessmentForm());
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    shape: const StadiumBorder(),
+                                    primary: (StorageService.getAppThemeId() ==
+                                            false)
+                                        ? Color.fromARGB(220, 112, 14, 46)
+                                        : Color.fromARGB(148, 112, 14, 46),
+                                  ),
+                                  label: Text(
+                                      AppLocalizations.of(context)!
+                                          .buildingAssessment_cancelButton,
+                                      style: const TextStyle(
+                                          fontSize: 15, color: Colors.white)),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        //Cubature
+                        //Value
+                        //Sum Insured
+                      ],
+                    ),
+                  ),
+                  Flexible(
+                    child: Column(
+                      children: <Widget>[
+                        AddObjectsSection(
+                          width: horizontalWidth,
+                          objectType: ObjectType.measurement,
+                          onPressed: () => {
+                            StateService.measurement = Measurement(),
+                            NavigatorService.navigateTo(
+                                context, const MeasurementForm())
+                          },
                         ),
                       ],
                     ),
                   ),
-                  const Padding(padding: EdgeInsets.only(bottom: 20)),
-                  Form(
-                    key: _formKey,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Flexible(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              CustomTextFormField(
-                                type: TextInputType.text,
-                                labelText:
-                                    AppLocalizations.of(context)!.description,
-                                initialValue: buildingPart.description,
-                                onChanged: (newValue) => {
-                                  setState(() {
-                                    dirtyFlag = true;
-                                    buildingPart.description = newValue;
-                                  })
-                                },
-                                validator: (value) =>
-                                    Validators.defaultValidator(value!),
-                              ),
-                              CustomTextFormField(
-                                type: const TextInputType.numberWithOptions(
-                                    decimal: false),
-                                labelText: AppLocalizations.of(context)!
-                                    .buildingPartForm_buildingYear,
-                                initialValue:
-                                    buildingPart.buildingYear.toString(),
-                                onChanged: (newValue) => {
-                                  setState(() {
-                                    dirtyFlag = true;
-                                    buildingPart.buildingYear =
-                                        int.parse(newValue);
-                                  })
-                                },
-                                validator: (value) =>
-                                    Validators.intValidator(value!),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomDropdown(
-                                      hint: Text(AppLocalizations.of(context)!
-                                          .buildingPart_fireProtection),
-                                      height: 60,
-                                      value: buildingPart.fireProtection,
-                                      validator: (value) => value == null ? 'Field required' : null,
-                                      items: fireProtectionList,
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          dirtyFlag = true;
-                                          buildingPart.fireProtection =
-                                              newValue;
-                                        });
-                                      },
-                                      width: 170),
-                                  CustomDropdown(
-                                      hint: Text(AppLocalizations.of(context)!
-                                          .buildingPart_constructionClass),
-                                      height: 60,
-                                      value: buildingPart.constructionClass,
-                                      validator: (value) => value == null ? 'Field required' : null,
-                                      items: constructionClassList,
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          dirtyFlag = true;
-                                          buildingPart.constructionClass =
-                                              newValue;
-                                        });
-                                      },
-                                      width: 170),
-                                  CustomDropdown(
-                                      hint: Text(AppLocalizations.of(context)!
-                                          .buildingPart_riskClass),
-                                      height: 60,
-                                      value: buildingPart.riskClass,
-                                      validator: (value) => value == null ? 'Field required' : null,
-                                      items: riskClassList,
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          dirtyFlag = true;
-                                          buildingPart.riskClass = newValue;
-                                        });
-                                      },
-                                      width: 170),
-                                ],
-                              ),
-                              CustomTextFormField(
-                                suffix: const Icon(FontAwesomeIcons.francSign,
-                                    color: Colors.grey),
-                                type: TextInputType.numberWithOptions(
-                                    decimal: true),
-                                labelText: AppLocalizations.of(context)!
-                                    .buildingPart_unitPrice,
-                                initialValue: buildingPart.unitPrice.toString(),
-                                onChanged: (newValue) => {
-                                  setState(() {
-                                    dirtyFlag = true;
-                                    buildingPart.unitPrice =
-                                        double.tryParse(newValue);
-                                  })
-                                },
-                                validator: (value) =>
-                                    Validators.floatValidator(value!),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 15.0),
-                                    child: CustomDropdown(
-                                        hint: Text(AppLocalizations.of(context)!
-                                            .buildingPart_insuredType),
-                                        height: 60,
-                                        value: buildingPart.insuredType,
-                                        validator: (value) => value == null ? 'Field required' : null,
-                                        items: insuredTypeList,
-                                        onChanged: (newValue) {
-                                          setState(() {
-                                            dirtyFlag = true;
-                                            buildingPart.insuredType = newValue;
-                                          });
-                                        },
-                                        width: 120),
-                                  ),
-                                  CustomTextFormField(
-                                    suffix: Icon(Icons.percent_rounded,
-                                        color: (buildingPart.insuredType ==
-                                                InsuredType.timeValue)
-                                            ? Colors.grey
-                                            : Colors.grey[700]),
-                                    enabled: buildingPart.insuredType ==
-                                            InsuredType.timeValue
-                                        ? true
-                                        : false,
-                                    width: 450,
-                                    type: const TextInputType.numberWithOptions(
-                                        decimal: true),
-                                    labelText: AppLocalizations.of(context)!
-                                        .buildingPart_devaluationPercentage,
-                                    initialValue: buildingPart
-                                        .devaluationPercentage
-                                        .toString(),
-                                    onChanged: (newValue) => {
-                                      setState(() {
-                                        dirtyFlag = true;
-                                        buildingPart.devaluationPercentage =
-                                            double.tryParse(newValue);
-                                      })
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildVerticalLayout(
+      double verticalWidth,
+      List<DropdownMenuItem<FireProtection>> fireProtectionList,
+      List<DropdownMenuItem<ConstructionClass>> constructionClassList,
+      List<DropdownMenuItem<InsuredType>> insuredTypeList,
+      List<DropdownMenuItem<RiskClass>> riskClassList) {
+    return SingleChildScrollView(
+      physics: const ClampingScrollPhysics(),
+      child: Container(
+        padding: const EdgeInsets.all(50.0),
+        child: Column(
+          children: [
+            CustomNavbar(
+              leading: Row(
+                children: [
+                  IconButton(
+                    onPressed: () async => {
+                      isValid(),
+                      if (dirtyFlag)
+                        {
+                          await showDialog(
+                              context: context,
+                              builder: (BuildContext context) => CustomDialog(
+                                    title: const Text("Save Changes?"),
+                                    twoButtons: true,
+                                    titleButtonOne: const Text("No"),
+                                    onPressedButtonOne: () => {
+                                      NavigatorService.navigateTo(context,
+                                          const BuildingAssessmentForm())
                                     },
-                                    validator: (value) {
-                                      if (buildingPart.getInsuredType ==
-                                          InsuredType.timeValue) {
-                                        return Validators.floatValidator(
-                                            value!);
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 10.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                        AppLocalizations.of(context)!.cubature +
-                                            ': ${getCubature()} m\u00B3'),
-                                    Text(AppLocalizations.of(context)!.value +
-                                        ': ${getValue()} \u20A3'),
-                                    Text(AppLocalizations.of(context)!
-                                            .sumInsured +
-                                        ': ${getSumInsured()} \u20A3'),
-                                  ],
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  ElevatedButton.icon(
-                                    icon: const Icon(
-                                      Icons.check_rounded,
-                                      size: 18,
-                                      color: Colors.white,
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      shape: const StadiumBorder(),
-                                      primary:
-                                          (StorageService.getAppThemeId() ==
-                                                  false)
-                                              ? const Color.fromARGB(220, 112, 14, 46)
-                                              : const Color.fromARGB(
-                                                  148, 112, 14, 46),
-                                    ),
-                                    label: Text(
-                                      AppLocalizations.of(context)!
-                                          .buildingAssessment_okButton,
-                                      style: const TextStyle(
-                                          fontSize: 15, color: Colors.white),
-                                    ),
-                                    onPressed: () async => {
-                                      if (_formKey.currentState!.validate())
+                                    titleButtonTwo: const Text("Yes"),
+                                    onPressedButtonTwo: () async => {
+                                      if (buildingPart.description == null ||
+                                          buildingPart.description == "")
                                         {
-                                          buildingPart.validated = true,
-                                          await saveBuildingPart(),
-                                          NavigatorService.navigateTo(context,
-                                              const BuildingAssessmentForm())
-                                        }
+                                          buildingPart.description = "DRAFT",
+                                        },
+                                      await saveBuildingPart(),
+                                      NavigatorService.navigateTo(context,
+                                          const BuildingAssessmentForm())
                                     },
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 10.0),
-                                    child: ElevatedButton.icon(
-                                      icon: const Icon(
-                                        Icons.cancel_rounded,
-                                        size: 18,
-                                        color: Colors.white,
-                                      ),
-                                      onPressed: () {
-                                        NavigatorService.navigateTo(context,
-                                            const BuildingAssessmentForm());
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        shape: const StadiumBorder(),
-                                        primary: (StorageService
-                                                    .getAppThemeId() ==
-                                                false)
-                                            ? Color.fromARGB(220, 112, 14, 46)
-                                            : Color.fromARGB(148, 112, 14, 46),
-                                      ),
-                                      label: Text(
-                                          AppLocalizations.of(context)!
-                                              .buildingAssessment_cancelButton,
-                                          style: const TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.white)),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              //Cubature
-                              //Value
-                              //Sum Insured
-                            ],
-                          ),
-                        ),
-                        Flexible(
-                          child: Column(
-                            children: <Widget>[
-                              AddObjectsSection(
-                                objectType: ObjectType.measurement,
-                                onPressed: () => {
-                                  StateService.measurement = Measurement(),
-                                  NavigatorService.navigateTo(
-                                      context, const MeasurementForm())
+                                  )),
+                        },
+                      NavigatorService.navigateTo(
+                          context, const BuildingAssessmentForm())
+                    },
+                    icon: const Icon(Icons.arrow_back),
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!.buildingAssessment_addButton,
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Theme.of(context).colorScheme.onPrimary),
+                  ),
+                ],
+              ),
+            ),
+            Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Column(
+                    children: [
+                      CustomTextFormField(
+                        type: TextInputType.text,
+                        labelText: AppLocalizations.of(context)!.description,
+                        initialValue: buildingPart.description,
+                        onChanged: (newValue) => {
+                          setState(() {
+                            dirtyFlag = true;
+                            buildingPart.description = newValue;
+                          })
+                        },
+                        validator: (value) =>
+                            Validators.defaultValidator(value!),
+                      ),
+                      CustomTextFormField(
+                        type: const TextInputType.numberWithOptions(
+                            decimal: false),
+                        labelText: AppLocalizations.of(context)!
+                            .buildingPartForm_buildingYear,
+                        initialValue: buildingPart.buildingYear.toString(),
+                        onChanged: (newValue) => {
+                          setState(() {
+                            dirtyFlag = true;
+                            buildingPart.buildingYear = int.parse(newValue);
+                          })
+                        },
+                        validator: (value) => Validators.intValidator(value!),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomDropdown(
+                              hint: Text(AppLocalizations.of(context)!
+                                  .buildingPart_fireProtection),
+                              height: 60,
+                              value: buildingPart.fireProtection,
+                              validator: (value) =>
+                                  value == null ? 'Field required' : null,
+                              items: fireProtectionList,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  dirtyFlag = true;
+                                  buildingPart.fireProtection = newValue;
+                                });
+                              },
+                              width: 170),
+                          CustomDropdown(
+                              hint: Text(AppLocalizations.of(context)!
+                                  .buildingPart_constructionClass),
+                              height: 60,
+                              value: buildingPart.constructionClass,
+                              validator: (value) =>
+                                  value == null ? 'Field required' : null,
+                              items: constructionClassList,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  dirtyFlag = true;
+                                  buildingPart.constructionClass = newValue;
+                                });
+                              },
+                              width: 170),
+                          CustomDropdown(
+                              hint: Text(AppLocalizations.of(context)!
+                                  .buildingPart_riskClass),
+                              height: 60,
+                              value: buildingPart.riskClass,
+                              validator: (value) =>
+                                  value == null ? 'Field required' : null,
+                              items: riskClassList,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  dirtyFlag = true;
+                                  buildingPart.riskClass = newValue;
+                                });
+                              },
+                              width: 170),
+                        ],
+                      ),
+                      CustomTextFormField(
+                        suffix: const Icon(FontAwesomeIcons.francSign,
+                            color: Colors.grey),
+                        type: TextInputType.numberWithOptions(decimal: true),
+                        labelText: AppLocalizations.of(context)!
+                            .buildingPart_unitPrice,
+                        initialValue: buildingPart.unitPrice.toString(),
+                        onChanged: (newValue) => {
+                          setState(() {
+                            dirtyFlag = true;
+                            buildingPart.unitPrice = double.tryParse(newValue);
+                          })
+                        },
+                        validator: (value) => Validators.floatValidator(value!),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: 10.0, right: 30),
+                            child: CustomDropdown(
+                                hint: Text(AppLocalizations.of(context)!
+                                    .buildingPart_insuredType),
+                                height: 53,
+                                value: buildingPart.insuredType,
+                                validator: (value) =>
+                                    value == null ? 'Field required' : null,
+                                items: insuredTypeList,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    dirtyFlag = true;
+                                    buildingPart.insuredType = newValue;
+                                  });
                                 },
-                              ),
-                            ],
+                                width: 120),
+                          ),
+                          CustomTextFormField(
+                            suffix: Icon(Icons.percent_rounded,
+                                color: (buildingPart.insuredType ==
+                                        InsuredType.timeValue)
+                                    ? Colors.grey
+                                    : Colors.grey[700]),
+                            enabled: buildingPart.insuredType ==
+                                    InsuredType.timeValue
+                                ? true
+                                : false,
+                            width: 450,
+                            type: const TextInputType.numberWithOptions(
+                                decimal: true),
+                            labelText: AppLocalizations.of(context)!
+                                .buildingPart_devaluationPercentage,
+                            initialValue:
+                                buildingPart.devaluationPercentage.toString(),
+                            onChanged: (newValue) => {
+                              setState(() {
+                                dirtyFlag = true;
+                                buildingPart.devaluationPercentage =
+                                    double.tryParse(newValue);
+                              })
+                            },
+                            validator: (value) {
+                              if (buildingPart.getInsuredType ==
+                                  InsuredType.timeValue) {
+                                return Validators.floatValidator(value!);
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(AppLocalizations.of(context)!.cubature +
+                                ': ${getCubature()} m\u00B3'),
+                            Text(AppLocalizations.of(context)!.value +
+                                ': ${getValue()} \u20A3'),
+                            Text(AppLocalizations.of(context)!.sumInsured +
+                                ': ${getSumInsured()} \u20A3'),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      AddObjectsSection(
+                        width: verticalWidth,
+                        objectType: ObjectType.measurement,
+                        onPressed: () => {
+                          StateService.measurement = Measurement(),
+                          NavigatorService.navigateTo(
+                              context, const MeasurementForm())
+                        },
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ElevatedButton.icon(
+                          icon: const Icon(
+                            Icons.check_rounded,
+                            size: 18,
+                            color: Colors.white,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            shape: const StadiumBorder(),
+                            primary: (StorageService.getAppThemeId() == false)
+                                ? const Color.fromARGB(220, 112, 14, 46)
+                                : const Color.fromARGB(148, 112, 14, 46),
+                          ),
+                          label: Text(
+                            AppLocalizations.of(context)!
+                                .buildingAssessment_okButton,
+                            style: const TextStyle(
+                                fontSize: 15, color: Colors.white),
+                          ),
+                          onPressed: () async => {
+                            if (_formKey.currentState!.validate())
+                              {
+                                buildingPart.validated = true,
+                                await saveBuildingPart(),
+                                NavigatorService.navigateTo(
+                                    context, const BuildingAssessmentForm())
+                              }
+                          },
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: ElevatedButton.icon(
+                            icon: const Icon(
+                              Icons.cancel_rounded,
+                              size: 18,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              NavigatorService.navigateTo(
+                                  context, const BuildingAssessmentForm());
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: const StadiumBorder(),
+                              primary: (StorageService.getAppThemeId() == false)
+                                  ? Color.fromARGB(220, 112, 14, 46)
+                                  : Color.fromARGB(148, 112, 14, 46),
+                            ),
+                            label: Text(
+                                AppLocalizations.of(context)!
+                                    .buildingAssessment_cancelButton,
+                                style: const TextStyle(
+                                    fontSize: 15, color: Colors.white)),
                           ),
                         ),
                       ],
@@ -469,7 +788,9 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                 ],
               ),
             ),
-          ),
-        ));
+          ],
+        ),
+      ),
+    );
   }
 }

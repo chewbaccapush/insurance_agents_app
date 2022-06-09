@@ -16,8 +16,10 @@ enum ObjectType { buildingPart, measurement }
 class AddObjectsSection extends StatefulWidget {
   final dynamic onPressed;
   final ObjectType objectType;
+  final double width;
 
-  const AddObjectsSection({Key? key, this.onPressed, required this.objectType})
+  const AddObjectsSection(
+      {Key? key, this.onPressed, required this.objectType, required this.width})
       : super(key: key);
 
   @override
@@ -161,7 +163,7 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
         ),
         SizedBox(
           height: 500,
-          width: 500,
+          width: widget.width,
           child: Card(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0)),
