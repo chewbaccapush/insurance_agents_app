@@ -98,6 +98,7 @@ class DatabaseHelper {
     debugPrint("SQL: saving building part");
     final db = await instance.database;
 
+    buildingPart.description ??= "DRAFT";
     if (assessment.id == null) {
       assessment.sent = false;
       buildingPart.fk_buildingAssesmentId = await persistAssessment(assessment);
@@ -115,7 +116,8 @@ class DatabaseHelper {
     return buildingPart.copy();
   }
 
-  Future<Measurement> persistMeasurement(Measurement measurement, BuildingPart buildingPart, BuildingAssessment assessment) async {
+  Future<Measurement> persistMeasurement(Measurement measurement,
+      BuildingPart buildingPart, BuildingAssessment assessment) async {
     final db = await instance.database;
 
     if (buildingPart.id == null) {
@@ -186,7 +188,7 @@ class DatabaseHelper {
   Future<List<Measurement>> getMeasurementsByFk(int id) async {
     final db = await instance.database;
 
-     final result = await db.query(tableMeasurement,
+    final result = await db.query(tableMeasurement,
         where: '${MeasurementFields.buildingPart} = ?', whereArgs: [id]);
     return result.map((json) => Measurement.fromJson(json)).toList();
   }
