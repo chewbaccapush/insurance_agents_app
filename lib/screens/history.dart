@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:msg/models/Measurement/measurement.dart';
-import 'package:msg/services/connectivity_cheker.dart';
+// import 'package:msg/services/connectivity_cheker.dart';
 import 'package:msg/services/navigator_service.dart';
 import 'package:msg/services/storage_service.dart';
 
@@ -53,23 +53,23 @@ class _HistoryPageState extends State<HistoryPage> {
   int countSyncedAssessments = 0;
   int allAssessments = 0;
   bool _isExpanded = false;
-  bool hasConnection = false;
+  bool hasConnection = true;
   late StreamSubscription subscription;
 
   @override
   void initState() {
     _localGet();
-    ConnectivityCheker().initialize();
-    subscription =
-        ConnectivityCheker().connectionChange.listen(connectionChanged);
+    // ConnectivityCheker().initialize();
+    // subscription =
+    //     ConnectivityCheker().connectionChange.listen(connectionChanged);
     super.initState();
   }
 
-  void connectionChanged(dynamic hasInternetConnection) {
-    setState(() {
-      hasConnection = hasInternetConnection;
-    });
-  }
+  // void connectionChanged(dynamic hasInternetConnection) {
+  //   setState(() {
+  //     hasConnection = hasInternetConnection;
+  //   });
+  // }
 
   @override
   void dispose() {
@@ -82,9 +82,6 @@ class _HistoryPageState extends State<HistoryPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Sending..')),
     );
-    debugPrint("Sending");
-    List<BuildingAssessment> unsentAssessments = [];
-    int numOfUnsent = 0;
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
     List unsent = await iterateAssessments();

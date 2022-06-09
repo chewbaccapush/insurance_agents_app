@@ -11,20 +11,22 @@ class CustomTextFormField extends StatelessWidget {
   final bool? enabled;
   final Widget? suffix;
   final bool? obscureText;
+  final dynamic controller;
 
-  const CustomTextFormField({
-    Key? key,
-    required this.type,
-    this.labelText,
-    this.width,
-    this.initialValue,
-    this.onChanged,
-    this.validator,
-    this.fontSize,
-    this.enabled,
-    this.suffix,
-    this.obscureText
-  }) : super(key: key); 
+  const CustomTextFormField(
+      {Key? key,
+      required this.type,
+      this.labelText,
+      this.width,
+      this.initialValue,
+      this.onChanged,
+      this.validator,
+      this.fontSize,
+      this.enabled,
+      this.suffix,
+      this.obscureText,
+      this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class CustomTextFormField extends StatelessWidget {
         SizedBox(
           width: width,
           child: TextFormField(
+            controller: controller,
             enabled: enabled,
             cursorColor: Theme.of(context).colorScheme.onPrimary,
             style: TextStyle(
