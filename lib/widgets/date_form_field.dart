@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:msg/models/BuildingAssessment/building_assessment.dart';
+import 'package:msg/services/state_service.dart';
+import 'package:msg/widgets/custom_text_form_field.dart';
 
 import '../services/storage_service.dart';
 
 class CustomDateFormField extends StatefulWidget {
   final DateTime? initialValue;
-  final dynamic onDateSaved;
-  const CustomDateFormField({Key? key, this.initialValue, this.onDateSaved})
+  final dynamic onChanged;
+  const CustomDateFormField({Key? key, this.initialValue, this.onChanged})
       : super(key: key);
 
   @override
@@ -14,37 +18,56 @@ class CustomDateFormField extends StatefulWidget {
 
 class _CustomDateFormFieldState extends State<CustomDateFormField> {
   DateTime _selectedAppointmentDate = DateTime.now();
+  final controller = TextEditingController();
+  String languageCode = StorageService.getLocale()!.languageCode;
+  BuildingAssessment buildingAssessment = StateService.buildingAssessment;
 
   @override
   void initState() {
     _selectedAppointmentDate = widget.initialValue ?? DateTime.now();
+    setValue();
     super.initState();
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  setValue() {
+    controller.text =
+        DateFormat('d.M.yyyy', languageCode).format(_selectedAppointmentDate);
+    buildingAssessment.appointmentDate = _selectedAppointmentDate;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Row(children: <Widget>[
-      Flexible(
-        child: Column(
-          children: [
-            InputDatePickerFormField(
-                initialDate: _selectedAppointmentDate,
-                onDateSaved: widget.onDateSaved,
-                fieldLabelText: "Appointment Date",
-                firstDate: DateTime(2000),
-                lastDate: DateTime(2100)),
-          ],
+    return Row(
+      children: <Widget>[
+        Flexible(
+          child: Column(
+            children: [
+              CustomTextFormField(
+                enabled: false,
+                controller: controller,
+                type: TextInputType.datetime,
+                labelText: "Appointment Date",
+              )
+            ],
+          ),
         ),
-      ),
-      Column(
-        children: [
-          IconButton(
+        Column(
+          children: [
+            IconButton(
               color: Theme.of(context).colorScheme.onPrimary,
               onPressed: () => _selectDate(context),
-              icon: const Icon(Icons.calendar_month)),
-        ],
-      )
-    ]);
+              icon: const Icon(Icons.calendar_month),
+            ),
+          ],
+        )
+      ],
+    );
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -56,6 +79,7 @@ class _CustomDateFormFieldState extends State<CustomDateFormField> {
     if (picked != null && picked != _selectedAppointmentDate) {
       setState(() {
         _selectedAppointmentDate = picked;
+        setValue();
       });
     }
   }

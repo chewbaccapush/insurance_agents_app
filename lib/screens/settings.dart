@@ -103,7 +103,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             InkWell(
                 onTap: () {
-                  WidgetsBinding.instance!.addPostFrameCallback((_) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
                     if (_currentLanguage == "en") {
                       MyApp.setLocale(context, const Locale("de", "DE"));
                       setState(() {

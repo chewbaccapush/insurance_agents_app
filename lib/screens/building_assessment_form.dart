@@ -145,11 +145,6 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               child: CustomDateFormField(
                                 initialValue:
                                     buildingAssessment.appointmentDate,
-                                onDateSaved: (newValue) => {
-                                  setState((() => {
-                                        buildingAssessment.appointmentDate = newValue
-                                      }))
-                                },
                               ),
                             ),
                             CustomTextFormField(
@@ -259,10 +254,9 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                     shape: const StadiumBorder(),
                                     primary: (StorageService.getAppThemeId() ==
                                             false)
-                                        ? Color.fromARGB(220, 112, 14, 46)
-                                        //Color.fromARGB(220, 18, 136, 85)
-                                        : Color.fromARGB(148, 112, 14, 46),
-                                    //Color.fromARGB(220, 18, 136, 85),
+                                        ? const Color.fromARGB(220, 112, 14, 46)
+                                        : const Color.fromARGB(
+                                            148, 112, 14, 46),
                                   ),
                                   onPressed: () async => {
                                     await saveBuildingAssessment(),
@@ -272,7 +266,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                   label: Text(
                                     AppLocalizations.of(context)!
                                         .buildingAssessment_okButton,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 15,
                                       color: Colors.white,
                                     ),
@@ -314,8 +308,8 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                   onPressed: () async {
                                     // Validates form
                                     if (_formKey.currentState!.validate()) {
-                                      if (!buildingAssessment
-                                          .buildingParts.isEmpty) {
+                                      if (buildingAssessment
+                                          .buildingParts.isNotEmpty) {
                                         List<BuildingPart> unvalidParts =
                                             await ValidateAll()
                                                 .check(buildingAssessment);
