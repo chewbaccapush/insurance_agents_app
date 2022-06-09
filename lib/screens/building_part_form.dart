@@ -48,10 +48,11 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
   // Gets measurements for calculations
   void getMeasurements() async {
     if (buildingPart.id != null) {
-        List<Measurement> measurementsFromDb = await DatabaseHelper.instance.getMeasurementsByFk(buildingPart.id!);
-        setState(() {
-          buildingPart.measurements = measurementsFromDb;
-        });
+      List<Measurement> measurementsFromDb =
+          await DatabaseHelper.instance.getMeasurementsByFk(buildingPart.id!);
+      setState(() {
+        buildingPart.measurements = measurementsFromDb;
+      });
     }
   }
 
@@ -346,7 +347,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                       buildingPart.insuredType = newValue;
                                     });
                                   },
-                                  width: 120),
+                                  width: 150),
                             ),
                             CustomTextFormField(
                               suffix: Icon(Icons.percent_rounded,
@@ -666,7 +667,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                     buildingPart.insuredType = newValue;
                                   });
                                 },
-                                width: 120),
+                                width: 150),
                           ),
                           CustomTextFormField(
                             suffix: Icon(Icons.percent_rounded,
