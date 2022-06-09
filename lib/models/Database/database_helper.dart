@@ -183,6 +183,14 @@ class DatabaseHelper {
     return result.map((json) => BuildingPart.fromJson(json)).toList();
   }
 
+  Future<List<Measurement>> getMeasurementsByFk(int id) async {
+    final db = await instance.database;
+
+     final result = await db.query(tableMeasurement,
+        where: '${MeasurementFields.buildingPart} = ?', whereArgs: [id]);
+    return result.map((json) => Measurement.fromJson(json)).toList();
+  }
+
   Future<BuildingAssessment> readAssessment(int id) async {
     final db = await instance.database;
 

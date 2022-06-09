@@ -84,8 +84,7 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
                         titleButtonTwo:
                             Text(AppLocalizations.of(context)!.dialog_yes),
                         onPressedButtonTwo: () async => {
-                              await DatabaseHelper.instance
-                                  .deleteBuildingPart(buildingPart.id!),
+                              await DatabaseHelper.instance.deleteBuildingPart(buildingPart.id!),
                               await _getFromDB(),
                               Navigator.pop(context, true),
                             }),

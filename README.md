@@ -8,7 +8,7 @@ The system is built for a real client - MSG Life
 
 1. [Install](https://docs.flutter.dev/get-started/install) Android SDK and Flutter on your device. 
 2. Clone the repository.
-3. Run `pub get`
+3. Run `flutter pub get`
 4. Select an emulator or connect a real device
 5. Run `flutter run`
 
