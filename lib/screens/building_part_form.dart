@@ -40,8 +40,19 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
 
   @override
   void initState() {
+    getMeasurements();
     uneditedBuildingPart = buildingPart.copy();
     super.initState();
+  }
+
+  // Gets measurements for calculations
+  void getMeasurements() async {
+    if (buildingPart.id != null) {
+        List<Measurement> measurementsFromDb = await DatabaseHelper.instance.getMeasurementsByFk(buildingPart.id!);
+        setState(() {
+          buildingPart.measurements = measurementsFromDb;
+        });
+    }
   }
 
   int? getCubature() {
@@ -90,6 +101,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
   }
 
   saveBuildingPart() async {
+    isValid();
     await DatabaseHelper.instance
         .persistBuildingPart(buildingPart, buildingAssessment)
         .then((value) => {
@@ -172,7 +184,6 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                 children: [
                   IconButton(
                     onPressed: () async => {
-                      isValid(),
                       if (dirtyFlag)
                         {
                           await showDialog(

@@ -33,6 +33,14 @@ class _MeasurementFormState extends State<MeasurementForm> {
   Measurement uneditedMeasurement = Measurement();
   bool dirtyFlag = false;
 
+  @override
+  void initState() {
+    uneditedMeasurement = measurement.copy();
+    measurement.measurementType =
+        measurement.measurementType ?? MeasurementType.rectangular;
+    super.initState();
+  }
+
   saveMeasurement() async {
     await DatabaseHelper.instance
         .persistMeasurement(measurement, buildingPart, buildingAssessment)
@@ -42,37 +50,47 @@ class _MeasurementFormState extends State<MeasurementForm> {
               buildingAssessment.id = buildingPart.fk_buildingAssesmentId
             });
 
-    if (!buildingPart.measurements.contains(measurement)) {
+    int contains = containsChecker();
+    if (contains == -1) {
+      print(measurement.cubature);  
       buildingPart.measurements.add(measurement);
+    } else {
+      buildingPart.measurements[contains] = measurement;
     }
+
+    // if (!buildingPart.measurements.contains(measurement)) {
+    //   buildingPart.measurements.add(measurement);
+    // }
   }
 
-  @override
-  void initState() {
-    uneditedMeasurement = measurement.copy();
-    measurement.measurementType =
-        measurement.measurementType ?? MeasurementType.rectangular;
-    super.initState();
+  int containsChecker() {
+    for (int i = 0; i < buildingPart.measurements.length; i++) {
+      if (measurement.measurementId == buildingPart.measurements[i].measurementId) {
+        return i;
+      }
+    }
+    return -1;
   }
 
   int getCubature() {
-    if (measurement.measurementType == MeasurementType.rectangular) {
-      if (measurement.height != null &&
-          measurement.width != null &&
-          measurement.length != null) {
-        measurement.cubature =
-            measurement.height! * measurement.width! * measurement.length!;
+    setState(() {
+      if (measurement.measurementType == MeasurementType.rectangular) {
+        if (measurement.height != null &&
+            measurement.width != null &&
+            measurement.length != null) {
+          measurement.cubature =
+              measurement.height! * measurement.width! * measurement.length!;
+        } else {
+          measurement.cubature = 0.0;
+        }
       } else {
-        measurement.cubature = 0.0;
+        if (measurement.height != null && measurement.radius != null) {
+          measurement.cubature = 3.14 * pow(measurement.radius!, 2) * measurement.height!;
+        } else {
+          measurement.cubature = 0.0;
+        }
       }
-    } else {
-      if (measurement.height != null && measurement.radius != null) {
-        measurement.cubature =
-            3.14 * pow(measurement.radius!, 2) * measurement.height!;
-      } else {
-        measurement.cubature = 0.0;
-      }
-    }
+    });
     return measurement.cubature!.round();
   }
 
@@ -106,13 +124,10 @@ class _MeasurementFormState extends State<MeasurementForm> {
                                           if (buildingPart.measurements
                                               .contains(measurement))
                                             {
-                                              buildingPart.measurements
-                                                  .remove(measurement),
-                                              buildingPart.measurements
-                                                  .add(uneditedMeasurement),
+                                              buildingPart.measurements.remove(measurement),
+                                              buildingPart.measurements.add(uneditedMeasurement),
                                             },
-                                          NavigatorService.navigateTo(
-                                              context, const BuildingPartForm())
+                                          NavigatorService.navigateTo(context, const BuildingPartForm())
                                         },
                                         titleButtonTwo: const Text("Yes"),
                                         onPressedButtonTwo: () async => {
