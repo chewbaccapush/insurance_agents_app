@@ -37,6 +37,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
   BuildingPart buildingPart = StateService.buildingPart;
   BuildingPart uneditedBuildingPart = BuildingPart();
   bool dirtyFlag = false;
+  var formatter = NumberFormat.decimalPattern('de');
 
   @override
   void initState() {
@@ -190,14 +191,19 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                           await showDialog(
                               context: context,
                               builder: (BuildContext context) => CustomDialog(
-                                    title: const Text("Save Changes?"),
+                                    title: Text(AppLocalizations.of(context)!
+                                        .dialog_save),
                                     twoButtons: true,
-                                    titleButtonOne: const Text("No"),
+                                    titleButtonOne: Text(
+                                        AppLocalizations.of(context)!
+                                            .dialog_no),
                                     onPressedButtonOne: () => {
                                       NavigatorService.navigateTo(context,
                                           const BuildingAssessmentForm())
                                     },
-                                    titleButtonTwo: const Text("Yes"),
+                                    titleButtonTwo: Text(
+                                        AppLocalizations.of(context)!
+                                            .dialog_yes),
                                     onPressedButtonTwo: () async => {
                                       if (buildingPart.description == null ||
                                           buildingPart.description == "")
@@ -391,11 +397,11 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(AppLocalizations.of(context)!.cubature +
-                                  ': ${getCubature()} m\u00B3'),
+                                  ': ${formatter.format(getCubature())} m\u00B3'),
                               Text(AppLocalizations.of(context)!.value +
-                                  ': ${getValue()} \u20A3'),
+                                  ': ${formatter.format(getValue())} \u20A3'),
                               Text(AppLocalizations.of(context)!.sumInsured +
-                                  ': ${getSumInsured()} \u20A3'),
+                                  ': ${formatter.format(getSumInsured())} \u20A3'),
                             ],
                           ),
                         ),
@@ -414,8 +420,8 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                   shape: const StadiumBorder(),
                                   primary: (StorageService.getAppThemeId() ==
                                           false)
-                                      ? const Color.fromARGB(220, 112, 14, 46)
-                                      : const Color.fromARGB(148, 112, 14, 46),
+                                      ? const Color.fromARGB(235, 141, 130, 6)
+                                      : const Color.fromARGB(235, 141, 130, 6),
                                 ),
                                 label: Text(
                                   AppLocalizations.of(context)!
@@ -516,14 +522,19 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                           await showDialog(
                               context: context,
                               builder: (BuildContext context) => CustomDialog(
-                                    title: const Text("Save Changes?"),
+                                    title: Text(AppLocalizations.of(context)!
+                                        .dialog_save),
                                     twoButtons: true,
-                                    titleButtonOne: const Text("No"),
+                                    titleButtonOne: Text(
+                                        AppLocalizations.of(context)!
+                                            .dialog_no),
                                     onPressedButtonOne: () => {
                                       NavigatorService.navigateTo(context,
                                           const BuildingAssessmentForm())
                                     },
-                                    titleButtonTwo: const Text("Yes"),
+                                    titleButtonTwo: Text(
+                                        AppLocalizations.of(context)!
+                                            .dialog_yes),
                                     onPressedButtonTwo: () async => {
                                       if (buildingPart.description == null ||
                                           buildingPart.description == "")
@@ -750,8 +761,8 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                           style: ElevatedButton.styleFrom(
                             shape: const StadiumBorder(),
                             primary: (StorageService.getAppThemeId() == false)
-                                ? const Color.fromARGB(220, 112, 14, 46)
-                                : const Color.fromARGB(148, 112, 14, 46),
+                                ? const Color.fromARGB(235, 141, 130, 6)
+                                : const Color.fromARGB(235, 141, 130, 6),
                           ),
                           label: Text(
                             AppLocalizations.of(context)!

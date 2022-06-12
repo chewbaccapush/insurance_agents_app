@@ -81,12 +81,12 @@ class _HistoryPageState extends State<HistoryPage>
 
   void synchronize() async {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
+      SnackBar(
           content: Text(
-            'Sending..',
+            AppLocalizations.of(context)!.snackBar_sending,
             style: TextStyle(color: Colors.white),
           ),
-          backgroundColor: Colors.grey),
+          backgroundColor: Theme.of(context).colorScheme.secondary),
     );
 
     List<BuildingAssessment> unsent = buildingAssessments
@@ -112,8 +112,11 @@ class _HistoryPageState extends State<HistoryPage>
 
     Text title = Text(AppLocalizations.of(context)!.dialog_assessments_sent);
     if (unsuccessful != 0) {
-      title = Text(
-          "Successfully sent: ${successful}, Unsuccessfully sent: ${unsuccessful}");
+      title = Text(AppLocalizations.of(context)!.successfullySent +
+          successful.toString() +
+          ', ' +
+          AppLocalizations.of(context)!.unsuccessfullySent +
+          unsuccessful.toString());
       setState(() {
         countFinalizedAssessments = unsuccessful;
       });
@@ -132,6 +135,8 @@ class _HistoryPageState extends State<HistoryPage>
           titleButtonOne: Text(AppLocalizations.of(context)!.dialog_dissmiss),
           onPressedButtonOne: () => {Navigator.pop(context, true)}),
     );
+
+    filterBuildingAssessments();
   }
 
   void filterBuildingAssessments() {
@@ -149,6 +154,16 @@ class _HistoryPageState extends State<HistoryPage>
       }
     }
 
+    countDraftAssessments =
+        buildingAssessments.where((c) => c.finalized == false).length;
+    countFinalizedAssessments = buildingAssessments
+        .where((c) => c.finalized == true && c.sent == false)
+        .length;
+
+    countSyncedAssessments = buildingAssessments
+        .where((c) => c.finalized == true && c.sent == true)
+        .length;
+
     setState(() {});
   }
 
@@ -157,8 +172,6 @@ class _HistoryPageState extends State<HistoryPage>
         .readAllAssessments()
         .then((value) => buildingAssessments = value.reversed.toList());
 
-    countDraftAssessments =
-        buildingAssessments.where((c) => c.finalized == false).length;
     countFinalizedAssessments = buildingAssessments
         .where((c) => c.finalized == true && c.sent == false)
         .length;
@@ -170,9 +183,6 @@ class _HistoryPageState extends State<HistoryPage>
       });
     }
 
-    countSyncedAssessments = buildingAssessments
-        .where((c) => c.finalized == true && c.sent == true)
-        .length;
     filterBuildingAssessments();
     setState(() {});
   }

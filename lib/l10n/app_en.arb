@@ -67,6 +67,11 @@
     "enter_pin": "Please enter your pin",
     "enter_new_pin": "Please enter new pin",
     "incorrect_pin": "Pin is incorrect",
-    "dialog_delete": "Are you sure you want to delete this item?"
+    "dialog_delete": "Are you sure you want to delete this item?",
+
+    "snackBar_sending": "Sending...",
+    "successfullySent": "Successfully sent: ",
+    "unsuccessfullySent": "Unsuccessfully sent: "
+
     
 }

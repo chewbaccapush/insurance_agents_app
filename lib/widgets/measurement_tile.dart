@@ -59,7 +59,9 @@ class MeasurementTile extends StatelessWidget {
                                         Text(
                                           entry.length.toString() == "null"
                                               ? ""
-                                              : entry.length.toString() + " m",
+                                              : entry.length!
+                                                      .toStringAsFixed(0) +
+                                                  " m",
                                           style: Theme.of(widgetContext)
                                               .textTheme
                                               .bodyText1,
@@ -89,7 +91,8 @@ class MeasurementTile extends StatelessWidget {
                                         Text(
                                             entry.height.toString() == "null"
                                                 ? ""
-                                                : entry.height.toString() +
+                                                : entry.height!
+                                                        .toStringAsFixed(0) +
                                                     " m",
                                             style: Theme.of(widgetContext)
                                                 .textTheme
@@ -119,7 +122,9 @@ class MeasurementTile extends StatelessWidget {
                                         Text(
                                             entry.width.toString() == "null"
                                                 ? ""
-                                                : entry.width.toString() + " m",
+                                                : entry.width!
+                                                        .toStringAsFixed(0) +
+                                                    " m",
                                             style: Theme.of(widgetContext)
                                                 .textTheme
                                                 .bodyText1)
@@ -148,7 +153,9 @@ class MeasurementTile extends StatelessWidget {
                                         Text(
                                           entry.radius.toString() == "null"
                                               ? ""
-                                              : entry.radius.toString() + " m",
+                                              : entry.radius!
+                                                      .toStringAsFixed(0) +
+                                                  " m",
                                           style: Theme.of(widgetContext)
                                               .textTheme
                                               .bodyText1,

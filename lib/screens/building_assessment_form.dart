@@ -278,12 +278,13 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                 color: Colors.white,
                               ),
                               style: ElevatedButton.styleFrom(
-                                shape: const StadiumBorder(),
-                                primary: (StorageService.getAppThemeId() ==
-                                        false)
-                                    ? const Color.fromARGB(220, 112, 14, 46)
-                                    : const Color.fromARGB(148, 112, 14, 46),
-                              ),
+                                  shape: const StadiumBorder(),
+                                  primary:
+                                      (StorageService.getAppThemeId() == false)
+                                          ? Color.fromARGB(235, 141, 130, 6)
+                                          : Color.fromARGB(235, 141, 130, 6)
+                                  //const Color.fromARGB(148, 112, 14, 46),
+                                  ),
                               onPressed: () async => {
                                 await saveBuildingAssessment(),
                                 NavigatorService.navigateTo(
@@ -352,8 +353,9 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                 shape: const StadiumBorder(),
                                 primary:
                                     (StorageService.getAppThemeId() == false)
-                                        ? Color.fromARGB(220, 112, 14, 46)
-                                        : Color.fromARGB(148, 112, 14, 46),
+                                        ? Color.fromARGB(146, 12, 104, 50)
+                                        : Color.fromARGB(146, 12, 104, 50),
+                                //Color.fromARGB(148, 112, 14, 46),
                               ),
                               label: Text(
                                   AppLocalizations.of(context)!
@@ -590,9 +592,9 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                           style: ElevatedButton.styleFrom(
                             shape: const StadiumBorder(),
                             primary: (StorageService.getAppThemeId() == false)
-                                ? Color.fromARGB(220, 112, 14, 46)
+                                ? Color.fromARGB(235, 141, 130, 6)
                                 //Color.fromARGB(220, 18, 136, 85)
-                                : Color.fromARGB(148, 112, 14, 46),
+                                : Color.fromARGB(235, 141, 130, 6),
                             //Color.fromARGB(220, 18, 136, 85),
                           ),
                           onPressed: () async => {
@@ -660,8 +662,8 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                           style: ElevatedButton.styleFrom(
                             shape: const StadiumBorder(),
                             primary: (StorageService.getAppThemeId() == false)
-                                ? Color.fromARGB(220, 112, 14, 46)
-                                : Color.fromARGB(148, 112, 14, 46),
+                                ? Color.fromARGB(146, 12, 104, 50)
+                                : Color.fromARGB(146, 12, 104, 50),
                           ),
                           label: Text(
                               AppLocalizations.of(context)!

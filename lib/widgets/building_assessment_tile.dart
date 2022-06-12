@@ -31,6 +31,7 @@ class BuildingAssessmentTile extends StatefulWidget {
 class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
   bool _isExpanded = false;
   String languageCode = StorageService.getLocale()!.languageCode;
+  var formatter = NumberFormat.decimalPattern('de');
 
   // Creates icon for sent/unsent
   Icon getIcon() {
@@ -317,10 +318,9 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                                         ),
                                                       ),
                                                       Text(
-                                                          widget.entry!
-                                                                  .assessmentFee!
-                                                                  .toStringAsFixed(
-                                                                      0) +
+                                                          formatter.format(widget
+                                                                  .entry!
+                                                                  .assessmentFee!) +
                                                               " \u20A3",
                                                           style: Theme.of(widget
                                                                   .context)

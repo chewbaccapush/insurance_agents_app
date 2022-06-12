@@ -1,5 +1,6 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:msg/models/BuildingPart/insured_type.dart';
 import 'package:msg/models/BuildingPart/construction_class.dart';
 import 'package:msg/models/BuildingPart/fire_protection.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class BuildingPartTile extends StatefulWidget {
   final BuildContext context;
   final BuildingPart? entry;
+
   final List<Widget>? measurements;
 
   const BuildingPartTile(
@@ -23,6 +25,7 @@ class BuildingPartTile extends StatefulWidget {
 }
 
 class _BuildingPartTileState extends State<BuildingPartTile> {
+  var formatter = NumberFormat.decimalPattern('de');
   bool checkIfEmptyFirstColumn() {
     if (int.tryParse(widget.entry!.buildingYear.toString()) == null &&
         widget.entry!.fireProtection == null &&
@@ -387,8 +390,11 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                               ),
                                             ),
                                             Text(
-                                                widget.entry!.cubature!
-                                                        .toStringAsFixed(0) +
+                                                formatter.format(
+                                                        double.tryParse(widget
+                                                            .entry!.cubature!
+                                                            .toStringAsFixed(
+                                                                0))) +
                                                     " m\u00B3",
                                                 style: Theme.of(widget.context)
                                                     .textTheme
@@ -418,8 +424,11 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                               ),
                                             ),
                                             Text(
-                                                widget.entry!.value!
-                                                        .toStringAsFixed(0) +
+                                                formatter.format(
+                                                        double.tryParse(widget
+                                                            .entry!.value!
+                                                            .toStringAsFixed(
+                                                                0))) +
                                                     " \u20A3",
                                                 style: Theme.of(widget.context)
                                                     .textTheme
@@ -449,8 +458,11 @@ class _BuildingPartTileState extends State<BuildingPartTile> {
                                               ),
                                             ),
                                             Text(
-                                                widget.entry!.sumInsured!
-                                                        .toStringAsFixed(0) +
+                                                formatter.format(
+                                                        double.tryParse(widget
+                                                            .entry!.sumInsured!
+                                                            .toStringAsFixed(
+                                                                0))) +
                                                     " \u20A3",
                                                 style: Theme.of(widget.context)
                                                     .textTheme

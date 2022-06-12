@@ -65,5 +65,9 @@
         "enter_pin": "Bitte geben Sie Ihre PIN ein",
         "enter_new_pin": "Bitte geben Sie eine neue PIN ein",
         "incorrect_pin": "PIN ist falsch",
-        "dialog_delete": "Möchten Sie dieses Element wirklich löschen?"
+        "dialog_delete": "Möchten Sie dieses Element wirklich löschen?",
+
+        "snackBar_sending": "Senden...",
+        "successfullySent": "Erfolgreich gesendet: ",
+        "unsuccessfullySent": "Erfolglos gesendet: "
 }

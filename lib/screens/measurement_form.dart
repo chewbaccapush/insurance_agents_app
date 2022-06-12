@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:msg/models/BuildingAssessment/building_assessment.dart';
 import 'package:msg/models/Database/database_helper.dart';
 import 'package:msg/models/Measurement/measurement.dart';
@@ -32,6 +33,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
   Measurement measurement = StateService.measurement;
   Measurement uneditedMeasurement = Measurement();
   bool dirtyFlag = false;
+  var formatter = NumberFormat.decimalPattern('de');
 
   @override
   void initState() {
@@ -52,7 +54,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
 
     int contains = containsChecker();
     if (contains == -1) {
-      print(measurement.cubature);  
+      print(measurement.cubature);
       buildingPart.measurements.add(measurement);
     } else {
       buildingPart.measurements[contains] = measurement;
@@ -65,7 +67,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
 
   int containsChecker() {
     for (int i = 0; i < buildingPart.measurements.length; i++) {
-      if (measurement.measurementId == buildingPart.measurements[i].measurementId) {
+      if (measurement.measurementId ==
+          buildingPart.measurements[i].measurementId) {
         return i;
       }
     }
@@ -85,7 +88,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
         }
       } else {
         if (measurement.height != null && measurement.radius != null) {
-          measurement.cubature = 3.14 * pow(measurement.radius!, 2) * measurement.height!;
+          measurement.cubature =
+              3.14 * pow(measurement.radius!, 2) * measurement.height!;
         } else {
           measurement.cubature = 0.0;
         }
@@ -117,19 +121,28 @@ class _MeasurementFormState extends State<MeasurementForm> {
                                   context: context,
                                   builder: (BuildContext context) =>
                                       CustomDialog(
-                                        title: const Text("Save Changes?"),
+                                        title: Text(
+                                            AppLocalizations.of(context)!
+                                                .dialog_save),
                                         twoButtons: true,
-                                        titleButtonOne: const Text("No"),
+                                        titleButtonOne: Text(
+                                            AppLocalizations.of(context)!
+                                                .dialog_no),
                                         onPressedButtonOne: () => {
                                           if (buildingPart.measurements
                                               .contains(measurement))
                                             {
-                                              buildingPart.measurements.remove(measurement),
-                                              buildingPart.measurements.add(uneditedMeasurement),
+                                              buildingPart.measurements
+                                                  .remove(measurement),
+                                              buildingPart.measurements
+                                                  .add(uneditedMeasurement),
                                             },
-                                          NavigatorService.navigateTo(context, const BuildingPartForm())
+                                          NavigatorService.navigateTo(
+                                              context, const BuildingPartForm())
                                         },
-                                        titleButtonTwo: const Text("Yes"),
+                                        titleButtonTwo: Text(
+                                            AppLocalizations.of(context)!
+                                                .dialog_yes),
                                         onPressedButtonTwo: () async => {
                                           measurement.description ??= "DRAFT",
                                           await saveMeasurement(),
@@ -199,19 +212,21 @@ class _MeasurementFormState extends State<MeasurementForm> {
                                       )),
                                   Spacer(),
                                   Text(AppLocalizations.of(context)!.cubature +
-                                      ": ${getCubature()}m\u00B3"),
+                                      ": ${formatter.format(getCubature())}m\u00B3"),
                                 ],
                               ),
                             ),
                             Visibility(
-                              visible: measurement.measurementType == MeasurementType.rectangular
-                              ? true : false,
+                              visible: measurement.measurementType ==
+                                      MeasurementType.rectangular
+                                  ? true
+                                  : false,
                               child: Column(
                                 children: [
                                   CustomTextFormField(
                                     suffix: const Padding(
                                       padding: EdgeInsets.only(top: 15.0),
-                                      child: Text("metres",
+                                      child: Text("meters",
                                           style: TextStyle(color: Colors.grey)),
                                     ),
                                     type: const TextInputType.numberWithOptions(
@@ -253,26 +268,26 @@ class _MeasurementFormState extends State<MeasurementForm> {
                                 ],
                               ),
                               replacement: CustomTextFormField(
-                              suffix: const Padding(
-                                padding: EdgeInsets.only(top: 15.0),
-                                child: Text("meters",
-                                    style: TextStyle(color: Colors.grey)),
+                                suffix: const Padding(
+                                  padding: EdgeInsets.only(top: 15.0),
+                                  child: Text("meters",
+                                      style: TextStyle(color: Colors.grey)),
+                                ),
+                                type: const TextInputType.numberWithOptions(
+                                    decimal: true),
+                                labelText: AppLocalizations.of(context)!
+                                    .measurement_radius,
+                                initialValue: measurement.radius.toString(),
+                                onChanged: (newValue) => {
+                                  setState(() => {
+                                        dirtyFlag = true,
+                                        measurement.radius =
+                                            double.tryParse(newValue)
+                                      })
+                                },
+                                validator: (value) =>
+                                    Validators.measurementValidator(value!),
                               ),
-                              type: const TextInputType.numberWithOptions(
-                                  decimal: true),
-                              labelText: AppLocalizations.of(context)!
-                                  .measurement_radius,
-                              initialValue: measurement.radius.toString(),
-                              onChanged: (newValue) => {
-                                setState(() => {
-                                      dirtyFlag = true,
-                                      measurement.radius =
-                                          double.tryParse(newValue)
-                                    })
-                              },
-                              validator: (value) =>
-                                  Validators.measurementValidator(value!),
-                            ),
                             ),
                             CustomTextFormField(
                               suffix: const Padding(
@@ -308,8 +323,9 @@ class _MeasurementFormState extends State<MeasurementForm> {
                                     shape: const StadiumBorder(),
                                     primary: (StorageService.getAppThemeId() ==
                                             false)
-                                        ? Color.fromARGB(220, 112, 14, 46)
-                                        : Color.fromARGB(148, 112, 14, 46),
+                                        ? const Color.fromARGB(235, 141, 130, 6)
+                                        : const Color.fromARGB(
+                                            235, 141, 130, 6),
                                   ),
                                   onPressed: () async => {
                                     if (_formKey.currentState!.validate())
