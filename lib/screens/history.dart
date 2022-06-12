@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:msg/models/Measurement/measurement.dart';
-// import 'package:msg/services/connectivity_cheker.dart';
+import 'package:msg/services/connectivity_cheker.dart';
 import 'package:msg/services/navigator_service.dart';
 import 'package:msg/services/storage_service.dart';
 
@@ -56,21 +56,22 @@ class _HistoryPageState extends State<HistoryPage>
   bool _isExpanded = false;
   bool synchronizable = true;
   late StreamSubscription subscription;
+  bool hasConnection = false;
 
   @override
   void initState() {
     _localGet();
-    // ConnectivityCheker().initialize();
-    // subscription =
-    //     ConnectivityCheker().connectionChange.listen(connectionChanged);
+    ConnectivityCheker().initialize();
+    subscription =
+        ConnectivityCheker().connectionChange.listen(connectionChanged);
     super.initState();
   }
 
-  // void connectionChanged(dynamic hasInternetConnection) {
-  //   setState(() {
-  //     hasConnection = hasInternetConnection;
-  //   });
-  // }
+  void connectionChanged(dynamic hasInternetConnection) {
+    setState(() {
+      hasConnection = hasInternetConnection;
+    });
+  }
 
   @override
   void dispose() {
@@ -243,7 +244,9 @@ class _HistoryPageState extends State<HistoryPage>
                             ? const Color.fromARGB(220, 112, 14, 46)
                             : const Color.fromARGB(148, 112, 14, 46),
                       ),
-                      onPressed: synchronizable ? () => synchronize() : null,
+                      onPressed: synchronizable && hasConnection
+                          ? () => synchronize()
+                          : null,
                       label: Text(
                           "${AppLocalizations.of(context)!.assessments_sendButton} ($countFinalizedAssessments)",
                           style: const TextStyle(
@@ -418,9 +421,10 @@ class _HistoryPageState extends State<HistoryPage>
                                                 : const Color.fromARGB(
                                                     148, 112, 14, 46),
                                           ),
-                                          onPressed: synchronizable
-                                              ? () => synchronize()
-                                              : null,
+                                          onPressed:
+                                              synchronizable && hasConnection
+                                                  ? () => synchronize()
+                                                  : null,
                                           label: Text(
                                               "${AppLocalizations.of(context)!.assessments_sendButton} ($countFinalizedAssessments)",
                                               style: const TextStyle(
