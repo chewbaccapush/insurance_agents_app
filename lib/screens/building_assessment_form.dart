@@ -33,8 +33,18 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
 
   @override
   void initState() {
+    getBuildingParts();
     uneditedBuildingAssessment = buildingAssessment.copy();
     super.initState();
+  }
+
+  void getBuildingParts() async {
+    if (buildingAssessment.id != null) {
+      List<BuildingPart> measurementsFromDb = await DatabaseHelper.instance.getBuildingPartsByFk(buildingAssessment.id!);
+      setState(() {
+        buildingAssessment.buildingParts = measurementsFromDb;
+      });
+    }
   }
 
   // Save to database
@@ -61,10 +71,14 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
         ),
       );
     } else {
+      Text title = Text(AppLocalizations.of(context)!.missingDialog_finalize);
+      if (buildingAssessment.buildingParts.isEmpty) {
+        title = Text(AppLocalizations.of(context)!.noBuildingParts_finalize);
+      }
       return showDialog(
         context: context,
         builder: (BuildContext context) => CustomDialog(
-          title: Text(AppLocalizations.of(context)!.missingDialog_finalize),
+          title: title,
           twoButtons: false,
           titleButtonOne: Icon(Icons.clear),
           onPressedButtonOne: () => {Navigator.pop(context, true)},
@@ -317,11 +331,8 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               onPressed: () async {
                                 // Validates form
                                 if (_formKey.currentState!.validate()) {
-                                  if (buildingAssessment
-                                      .buildingParts.isNotEmpty) {
-                                    List<BuildingPart> unvalidParts =
-                                        await ValidateAll()
-                                            .check(buildingAssessment);
+                                  if (buildingAssessment.buildingParts.isNotEmpty) {
+                                    List<BuildingPart> unvalidParts = await ValidateAll().check(buildingAssessment);
                                     if (unvalidParts.isEmpty) {
                                       showFinalizeDialog(true);
                                       _formKey.currentState!.save();
@@ -329,7 +340,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                       showFinalizeDialog(false);
                                     }
                                   } else {
-                                    showFinalizeDialog(true);
+                                    showFinalizeDialog(false);
                                   }
                                 }
                               },
@@ -358,6 +369,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                       child: Column(
                         children: <Widget>[
                           AddObjectsSection(
+                            deleteNotifier: () => getBuildingParts(),
                             width: width,
                             objectType: ObjectType.buildingPart,
                             onPressed: () async => {
@@ -546,6 +558,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                         child: Column(
                           children: <Widget>[
                             AddObjectsSection(
+                              deleteNotifier: () => getBuildingParts(),
                               width: width,
                               objectType: ObjectType.buildingPart,
                               onPressed: () async => {

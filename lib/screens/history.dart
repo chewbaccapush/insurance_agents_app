@@ -35,7 +35,7 @@ class HistoryPage extends StatefulWidget {
   State<HistoryPage> createState() => _HistoryPageState();
 }
 
-class _HistoryPageState extends State<HistoryPage> {
+class _HistoryPageState extends State<HistoryPage> with SingleTickerProviderStateMixin {
   List<BuildingAssessment> buildingAssessments = [];
 
   List<BuildingAssessment> searchResults = [];
@@ -53,7 +53,7 @@ class _HistoryPageState extends State<HistoryPage> {
   int countSyncedAssessments = 0;
   int allAssessments = 0;
   bool _isExpanded = false;
-  bool hasConnection = true;
+  bool synchronizable = true;
   late StreamSubscription subscription;
 
   @override
@@ -64,6 +64,7 @@ class _HistoryPageState extends State<HistoryPage> {
     //     ConnectivityCheker().connectionChange.listen(connectionChanged);
     super.initState();
   }
+
 
   // void connectionChanged(dynamic hasInternetConnection) {
   //   setState(() {
@@ -80,70 +81,42 @@ class _HistoryPageState extends State<HistoryPage> {
 
   void synchronize() async {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Sending..')),
-    );
+       const SnackBar(content: Text('Sending..')),
+     );
+
+    List<BuildingAssessment> unsent = buildingAssessments.where((c) => c.finalized == true && c.sent == false).toList();
+    
+    int successful = 0;
+    int unsuccessful = 0;
+
+    for (BuildingAssessment element in unsent) {
+      await sqsSender.sendToSQS(element.toMessage().toString()).then((value) {
+        successful++;
+        setState(() {
+          element.sent = true;
+        });
+        DatabaseHelper.instance.updateAssessment(element);
+      }).onError((error, stackTrace) {
+        unsuccessful++; 
+      });
+    }
+
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-    List unsent = await iterateAssessments();
-
-    if (unsent[0] != 0) {
-      if (unsent[1].length == 0) {
-        if (unsent[0] == 1) {
-          await showDialog(
-            context: context,
-            builder: (BuildContext context) => CustomDialog(
-                title:
-                    Text(AppLocalizations.of(context)!.dialog_assessments_sent),
-                twoButtons: false,
-                titleButtonOne:
-                    Text(AppLocalizations.of(context)!.dialog_dissmiss),
-                onPressedButtonOne: () => {Navigator.pop(context, true)}),
-          );
-        } else {
-          await showDialog(
-            context: context,
-            builder: (BuildContext context) => CustomDialog(
-                title: Text("All ${unsent[0]} assessments successfully sent"),
-                twoButtons: false,
-                titleButtonOne:
-                    Text(AppLocalizations.of(context)!.dialog_dissmiss),
-                onPressedButtonOne: () => {Navigator.pop(context, true)}),
-          );
-        }
-      } else {
-        await showDialog(
-          context: context,
-          builder: (BuildContext context) => CustomDialog(
-              title: Text("${unsent[1].length}" +
-                  AppLocalizations.of(context)!.dialog_assessments_notSent),
-              twoButtons: false,
-              titleButtonOne:
-                  Text(AppLocalizations.of(context)!.dialog_dissmiss),
-              onPressedButtonOne: () => {Navigator.pop(context, true)}),
-        );
-      }
+    Text title = Text(AppLocalizations.of(context)!.dialog_assessments_sent);
+    if (unsuccessful != 0) {
+      title = Text("Successfully sent: ${successful}, Unsuccessfully sent: ${unsuccessful}");
     }
-  }
 
-  // TODO: async
-  List iterateAssessments() {
-    int numOfUnsent = 0;
-    List<BuildingAssessment> unsentAssessments = [];
-    buildingAssessments.forEach((element) async {
-      if (element.sent == false && element.finalized == true) {
-        numOfUnsent++;
-        debugPrint("Sending" + element.id.toString());
-        await sqsSender.sendToSQS(element.toMessage().toString()).then((value) {
-          setState(() {
-            element.sent = true;
-          });
-          DatabaseHelper.instance.updateAssessment(element);
-        }).onError((error, stackTrace) {
-          unsentAssessments.add(element);
-        });
-      }
-    });
-    return [numOfUnsent, unsentAssessments];
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) => CustomDialog(
+          title: title,
+          twoButtons: false,
+          titleButtonOne:
+              Text(AppLocalizations.of(context)!.dialog_dissmiss),
+          onPressedButtonOne: () => {Navigator.pop(context, true)}),
+    );
   }
 
   void filterBuildingAssessments() {
@@ -174,6 +147,16 @@ class _HistoryPageState extends State<HistoryPage> {
     countFinalizedAssessments = buildingAssessments
         .where((c) => c.finalized == true && c.sent == false)
         .length;
+    
+
+    // disables sync button if there are no finalized assessments
+    if (countFinalizedAssessments == 0) {
+      print("ni finalized");
+      setState(() {
+        synchronizable = false;
+      });
+    }
+
     countSyncedAssessments = buildingAssessments
         .where((c) => c.finalized == true && c.sent == true)
         .length;
@@ -237,17 +220,17 @@ class _HistoryPageState extends State<HistoryPage> {
                   padding: const EdgeInsets.only(right: 25.0),
                   child: ElevatedButton.icon(
                       icon: const Icon(
-                        Icons.sync,
-                        size: 22,
-                        color: Colors.white,
-                      ),
+                          Icons.sync,
+                          size: 22,
+                          color: Colors.white,
+                        ),
                       style: ElevatedButton.styleFrom(
                         shape: const StadiumBorder(),
                         primary: (StorageService.getAppThemeId() == false)
                             ? const Color.fromARGB(220, 112, 14, 46)
                             : const Color.fromARGB(148, 112, 14, 46),
                       ),
-                      onPressed: hasConnection ? () => synchronize() : null,
+                      onPressed: synchronizable ? () => synchronize() : null,
                       label: Text(
                           AppLocalizations.of(context)!.assessments_sendButton,
                           style: const TextStyle(
@@ -422,7 +405,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                                 : const Color.fromARGB(
                                                     148, 112, 14, 46),
                                           ),
-                                          onPressed: hasConnection
+                                          onPressed: synchronizable
                                               ? () => synchronize()
                                               : null,
                                           label: Text(
