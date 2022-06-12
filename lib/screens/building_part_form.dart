@@ -48,7 +48,8 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
   // Gets measurements for calculations
   void getMeasurements() async {
     if (buildingPart.id != null) {
-      List<Measurement> measurementsFromDb = await DatabaseHelper.instance.getMeasurementsByFk(buildingPart.id!);
+      List<Measurement> measurementsFromDb =
+          await DatabaseHelper.instance.getMeasurementsByFk(buildingPart.id!);
       setState(() {
         buildingPart.measurements = measurementsFromDb;
       });
@@ -255,8 +256,8 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                           onChanged: (newValue) => {
                             setState(() {
                               dirtyFlag = true;
-                              newValue == "" ? buildingPart.buildingYear = null : buildingPart.buildingYear = int.parse(newValue);
-                              print(buildingPart.buildingYear);
+                              buildingPart.buildingYear =
+                                  int.tryParse(newValue);
                             })
                           },
                           validator: (value) => Validators.intValidator(value!),
@@ -321,7 +322,8 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                           onChanged: (newValue) => {
                             setState(() {
                               dirtyFlag = true;
-                              newValue == "" ? buildingPart.unitPrice = null : buildingPart.unitPrice = double.parse(newValue);
+                              buildingPart.unitPrice =
+                                  double.tryParse(newValue);
                             })
                           },
                           validator: (value) =>
@@ -368,7 +370,8 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                               onChanged: (newValue) => {
                                 setState(() {
                                   dirtyFlag = true;
-                                  newValue == "" ? buildingPart.devaluationPercentage = null : buildingPart.devaluationPercentage = double.parse(newValue);
+                                  buildingPart.devaluationPercentage =
+                                      double.tryParse(newValue);
                                 })
                               },
                               validator: (value) {
@@ -576,7 +579,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                         onChanged: (newValue) => {
                           setState(() {
                             dirtyFlag = true;
-                            buildingPart.buildingYear = int.parse(newValue);
+                            buildingPart.buildingYear = int.tryParse(newValue);
                           })
                         },
                         validator: (value) => Validators.intValidator(value!),

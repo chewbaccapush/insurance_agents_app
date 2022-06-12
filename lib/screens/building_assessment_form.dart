@@ -40,7 +40,8 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
 
   void getBuildingParts() async {
     if (buildingAssessment.id != null) {
-      List<BuildingPart> measurementsFromDb = await DatabaseHelper.instance.getBuildingPartsByFk(buildingAssessment.id!);
+      List<BuildingPart> measurementsFromDb = await DatabaseHelper.instance
+          .getBuildingPartsByFk(buildingAssessment.id!);
       setState(() {
         buildingAssessment.buildingParts = measurementsFromDb;
       });
@@ -219,7 +220,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                 setState(() => {
                                       dirtyFlag = true,
                                       buildingAssessment.numOfAppartments =
-                                          int.parse(newValue)
+                                          int.tryParse(newValue)
                                     })
                               },
                               validator: (value) =>
@@ -239,7 +240,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                 setState(() => {
                                       dirtyFlag = true,
                                       buildingAssessment.voluntaryDeduction =
-                                          double.parse(newValue)
+                                          double.tryParse(newValue)
                                     })
                               },
                               validator: (value) =>
@@ -259,7 +260,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                                 setState(() => {
                                       dirtyFlag = true,
                                       buildingAssessment.assessmentFee =
-                                          double.parse(newValue)
+                                          double.tryParse(newValue)
                                     })
                               },
                               validator: (value) =>
@@ -331,8 +332,11 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               onPressed: () async {
                                 // Validates form
                                 if (_formKey.currentState!.validate()) {
-                                  if (buildingAssessment.buildingParts.isNotEmpty) {
-                                    List<BuildingPart> unvalidParts = await ValidateAll().check(buildingAssessment);
+                                  if (buildingAssessment
+                                      .buildingParts.isNotEmpty) {
+                                    List<BuildingPart> unvalidParts =
+                                        await ValidateAll()
+                                            .check(buildingAssessment);
                                     if (unvalidParts.isEmpty) {
                                       showFinalizeDialog(true);
                                       _formKey.currentState!.save();
@@ -503,7 +507,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               setState(() => {
                                     dirtyFlag = true,
                                     buildingAssessment.numOfAppartments =
-                                        int.parse(newValue)
+                                        int.tryParse(newValue)
                                   })
                             },
                             validator: (value) =>
@@ -521,7 +525,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               setState(() => {
                                     dirtyFlag = true,
                                     buildingAssessment.voluntaryDeduction =
-                                        double.parse(newValue)
+                                        double.tryParse(newValue)
                                   })
                             },
                             validator: (value) =>
@@ -541,7 +545,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                               setState(() => {
                                     dirtyFlag = true,
                                     buildingAssessment.assessmentFee =
-                                        double.parse(newValue)
+                                        double.tryParse(newValue)
                                   })
                             },
                             validator: (value) =>
