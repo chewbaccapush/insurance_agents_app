@@ -294,7 +294,7 @@ class _BuildingPartFormState extends State<BuildingPartForm> {
                                     buildingPart.constructionClass = newValue;
                                   });
                                 },
-                                width: 170),
+                                width: 180),
                             CustomDropdown(
                                 hint: Text(AppLocalizations.of(context)!
                                     .buildingPart_riskClass),
