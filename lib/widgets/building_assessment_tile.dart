@@ -84,8 +84,7 @@ class _BuildingAssessmentTileState extends State<BuildingAssessmentTile> {
                                               DateFormat('d.M.yyyy, HH:mm',
                                                       languageCode)
                                                   .format(widget.entry!
-                                                          .appointmentDate
-                                                      as DateTime),
+                                                      .dateCreated as DateTime),
                                               style: Theme.of(widget.context)
                                                   .textTheme
                                                   .headline1,

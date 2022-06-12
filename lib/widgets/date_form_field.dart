@@ -8,8 +8,8 @@ import '../services/storage_service.dart';
 
 class CustomDateFormField extends StatefulWidget {
   final DateTime? initialValue;
-  final dynamic onChanged;
-  const CustomDateFormField({Key? key, this.initialValue, this.onChanged})
+  final dynamic setDirtyFlag;
+  const CustomDateFormField({Key? key, this.initialValue, this.setDirtyFlag})
       : super(key: key);
 
   @override
@@ -61,7 +61,10 @@ class _CustomDateFormFieldState extends State<CustomDateFormField> {
           children: [
             IconButton(
               color: Theme.of(context).colorScheme.onPrimary,
-              onPressed: () => _selectDate(context),
+              onPressed: () => {
+                widget.setDirtyFlag(),
+                _selectDate(context),
+              },
               icon: const Icon(Icons.calendar_month),
             ),
           ],

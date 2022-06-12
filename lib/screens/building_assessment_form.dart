@@ -156,6 +156,11 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                           padding: const EdgeInsets.only(top: 10.0),
                           child: CustomDateFormField(
                             initialValue: buildingAssessment.appointmentDate,
+                            setDirtyFlag: () => {
+                              setState(() => {
+                                    dirtyFlag = true,
+                                  }),
+                            },
                           ),
                         ),
                         CustomTextFormField(
@@ -437,6 +442,11 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                         padding: const EdgeInsets.only(top: 10.0),
                         child: CustomDateFormField(
                           initialValue: buildingAssessment.appointmentDate,
+                          setDirtyFlag: () => {
+                            setState(() => {
+                                  dirtyFlag = true,
+                                }),
+                          },
                         ),
                       ),
                       CustomTextFormField(

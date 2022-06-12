@@ -8,6 +8,7 @@ const String tableBuildingAssesment = 'buildingAssessment';
 class BuildingAssessmentFields {
   static final List<String> values = [
     id,
+    dateCreated,
     appointmentDate,
     description,
     assessmentCause,
@@ -19,6 +20,7 @@ class BuildingAssessmentFields {
   ];
 
   static const String id = 'buildingAssessmentId';
+  static const String dateCreated = 'dateCreated';
   static const String appointmentDate = 'appointmentDate';
   static const String description = 'description';
   static const String assessmentCause = 'assessmentCause';
@@ -32,6 +34,7 @@ class BuildingAssessmentFields {
 
 class BuildingAssessment {
   int? id;
+  DateTime? dateCreated;
   DateTime? appointmentDate;
   String? description;
   String? assessmentCause;
@@ -44,6 +47,7 @@ class BuildingAssessment {
 
   BuildingAssessment(
       {this.id,
+      this.dateCreated,
       this.appointmentDate,
       this.description,
       this.assessmentCause,
@@ -58,6 +62,7 @@ class BuildingAssessment {
   Map<String, dynamic> toJson() {
     return {
       BuildingAssessmentFields.id: id,
+      BuildingAssessmentFields.dateCreated: dateCreated!.toIso8601String(),
       BuildingAssessmentFields.appointmentDate:
           appointmentDate!.toIso8601String(),
       BuildingAssessmentFields.description: description,
@@ -88,11 +93,19 @@ class BuildingAssessment {
   }
 
   static BuildingAssessment fromJson(Map<String, Object?> json) {
-    bool sentBoolean = int.tryParse(json[BuildingAssessmentFields.sent].toString()) == 1 ? true : false;
-    bool finalizedBoolean = int.tryParse(json[BuildingAssessmentFields.finalized].toString()) == 1 ? true : false;
-    
+    bool sentBoolean =
+        int.tryParse(json[BuildingAssessmentFields.sent].toString()) == 1
+            ? true
+            : false;
+    bool finalizedBoolean =
+        int.tryParse(json[BuildingAssessmentFields.finalized].toString()) == 1
+            ? true
+            : false;
+
     return BuildingAssessment(
         id: int.tryParse(json[BuildingAssessmentFields.id].toString()),
+        dateCreated: DateTime.parse(
+            json[BuildingAssessmentFields.dateCreated] as String),
         appointmentDate: DateTime.parse(
             json[BuildingAssessmentFields.appointmentDate] as String),
         description: json[BuildingAssessmentFields.description] as String?,
@@ -105,12 +118,12 @@ class BuildingAssessment {
         assessmentFee: double.tryParse(
             json[BuildingAssessmentFields.assessmentFee].toString()),
         sent: sentBoolean,
-        finalized: finalizedBoolean
-        );
+        finalized: finalizedBoolean);
   }
 
   BuildingAssessment copy({
     int? id,
+    DateTime? dateCreated,
     DateTime? appointmentDate,
     String? description,
     String? assessmentCause,
@@ -122,21 +135,25 @@ class BuildingAssessment {
     bool? finalized,
   }) =>
       BuildingAssessment(
-        id: id ?? this.id,
-        appointmentDate: appointmentDate ?? this.appointmentDate,
-        description: description ?? this.description,
-        assessmentCause: assessmentCause ?? this.assessmentCause,
-        numOfAppartments: numOfAppartments ?? this.numOfAppartments,
-        voluntaryDeduction: voluntaryDeduction ?? this.voluntaryDeduction,
-        assessmentFee: assessmentFee ?? this.assessmentFee,
-        buildingParts: buildingParts ?? this.buildingParts,
-        sent: sent ?? this.sent,
-        finalized: finalized ?? this.finalized
-      );
+          id: id ?? this.id,
+          dateCreated: dateCreated ?? this.dateCreated,
+          appointmentDate: appointmentDate ?? this.appointmentDate,
+          description: description ?? this.description,
+          assessmentCause: assessmentCause ?? this.assessmentCause,
+          numOfAppartments: numOfAppartments ?? this.numOfAppartments,
+          voluntaryDeduction: voluntaryDeduction ?? this.voluntaryDeduction,
+          assessmentFee: assessmentFee ?? this.assessmentFee,
+          buildingParts: buildingParts ?? this.buildingParts,
+          sent: sent ?? this.sent,
+          finalized: finalized ?? this.finalized);
 
   get getId => this.id;
 
   set setId(int id) => this.id = id;
+
+  get getDateCreated => this.dateCreated;
+
+  set setDateCreated(dateCreated) => this.dateCreated = dateCreated;
 
   get getAppointmentDate => this.appointmentDate;
 

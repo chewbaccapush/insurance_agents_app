@@ -42,6 +42,7 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE $tableBuildingAssesment(
           ${BuildingAssessmentFields.id} $idType,
+          ${BuildingAssessmentFields.dateCreated} $stringNullable,
           ${BuildingAssessmentFields.appointmentDate} $stringNullable,
           ${BuildingAssessmentFields.description} $stringNullable,
           ${BuildingAssessmentFields.assessmentCause} $stringNullable,
@@ -88,6 +89,8 @@ class DatabaseHelper {
   }
 
   persistAssessment(BuildingAssessment assessment) async {
+    assessment.dateCreated = DateTime.now();
+
     final db = await instance.database;
     return await db.insert(tableBuildingAssesment, assessment.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace);
