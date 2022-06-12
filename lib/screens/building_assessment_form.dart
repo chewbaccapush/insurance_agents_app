@@ -209,7 +209,7 @@ class _BuildingAssessmentFormState extends State<BuildingAssessmentForm> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CustomTextFormField(
-                              width: 175,
+                              width: 195,
                               type: const TextInputType.numberWithOptions(
                                   decimal: false),
                               labelText: AppLocalizations.of(context)!

@@ -1,50 +1,49 @@
-// import 'dart:async';
-// import 'package:internet_connection_checker/internet_connection_checker.dart';
-// import 'package:connectivity_plus/connectivity_plus.dart';
+import 'dart:async';
 
-// class ConnectivityCheker {
-//   StreamController connectionChangeController = new StreamController.broadcast();
-//   final Connectivity _connectivity = Connectivity();
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
-//   ConnectivityCheker._privateConstructor();
-//   static final ConnectivityCheker _instance = ConnectivityCheker._privateConstructor();
-  
+class ConnectivityCheker {
+  StreamController connectionChangeController = StreamController.broadcast();
+  final Connectivity _connectivity = Connectivity();
 
-//   factory ConnectivityCheker() {
-//     return _instance;
-//   }
+  ConnectivityCheker._privateConstructor();
+  static final ConnectivityCheker _instance =
+      ConnectivityCheker._privateConstructor();
 
-//   void initialize() {
-//     _connectivity.onConnectivityChanged.listen(_connectionChange);
-//     check();
-//   }
+  factory ConnectivityCheker() {
+    return _instance;
+  }
 
-//   void dispose() {
-//     connectionChangeController.close();
-//   }
+  void initialize() {
+    _connectivity.onConnectivityChanged.listen(_connectionChange);
+    check();
+  }
 
-//   void _connectionChange(ConnectivityResult result) {
-//     check();
-//   }
+  void dispose() {
+    connectionChangeController.close();
+  }
 
-//   Future<bool> check() async {
-//     ConnectivityResult result = ConnectivityResult.none;
-//     try {
-//       result = await _connectivity.checkConnectivity();
-//     } catch (e) {
-//       print(e.toString());
-//     }
+  void _connectionChange(ConnectivityResult result) {
+    check();
+  }
 
-//     if (result == ConnectivityResult.none) {
-//       print(false);
-//       connectionChangeController.sink.add(false);
-//       return false;
-//     } else {
-//       print(true);
-//       connectionChangeController.sink.add(true);
-//       return true;
-//     }
-//   }
+  Future<bool> check() async {
+    ConnectivityResult result = ConnectivityResult.none;
+    try {
+      result = await _connectivity.checkConnectivity();
+    } catch (e) {
+      print(e.toString());
+    }
 
-//   Stream get connectionChange => connectionChangeController.stream;
-// }
+    if (result == ConnectivityResult.none) {
+      connectionChangeController.sink.add(false);
+      return false;
+    } else {
+      connectionChangeController.sink.add(true);
+      return true;
+    }
+  }
+
+  Stream get connectionChange => connectionChangeController.stream;
+}
