@@ -35,7 +35,8 @@ class HistoryPage extends StatefulWidget {
   State<HistoryPage> createState() => _HistoryPageState();
 }
 
-class _HistoryPageState extends State<HistoryPage> with SingleTickerProviderStateMixin {
+class _HistoryPageState extends State<HistoryPage>
+    with SingleTickerProviderStateMixin {
   List<BuildingAssessment> buildingAssessments = [];
 
   List<BuildingAssessment> searchResults = [];
@@ -65,7 +66,6 @@ class _HistoryPageState extends State<HistoryPage> with SingleTickerProviderStat
     super.initState();
   }
 
-
   // void connectionChanged(dynamic hasInternetConnection) {
   //   setState(() {
   //     hasConnection = hasInternetConnection;
@@ -81,11 +81,18 @@ class _HistoryPageState extends State<HistoryPage> with SingleTickerProviderStat
 
   void synchronize() async {
     ScaffoldMessenger.of(context).showSnackBar(
-       const SnackBar(content: Text('Sending..')),
-     );
+      const SnackBar(
+          content: Text(
+            'Sending..',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.grey),
+    );
 
-    List<BuildingAssessment> unsent = buildingAssessments.where((c) => c.finalized == true && c.sent == false).toList();
-    
+    List<BuildingAssessment> unsent = buildingAssessments
+        .where((c) => c.finalized == true && c.sent == false)
+        .toList();
+
     int successful = 0;
     int unsuccessful = 0;
 
@@ -97,7 +104,7 @@ class _HistoryPageState extends State<HistoryPage> with SingleTickerProviderStat
         });
         DatabaseHelper.instance.updateAssessment(element);
       }).onError((error, stackTrace) {
-        unsuccessful++; 
+        unsuccessful++;
       });
     }
 
@@ -105,7 +112,16 @@ class _HistoryPageState extends State<HistoryPage> with SingleTickerProviderStat
 
     Text title = Text(AppLocalizations.of(context)!.dialog_assessments_sent);
     if (unsuccessful != 0) {
-      title = Text("Successfully sent: ${successful}, Unsuccessfully sent: ${unsuccessful}");
+      title = Text(
+          "Successfully sent: ${successful}, Unsuccessfully sent: ${unsuccessful}");
+      setState(() {
+        countFinalizedAssessments = unsuccessful;
+      });
+    } else {
+      setState(() {
+        synchronizable = false;
+        countFinalizedAssessments = 0;
+      });
     }
 
     await showDialog(
@@ -113,8 +129,7 @@ class _HistoryPageState extends State<HistoryPage> with SingleTickerProviderStat
       builder: (BuildContext context) => CustomDialog(
           title: title,
           twoButtons: false,
-          titleButtonOne:
-              Text(AppLocalizations.of(context)!.dialog_dissmiss),
+          titleButtonOne: Text(AppLocalizations.of(context)!.dialog_dissmiss),
           onPressedButtonOne: () => {Navigator.pop(context, true)}),
     );
   }
@@ -147,11 +162,9 @@ class _HistoryPageState extends State<HistoryPage> with SingleTickerProviderStat
     countFinalizedAssessments = buildingAssessments
         .where((c) => c.finalized == true && c.sent == false)
         .length;
-    
 
     // disables sync button if there are no finalized assessments
     if (countFinalizedAssessments == 0) {
-      print("ni finalized");
       setState(() {
         synchronizable = false;
       });
@@ -220,10 +233,10 @@ class _HistoryPageState extends State<HistoryPage> with SingleTickerProviderStat
                   padding: const EdgeInsets.only(right: 25.0),
                   child: ElevatedButton.icon(
                       icon: const Icon(
-                          Icons.sync,
-                          size: 22,
-                          color: Colors.white,
-                        ),
+                        Icons.sync,
+                        size: 22,
+                        color: Colors.white,
+                      ),
                       style: ElevatedButton.styleFrom(
                         shape: const StadiumBorder(),
                         primary: (StorageService.getAppThemeId() == false)
@@ -232,7 +245,7 @@ class _HistoryPageState extends State<HistoryPage> with SingleTickerProviderStat
                       ),
                       onPressed: synchronizable ? () => synchronize() : null,
                       label: Text(
-                          AppLocalizations.of(context)!.assessments_sendButton,
+                          "${AppLocalizations.of(context)!.assessments_sendButton} ($countFinalizedAssessments)",
                           style: const TextStyle(
                               fontSize: 15, color: Colors.white))),
                 ),
@@ -409,8 +422,7 @@ class _HistoryPageState extends State<HistoryPage> with SingleTickerProviderStat
                                               ? () => synchronize()
                                               : null,
                                           label: Text(
-                                              AppLocalizations.of(context)!
-                                                  .assessments_sendButton,
+                                              "${AppLocalizations.of(context)!.assessments_sendButton} ($countFinalizedAssessments)",
                                               style: const TextStyle(
                                                   fontSize: 15,
                                                   color: Colors.white))),
@@ -595,8 +607,6 @@ class _HistoryPageState extends State<HistoryPage> with SingleTickerProviderStat
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: Theme.of(context).colorScheme.tertiary,
-            //color: Color.fromARGB(121, 154, 56, 91),
-            //color: Color.fromARGB(124, 90, 17, 43),
           ),
           child: ListView(
             physics: const BouncingScrollPhysics(),
