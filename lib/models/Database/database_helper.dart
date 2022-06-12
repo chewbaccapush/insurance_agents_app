@@ -89,7 +89,7 @@ class DatabaseHelper {
   }
 
   persistAssessment(BuildingAssessment assessment) async {
-    assessment.dateCreated = DateTime.now();
+    assessment.dateCreated ??= DateTime.now();
 
     final db = await instance.database;
     return await db.insert(tableBuildingAssesment, assessment.toJson(),
