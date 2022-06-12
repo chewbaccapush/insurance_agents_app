@@ -17,10 +17,11 @@ class AddObjectsSection extends StatefulWidget {
   final dynamic onPressed;
   final ObjectType objectType;
   final double width;
+  final VoidCallback? deleteNotifier;
 
-  const AddObjectsSection(
-      {Key? key, this.onPressed, required this.objectType, required this.width})
-      : super(key: key);
+  const AddObjectsSection({
+    Key? key, this.onPressed, required this.objectType, required this.width, this.deleteNotifier
+  }) : super(key: key);
 
   @override
   State<AddObjectsSection> createState() => _AddObjectsSectionState();
@@ -84,10 +85,13 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
                         titleButtonTwo:
                             Text(AppLocalizations.of(context)!.dialog_yes),
                         onPressedButtonTwo: () async => {
-                              await DatabaseHelper.instance.deleteBuildingPart(buildingPart.id!),
-                              await _getFromDB(),
-                              Navigator.pop(context, true),
-                            }),
+                          await DatabaseHelper.instance.deleteBuildingPart(buildingPart.id!),
+                          await _getFromDB(),
+                          if (widget.deleteNotifier != null) {
+                            widget.deleteNotifier!()
+                          },
+                          Navigator.pop(context, true),
+                        }),
                   ),
                   icon: const Icon(Icons.delete),
                 ),
@@ -116,11 +120,13 @@ class _AddObjectsSectionState extends State<AddObjectsSection> {
                         titleButtonTwo:
                             Text(AppLocalizations.of(context)!.dialog_yes),
                         onPressedButtonTwo: () async => {
-                              await DatabaseHelper.instance.deleteMeasurement(
-                                  measurement.measurementId!),
-                              _getFromDB(),
-                              Navigator.pop(context, true),
-                            }),
+                          await DatabaseHelper.instance.deleteMeasurement(measurement.measurementId!),
+                          _getFromDB(),
+                          if (widget.deleteNotifier != null) {
+                            widget.deleteNotifier!()
+                          },
+                          Navigator.pop(context, true),
+                        }),
                   ),
                   icon: const Icon(Icons.delete),
                 ),

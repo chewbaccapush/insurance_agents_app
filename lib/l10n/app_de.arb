@@ -53,6 +53,7 @@
         "dialog_yes": "Ja",
         "dialog_no": "Nein",
         "missingDialog_finalize": "Bitte füllen Sie alle Gebäudeteilformulare aus.",
+        "noBuildingParts_finalize": "Bitte fügen Sie mindestens einen Gebäudeteil hinzu.", 
         "dialog_save": "Änderungen speichern?",
         "dialog_assessments_sent": "Bewertungen erfolgreich gesendett",
         "dialog_dissmiss": "Zurückweisen",

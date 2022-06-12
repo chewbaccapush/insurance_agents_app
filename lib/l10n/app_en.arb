@@ -54,6 +54,7 @@
     "dialog_yes": "Yes",
     "dialog_no": "No",
     "missingDialog_finalize": "Please complete all building part forms.",
+    "noBuildingParts_finalize": "Please add at least one building part.", 
     "dialog_save": "Save changes?",
     "dialog_assessments_sent": "Assessments successfully sent",
     "dialog_dissmiss": "Dismiss",
