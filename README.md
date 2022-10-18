@@ -10,6 +10,7 @@ The system is built for a real client - MSG Life
 2. Clone the repository.
 3. Run `flutter pub get`
 4. Select an emulator or connect a real device
+  - Android Studio
 5. Run `flutter run`
 
 
