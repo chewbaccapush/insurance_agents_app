@@ -309,6 +309,13 @@ class DatabaseHelper {
         whereArgs: [assessment.id]);
   }
 
+  Future<void> updateBuildingPart(BuildingPart buildingPart) async {
+    final db = await instance.database;
+    await db.update(tableBuildingPart, buildingPart.toJson(),
+        where: '${BuildingPartFields.id} = ?',
+        whereArgs: [buildingPart.id]);
+  }
+
   Future close() async {
     final db = await instance.database;
     _database = null;
