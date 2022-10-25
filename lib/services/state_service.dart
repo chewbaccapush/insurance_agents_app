@@ -15,7 +15,7 @@ class StateService {
   }
 
   static getStateFromDatabase() async {
-    buildingAssessment.id != null
+     buildingAssessment.id != null
         ? buildingAssessment =
             await DatabaseHelper.instance.readAssessment(buildingAssessment.id!)
         : buildingAssessment = buildingAssessment;
